@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "142876190817",
+    "project_id": "prognosify-63e02",
+    "storage_bucket": "prognosify-63e02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:142876190817:android:d0139cffe97de30f9f6220",
+        "android_client_info": {
+          "package_name": "com.example.prognosify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "142876190817-kbeo3c7ldbck2upa3vifuj1k2sapi021.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXxs2Mr7A1ezKUL0tJpS1233kQxfluoWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "142876190817-kbeo3c7ldbck2upa3vifuj1k2sapi021.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
