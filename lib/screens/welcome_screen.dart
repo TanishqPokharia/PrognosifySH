@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class WelcomeScreen extends StatelessWidget {
@@ -13,14 +14,14 @@ class WelcomeScreen extends StatelessWidget {
         child: Column(
           children: [
             Container(
-              margin: EdgeInsets.all(50),
+              margin: EdgeInsets.all(mq(context, 60)),
               child: Center(
                 child: Hero(
                   tag: "Tag",
                   child: Image.asset(
                     'assets/applogo.png',
-                    height: 300,
-                    width: 300,
+                    height: mq(context, 350),
+                    width: mq(context, 350),
                   ),
                 ),
               ),
@@ -33,19 +34,20 @@ class WelcomeScreen extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(40),
-                        topRight: Radius.circular(40)),
+                        topLeft: Radius.circular(mq(context, 45)),
+                        topRight: Radius.circular(mq(context, 45))),
                   ),
                   child: Column(
                     children: [
                       Wrap(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(top: 40, left: 30),
+                            padding: EdgeInsets.only(
+                                top: mq(context, 45), left: mq(context, 35)),
                             child: Text(
                               "Welcome to Prognosify",
                               style: TextStyle(
-                                  fontSize: 45,
+                                  fontSize: mq(context, 50),
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
@@ -55,11 +57,12 @@ class WelcomeScreen extends StatelessWidget {
                       Wrap(
                         children: [
                           Padding(
-                            padding: const EdgeInsets.only(left: 30, top: 10),
+                            padding: EdgeInsets.only(
+                                left: mq(context, 35), top: mq(context, 15)),
                             child: Text(
                               "Guard yourself from future risks and diseases",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: mq(context, 25),
                                 color: Colors.white,
                               ),
                             ),
@@ -67,13 +70,16 @@ class WelcomeScreen extends StatelessWidget {
                         ],
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 40, right: 30, left: 30),
+                        margin: EdgeInsets.only(
+                            top: mq(context, 45),
+                            right: mq(context, 35),
+                            left: mq(context, 35)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             SizedBox(
-                              width: 150,
-                              height: 50,
+                              width: mq(context, 160),
+                              height: mq(context, 55),
                               child: ElevatedButton(
                                   onPressed: () {
                                     GoRouter.of(context).pushNamed(
@@ -82,13 +88,13 @@ class WelcomeScreen extends StatelessWidget {
                                   child: Text(
                                     "Sign Up",
                                     style: TextStyle(
-                                      fontSize: 20,
+                                      fontSize: mq(context, 25),
                                     ),
                                   )),
                             ),
                             SizedBox(
-                              width: 150,
-                              height: 50,
+                              width: mq(context, 160),
+                              height: mq(context, 55),
                               child: ElevatedButton(
                                   onPressed: () {
                                     GoRouter.of(context).pushNamed(
@@ -96,7 +102,7 @@ class WelcomeScreen extends StatelessWidget {
                                   },
                                   child: Text(
                                     "Sign In",
-                                    style: TextStyle(fontSize: 20),
+                                    style: TextStyle(fontSize: mq(context, 25)),
                                   )),
                             )
                           ],

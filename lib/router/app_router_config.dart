@@ -58,15 +58,11 @@ class AppRouter {
     GoRoute(
       name: AppRouterConstants.navigationScreen,
       path: "/navigation",
-      builder: (context, state) => NavigationMenu(
-        currentScreenIndex: state.extra as int,
-      ),
+      builder: (context, state) => NavigationMenu(),
       pageBuilder: (context, state) => CustomTransitionPage(
         transitionDuration: Duration(seconds: 1),
         key: state.pageKey,
-        child: NavigationMenu(
-          currentScreenIndex: state.extra as int,
-        ),
+        child: NavigationMenu(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             FadeTransition(
           opacity: CurveTween(curve: Curves.easeInCirc).animate(animation),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:prognosify/main.dart';
 import 'package:prognosify/models/disease_card_data.dart';
 
 class DiseaseCard extends StatefulWidget {
@@ -39,11 +40,11 @@ class _DiseaseCardState extends State<DiseaseCard> {
             Hero(
               tag: "disease${widget.index}",
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                height: 100,
-                width: 100,
+                margin: EdgeInsets.symmetric(horizontal: mq(context, 25)),
+                height: mq(context, 150),
+                width: mq(context, 150),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(mq(context, 15)),
                     image: DecorationImage(
                         image: widget.diseaseCardData.imageLink != null
                             ? CachedNetworkImageProvider(
@@ -64,29 +65,32 @@ class _DiseaseCardState extends State<DiseaseCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(10),
+                    padding: EdgeInsets.all(mq(context, 15)),
                     child: Material(
                       color: Colors.transparent,
                       child: Container(
-                        width: 200,
+                        width: mq(context, 250),
                         child: Text(
                           widget.diseaseCardData.disease,
                           textAlign: TextAlign.center,
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: mq(context, 25)),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ),
                   ),
-                  Divider(
+                  const Divider(
                     color: Colors.grey,
                     thickness: 0.5,
                   ),
                   Container(
                     margin: EdgeInsets.only(
-                        left: 30, right: 30, top: 10, bottom: 20),
+                        left: mq(context, 35),
+                        right: mq(context, 35),
+                        top: mq(context, 15),
+                        bottom: mq(context, 25)),
                     child: CircularPercentIndicator(
-                      radius: 40,
+                      radius: mq(context, 40),
                       progressColor:
                           setColor(widget.diseaseCardData.percentage),
                       lineWidth: 6,

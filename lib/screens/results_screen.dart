@@ -23,14 +23,14 @@ class _ResultsScreen extends State<ResultsScreen> {
           title: Text(appTitle),
           leading: IconButton(
             onPressed: () {
-              GoRouter.of(context)
-                  .goNamed(AppRouterConstants.navigationScreen, extra: 0);
+              GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
             },
             icon: const Icon(Icons.arrow_back),
           )),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+          padding: EdgeInsets.symmetric(
+              vertical: mq(context, 25), horizontal: mq(context, 15)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

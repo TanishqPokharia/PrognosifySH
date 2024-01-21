@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -15,18 +16,22 @@ class _SplashScreenState extends State<SplashScreen>
   final User? _user = FirebaseAuth.instance.currentUser;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     Future.delayed(
-        Duration(
+        const Duration(
           seconds: 2,
         ), () {
       _user == null
           ? GoRouter.of(context).goNamed(AppRouterConstants.welcomeScreen)
-          : GoRouter.of(context)
-              .goNamed(AppRouterConstants.navigationScreen, extra: 0);
+          : GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
     });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -38,8 +43,8 @@ class _SplashScreenState extends State<SplashScreen>
           tag: "Tag",
           child: Image.asset(
             'assets/applogo.png',
-            height: 300,
-            width: 200,
+            height: mq(context, 350),
+            width: mq(context, 250),
           ),
         )),
       ),

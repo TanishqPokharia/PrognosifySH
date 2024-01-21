@@ -27,8 +27,7 @@ class AuthServices {
       if (!context.mounted) {
         return;
       }
-      GoRouter.of(context)
-          .goNamed(AppRouterConstants.navigationScreen, extra: 0);
+      GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Signed Up Successfully!")));
     } on FirebaseAuthException catch (e) {
@@ -52,8 +51,7 @@ class AuthServices {
       if (!context.mounted) {
         return;
       }
-      GoRouter.of(context)
-          .goNamed(AppRouterConstants.navigationScreen, extra: 0);
+      GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Logged In Successfully!")));
     } on FirebaseAuthException catch (e) {

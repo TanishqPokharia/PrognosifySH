@@ -17,7 +17,6 @@ class QuestionsScreen extends StatefulWidget {
   final int userAge;
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _QuestionsScreen();
   }
 }
@@ -30,7 +29,6 @@ class _QuestionsScreen extends State<QuestionsScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     answersList.add(widget.userAge.toString());
     progressDialog = ProgressDialog(context);
@@ -150,22 +148,21 @@ class _QuestionsScreen extends State<QuestionsScreen> {
           if (!context.mounted) {
             return;
           }
-          GoRouter.of(context)
-              .goNamed(AppRouterConstants.navigationScreen, extra: 0);
+          GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
           showDialog(
               context: context,
               builder: ((context) => Dialog(
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16)),
+                      borderRadius: BorderRadius.circular(mq(context, 21))),
                   backgroundColor: Colors.white,
                   child: Padding(
-                      padding: EdgeInsets.all(20),
+                      padding: EdgeInsets.all(mq(context, 25)),
                       child: Column(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Padding(
-                              padding: EdgeInsets.all(30),
+                              padding: EdgeInsets.all(mq(context, 35)),
                               child: Text(
                                   "Invalid server response. Please try again later.",
                                   style:
@@ -183,16 +180,16 @@ class _QuestionsScreen extends State<QuestionsScreen> {
           context: context,
           builder: ((context) => Dialog(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16)),
+                  borderRadius: BorderRadius.circular(mq(context, 21))),
               backgroundColor: Colors.white,
               child: Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(mq(context, 25)),
                   child: Column(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Padding(
-                          padding: EdgeInsets.all(30),
+                          padding: EdgeInsets.all(mq(context, 35)),
                           child: Text(
                               "Invalid Response. Please check your internet connection",
                               style: Theme.of(context).textTheme.titleSmall),
@@ -204,62 +201,57 @@ class _QuestionsScreen extends State<QuestionsScreen> {
   @override
   Widget build(BuildContext context) {
     final currentQuestion = questions[currentQuestionIndex];
-    // TODO: implement build
     return Scaffold(
       appBar: AppBar(
         title: Text(appTitle),
       ),
       body: SafeArea(
-        child: LayoutBuilder(builder: (context, constraints) {
-          final height = constraints.maxHeight;
-          final width = constraints.maxWidth;
-
-          return Center(
-            child: Padding(
-              padding: EdgeInsets.only(bottom: height * 0.03),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    alignment: Alignment.center,
-                    padding: EdgeInsets.all(height * 0.05),
-                    child: Text(
-                      currentQuestion.question,
-                      style: Theme.of(context).textTheme.titleMedium,
-                      textAlign: TextAlign.center,
-                    ),
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.only(bottom: mq(context, 20)),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.all(mq(context, 15)),
+                  child: Text(
+                    currentQuestion.question,
+                    style: Theme.of(context).textTheme.titleMedium,
+                    textAlign: TextAlign.center,
                   ),
-                  SizedBox(
-                    height: height * 0.01,
-                  ),
-                  ...currentQuestion.options.map((option) {
-                    return Container(
-                        margin: EdgeInsets.symmetric(
-                            horizontal: height * 0.02, vertical: height * 0.01),
-                        width: double.infinity,
-                        padding: EdgeInsets.all(height * 0.01),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                answersList.add(option);
-                                if (currentQuestionIndex ==
-                                    questions.length - 1) {
-                                  getUserDiseases(answersList);
-                                  // GoRouter.of(context).goNamed(
-                                  //     AppRouterConstants.resultsScreen,
-                                  //     extra: userDiseaseReport);
-                                  return;
-                                }
-                                currentQuestionIndex++;
-                              });
-                            },
-                            child: Text(option)));
-                  })
-                ],
-              ),
+                ),
+                SizedBox(
+                  height: mq(context, 15),
+                ),
+                ...currentQuestion.options.map((option) {
+                  return Container(
+                      margin: EdgeInsets.symmetric(
+                          horizontal: mq(context, 25),
+                          vertical: mq(context, 15)),
+                      width: double.infinity,
+                      padding: EdgeInsets.all(mq(context, 15)),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            setState(() {
+                              answersList.add(option);
+                              if (currentQuestionIndex ==
+                                  questions.length - 1) {
+                                getUserDiseases(answersList);
+                                // GoRouter.of(context).goNamed(
+                                //     AppRouterConstants.resultsScreen,
+                                //     extra: userDiseaseReport);
+                                return;
+                              }
+                              currentQuestionIndex++;
+                            });
+                          },
+                          child: Text(option)));
+                })
+              ],
             ),
-          );
-        }),
+          ),
+        ),
       ),
     );
   }

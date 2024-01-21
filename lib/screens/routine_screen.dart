@@ -1,128 +1,91 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:prognosify/main.dart';
+import 'package:prognosify/models/hive_model/prognosify_notification.dart';
 import 'package:prognosify/models/notification/notification_services.dart';
 import 'package:prognosify/widgets/frosted_glass.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:collection/collection.dart';
 
 class RoutineScreen extends StatefulWidget {
-  const RoutineScreen({super.key});
-
+  RoutineScreen({super.key, required this.areNotificationsStored});
+  bool areNotificationsStored;
   @override
   State<RoutineScreen> createState() => _RoutineScreenState();
 }
 
 class _RoutineScreenState extends State<RoutineScreen> {
-  TimeOfDay _selectedTime = TimeOfDay.now();
+  TimeOfDay selectedTime = TimeOfDay.now();
   DateTime dateTime = DateTime.now();
   TextEditingController textEditingController = TextEditingController();
-  List<String> notificationTitles = [];
-  Map<int, String> notificationIdToTitle = {};
   final _formKey = GlobalKey<FormState>();
+  List<PrognosifyNotification> notificationList = [];
 
-  Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked = await showTimePicker(
+  Future<void> selectTime(BuildContext context) async {
+    final TimeOfDay? chosenTime = await showTimePicker(
       context: context,
-      initialTime: _selectedTime,
+      initialTime: selectedTime,
     );
 
-    if (picked != null && picked != _selectedTime) {
+    if (chosenTime != null && chosenTime != selectedTime) {
       setState(() {
-        _selectedTime = picked;
+        selectedTime = chosenTime;
       });
     }
   }
 
-  Future<void> loadStoredNotifications() async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    List<String> savedNotificationList =
-        sharedPreferences.getStringList("notifList") ?? [];
-    print("$savedNotificationList savedNotifications");
+  Future<void> loadNotifications() async {
+    var notificationsHiveBox = Hive.box("prognosifynotifications");
     setState(() {
-      notificationTitles = savedNotificationList;
+      notificationsHiveBox.toMap().forEach((key, value) {
+        notificationList.add(value);
+      });
+      if (notificationsHiveBox.isNotEmpty) {
+        setState(() {
+          widget.areNotificationsStored = true;
+        });
+      }
     });
   }
 
   Future<void> storeNotifications(
-      String notificationStore, DateTime convertedTime) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    if (notificationTitles.length < 5) {
-      // Generate a unique ID for the notification
-      int notificationId = DateTime.now().millisecondsSinceEpoch.hashCode;
-
-      notificationTitles.add(notificationStore);
-      notificationIdToTitle[notificationId] = notificationStore;
-
-      sharedPreferences.setStringList("notifList", notificationTitles);
-      print("$notificationTitles AFTER STORE");
-      loadStoredNotifications();
-
-      await NotificationServices.scheduleNotification(
-        details: textEditingController.text.trim(),
-        time: convertedTime,
-        notificationID: notificationId,
-      );
-    } else {
-      if (!context.mounted) {
-        return;
+      PrognosifyNotification notification, DateTime convertedTime) async {
+    var notificationsHiveBox = Hive.box("prognosifynotifications");
+    notificationsHiveBox.put(notification.id, notification);
+    setState(() {
+      notificationList.add(notification);
+      if (widget.areNotificationsStored == false) {
+        widget.areNotificationsStored = true;
       }
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text("You can only set 5 notifications at a time")));
-      return;
-    }
+    });
+    await NotificationServices.scheduleNotification(
+        details: textEditingController.text,
+        time: convertedTime,
+        notificationID: notification.id);
+    // loadNotifications();
   }
 
-  Future<void> removeNotification(String notification) async {
-    SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  Future<void> removeNotification(int id) async {
+    var notificationsHiveBox = Hive.box("prognosifynotifications");
+    notificationsHiveBox.delete(id);
+    setState(() {
+      notificationList.removeWhere((element) => element.id == id);
+    });
+    await AwesomeNotifications().cancel(id);
+    // loadNotifications();
+  }
 
-    // Find the unique ID associated with the custom identifier
-    int? notificationId = notificationIdToTitle.entries
-        .firstWhereOrNull((entry) => entry.value == notification)
-        ?.key;
-
-    if (notificationId != null) {
-      // Cancel the notification using the unique ID
-      await AwesomeNotifications().cancel(notificationId);
-      notificationTitles.remove(notification);
-      print("$notificationTitles TITLES after remove");
-
-      sharedPreferences.setStringList("notifList", notificationTitles);
-      print("$notificationTitles TITLES after set");
-
-      // Remove the association from the map
-      notificationIdToTitle.remove(notificationId);
-
-      // Update the list and shared preferences by loading them again
-      await loadStoredNotifications();
-
-      setState(() {
-        notificationTitles = [...notificationTitles];
-      });
-      if (!context.mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Notification Cancelled")));
-    } else {
-      if (!context.mounted) {
-        return;
-      }
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text("Not Working")));
-    }
+  Future initialize() async {
+    // await getHiveBox();
+    await loadNotifications();
   }
 
   @override
   void initState() {
     super.initState();
-    print(notificationTitles.isEmpty
-        ? "empty"
-        : "$notificationIdToTitle before init");
-
-    loadStoredNotifications();
-    print(notificationTitles.isEmpty
-        ? "empty"
-        : "$notificationIdToTitle afte init");
+    // getHiveBox().then((_) {
+    //   loadNotifications();
+    // });
+    initialize();
   }
 
   @override
@@ -134,25 +97,25 @@ class _RoutineScreenState extends State<RoutineScreen> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: EdgeInsets.all(mq(context, 15)),
       child: Column(
         children: [
           Center(
             child: Text(
               "Daily Routine",
               style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                  fontSize: 36,
+                  fontSize: mq(context, 41),
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).colorScheme.primary),
             ),
           ),
           Container(
-            margin: EdgeInsets.all(10),
-            height: 500,
-            padding: EdgeInsets.all(10),
-            child: notificationTitles.isNotEmpty
+            margin: EdgeInsets.all(mq(context, 15)),
+            height: mq(context, 500),
+            padding: EdgeInsets.all(mq(context, 15)),
+            child: widget.areNotificationsStored
                 ? ListView.builder(
-                    itemCount: notificationTitles.length,
+                    itemCount: notificationList.length,
                     itemBuilder: (context, index) {
                       return Dismissible(
                         background: Container(
@@ -160,34 +123,42 @@ class _RoutineScreenState extends State<RoutineScreen> {
                               .colorScheme
                               .error
                               .withOpacity(0.75),
-                          margin: EdgeInsets.symmetric(horizontal: 20),
+                          margin:
+                              EdgeInsets.symmetric(horizontal: mq(context, 25)),
                         ),
-                        key: ValueKey(notificationTitles[index]),
+                        key: ValueKey(notificationList[index]),
                         onDismissed: (direction) {
-                          removeNotification(notificationTitles[index]);
+                          removeNotification(notificationList[index].id);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text("Notification removed")));
                         },
                         child: FrostedGlassBox(
                           child: Container(
-                            padding: EdgeInsets.all(5),
-                            margin: EdgeInsets.all(5),
+                            padding: EdgeInsets.all(mq(context, 10)),
+                            margin: EdgeInsets.all(mq(context, 10)),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Wrap(
-                                alignment: WrapAlignment.spaceBetween,
+                                alignment: WrapAlignment.center,
                                 children: [
                                   Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        _selectedTime
-                                            .format(context)
-                                            .toString(),
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 18),
+                                      Center(
+                                        child: Text(
+                                          notificationList[index].time,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: mq(context, 21)),
+                                        ),
                                       ),
                                       Text(
-                                        notificationTitles[index],
+                                        notificationList[index].body,
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(fontSize: 20),
+                                        style: TextStyle(
+                                            fontSize: mq(context, 25)),
                                       ),
                                     ],
                                   ),
@@ -202,13 +173,13 @@ class _RoutineScreenState extends State<RoutineScreen> {
                 : Container(
                     child: Text(
                       "Follow a healthy routine to prevent future diseases! Set daily routines now!",
-                      style: TextStyle(fontSize: 24),
+                      style: TextStyle(fontSize: mq(context, 29)),
                       textAlign: TextAlign.center,
                     ),
                   ),
           ),
           SizedBox(
-            height: 20,
+            height: mq(context, 25),
           ),
           ElevatedButton(
             onPressed: () {
@@ -220,7 +191,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.all(mq(context, 25)),
                         child: Form(
                           key: _formKey,
                           child: TextFormField(
@@ -235,27 +206,27 @@ class _RoutineScreenState extends State<RoutineScreen> {
                             decoration: InputDecoration(
                               label: Text(
                                 "Body",
-                                style: TextStyle(fontSize: 20),
+                                style: TextStyle(fontSize: mq(context, 25)),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(20)),
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(mq(context, 25))),
                               ),
                             ),
                           ),
                         ),
                       ),
                       Container(
-                        margin: EdgeInsets.all(20),
+                        margin: EdgeInsets.all(mq(context, 25)),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
-                              onPressed: () => _selectTime(context),
+                              onPressed: () => selectTime(context),
                               child: Wrap(
-                                spacing: 10,
+                                spacing: mq(context, 15),
                                 alignment: WrapAlignment.spaceBetween,
-                                children: [
+                                children: const [
                                   Text(
                                     'Select Time',
                                     textAlign: TextAlign.center,
@@ -265,21 +236,23 @@ class _RoutineScreenState extends State<RoutineScreen> {
                               ),
                             ),
                             Container(
-                              padding: EdgeInsets.all(20),
+                              padding: EdgeInsets.all(mq(context, 25)),
                               decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 1, color: Colors.black),
-                                  borderRadius: BorderRadius.circular(10)),
+                                  border: Border.all(
+                                      width: mq(context, 2),
+                                      color: Colors.black),
+                                  borderRadius:
+                                      BorderRadius.circular(mq(context, 15))),
                               child: Text(
-                                _selectedTime.format(context).toString(),
-                                style: TextStyle(fontSize: 18),
+                                selectedTime.format(context).toString(),
+                                style: TextStyle(fontSize: mq(context, 21)),
                               ),
                             ),
                           ],
                         ),
                       ),
                       SizedBox(
-                        height: 20,
+                        height: mq(context, 25),
                       ),
                       ElevatedButton(
                         onPressed: () async {
@@ -288,19 +261,30 @@ class _RoutineScreenState extends State<RoutineScreen> {
                               dateTime.year,
                               dateTime.month,
                               dateTime.day,
-                              _selectedTime.hour,
-                              _selectedTime.minute,
+                              selectedTime.hour,
+                              selectedTime.minute,
                               0,
                             );
+
                             storeNotifications(
-                                textEditingController.text, convertedTime);
+                                PrognosifyNotification(
+                                    time:
+                                        selectedTime.format(context).toString(),
+                                    body: textEditingController.text,
+                                    id: DateTime.now()
+                                        .millisecondsSinceEpoch
+                                        .hashCode),
+                                convertedTime);
                             Navigator.of(context).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text("Notification saved")));
                           }
                         },
                         child: Wrap(
-                          spacing: 10,
+                          spacing: mq(context, 15),
                           alignment: WrapAlignment.spaceBetween,
-                          children: [
+                          children: const [
                             Text(
                               "Schedule Notification",
                               textAlign: TextAlign.center,
@@ -314,16 +298,16 @@ class _RoutineScreenState extends State<RoutineScreen> {
                 },
               );
             },
-            child: Text("Schedule Notification"),
+            child: const Text("Schedule Notification"),
           ),
-          const SizedBox(
-            height: 20,
+          SizedBox(
+            height: mq(context, 25),
           ),
           ElevatedButton(
             onPressed: () async {
               await AwesomeNotifications().cancelAllSchedules();
             },
-            child: Text("Cancel All Notification"),
+            child: const Text("Cancel All Notification"),
           ),
         ],
       ),

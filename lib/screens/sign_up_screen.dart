@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/auth/auth_services.dart';
+import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -31,16 +32,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   tag: "Tag",
                   child: Image.asset(
                     "assets/applogo.png",
-                    width: 300,
-                    height: 200,
+                    width: mq(context, 350),
+                    height: mq(context, 250),
                   ),
                 ),
               ),
               Container(
-                  margin: EdgeInsets.only(top: 50, right: 40, left: 40),
+                  margin: EdgeInsets.only(
+                      top: mq(context, 55),
+                      right: mq(context, 45),
+                      left: mq(context, 45)),
                   child: TextFormField(
-                    style: TextStyle(fontSize: 18),
-                    key: ValueKey("emailSignUp"),
+                    style: TextStyle(fontSize: mq(context, 23)),
+                    key: const ValueKey("emailSignUp"),
                     validator: (value) {
                       if (value!.length < 5 ||
                           value.isEmpty ||
@@ -56,22 +60,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       });
                     },
                     decoration: InputDecoration(
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(mq(context, 25)))),
                         label: Text(
-                          "Email", style: TextStyle(fontSize: 20),
+                          "Email", style: TextStyle(fontSize: mq(context, 25)),
                           // style: TextStyle(fontSize: 20),
                         )),
                   )),
               SizedBox(
-                height: 50,
+                height: mq(context, 55),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
+                margin: EdgeInsets.symmetric(horizontal: mq(context, 45)),
                 child: TextFormField(
-                  style: TextStyle(fontSize: 18),
-                  key: ValueKey("fullname"),
+                  style: TextStyle(fontSize: mq(context, 21)),
+                  key: const ValueKey("fullname"),
                   validator: (value) {
                     if (!value!.contains(" ")) {
                       return "Please enter your full name";
@@ -85,23 +89,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     });
                   },
                   decoration: InputDecoration(
-                    border: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                    border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(mq(context, 25)))),
                     label: Text(
                       "Full Name",
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: mq(context, 25)),
                     ),
                   ),
                 ),
               ),
               SizedBox(
-                height: 50,
+                height: mq(context, 55),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 40),
+                margin: EdgeInsets.symmetric(horizontal: mq(context, 45)),
                 child: TextFormField(
-                  style: TextStyle(fontSize: 18),
-                  key: ValueKey("passwordSignUp"),
+                  style: TextStyle(fontSize: mq(context, 21)),
+                  key: const ValueKey("passwordSignUp"),
                   validator: (value) {
                     if (value!.isEmpty || value.length < 5) {
                       return "Please create a strong password";
@@ -116,11 +121,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   },
                   obscureText: _passwordHideStatus,
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(
+                              Radius.circular(mq(context, 25)))),
                       label: Text(
                         "Password",
-                        style: TextStyle(fontSize: 20),
+                        style: TextStyle(fontSize: mq(context, 25)),
                       ),
                       suffixIcon: IconButton(
                         icon: Icon(_passwordHideStatus
@@ -134,11 +140,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       )),
                 ),
               ),
-              Container(padding: EdgeInsets.only(top: 40)),
+              Container(padding: EdgeInsets.only(top: mq(context, 45))),
               Container(
-                margin: EdgeInsets.only(top: 60),
-                padding: const EdgeInsets.symmetric(horizontal: 40),
-                height: 60,
+                margin: EdgeInsets.only(top: mq(context, 65)),
+                padding: EdgeInsets.symmetric(horizontal: mq(context, 45)),
+                height: mq(context, 65),
                 width: double.infinity,
                 child: ElevatedButton(
                     onPressed: () async {
@@ -148,16 +154,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             email, fullName, password, context);
                       }
                     },
-                    child: Text("Sign Up", style: TextStyle(fontSize: 18))),
+                    child: Text("Sign Up",
+                        style: TextStyle(fontSize: mq(context, 21)))),
               ),
               Container(
-                margin: EdgeInsets.only(top: 30, right: 40, left: 40),
+                margin: EdgeInsets.only(
+                    top: mq(context, 35),
+                    right: mq(context, 45),
+                    left: mq(context, 45)),
                 child: Wrap(
-                  spacing: 5,
+                  spacing: mq(context, 10),
                   children: [
                     Text(
                       "Already have an account?",
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: mq(context, 21)),
                     ),
                     GestureDetector(
                         onTap: () {
@@ -167,7 +177,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: Text(
                           "Login",
                           style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 18),
+                              fontWeight: FontWeight.bold,
+                              fontSize: mq(context, 21)),
                         ))
                   ],
                 ),

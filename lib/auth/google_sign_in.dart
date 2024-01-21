@@ -84,8 +84,7 @@ class GoogleSignInProvider extends ChangeNotifier {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text("Signed In Successfully!")));
 
-      GoRouter.of(context)
-          .goNamed(AppRouterConstants.navigationScreen, extra: 0);
+      GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
     } catch (e) {
       showDialog(
           context: context,

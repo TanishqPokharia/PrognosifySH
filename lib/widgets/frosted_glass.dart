@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:prognosify/main.dart';
 
 class FrostedGlassBox extends StatelessWidget {
   const FrostedGlassBox(
@@ -14,10 +15,10 @@ class FrostedGlassBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
+      borderRadius: BorderRadius.circular(mq(context, 15)),
       child: Container(
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(5),
+        margin: EdgeInsets.all(mq(context, 10)),
+        padding: EdgeInsets.all(mq(context, 10)),
         child: Wrap(children: [
           Stack(
             children: [
@@ -28,7 +29,7 @@ class FrostedGlassBox extends StatelessWidget {
               Container(
                 child: child,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(mq(context, 15)),
                     border: Border.all(color: Colors.white.withOpacity(0.13)),
                     gradient: LinearGradient(colors: [
                       Colors.white.withOpacity(0.15),

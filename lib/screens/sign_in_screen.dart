@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/auth/auth_services.dart';
 import 'package:prognosify/auth/google_sign_in.dart';
+import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
         body: Form(
           key: _formKeySignIn,
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: EdgeInsets.all(mq(context, 15)),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -35,15 +36,18 @@ class _SignInScreenState extends State<SignInScreen> {
                     tag: "Tag",
                     child: Image.asset(
                       "assets/applogo.png",
-                      width: 300,
-                      height: 200,
+                      width: mq(context, 350),
+                      height: mq(context, 250),
                     ),
                   ),
                 ),
                 Container(
-                    margin: EdgeInsets.only(top: 50, right: 40, left: 40),
+                    margin: EdgeInsets.only(
+                        top: mq(context, 55),
+                        right: mq(context, 45),
+                        left: mq(context, 45)),
                     child: TextFormField(
-                      style: TextStyle(fontSize: 18),
+                      style: TextStyle(fontSize: mq(context, 21)),
                       key: ValueKey("emailSignIn"),
                       validator: (value) {
                         if (value!.length < 5) {
@@ -58,22 +62,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         });
                       },
                       decoration: InputDecoration(
-                          border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.all(
+                                  Radius.circular(mq(context, 25)))),
                           label: Text(
-                            "Email", style: TextStyle(fontSize: 20),
+                            "Email",
+                            style: TextStyle(fontSize: mq(context, 25)),
                             // style: TextStyle(fontSize: 20),
                           )),
                     )),
                 SizedBox(
-                  height: 50,
+                  height: mq(context, 55),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: 40),
+                  margin: EdgeInsets.symmetric(horizontal: mq(context, 45)),
                   child: TextFormField(
-                    style: TextStyle(fontSize: 18),
-                    key: ValueKey("passwordSignIn"),
+                    style: TextStyle(fontSize: mq(context, 21)),
+                    key: const ValueKey("passwordSignIn"),
                     validator: (value) {
                       if (value!.length < 5) {
                         return "Create a strong password";
@@ -88,12 +93,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     },
                     obscureText: _passwordHideStatus,
                     decoration: InputDecoration(
-                        border: const OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20))),
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.all(
+                                Radius.circular(mq(context, 25)))),
                         label: Text(
                           "Password",
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: mq(context, 25)),
                         ),
                         suffixIcon: IconButton(
                           icon: Icon(_passwordHideStatus
@@ -108,7 +113,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 30, right: 40),
+                  padding: EdgeInsets.only(
+                      top: mq(context, 35), right: mq(context, 45)),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
@@ -119,7 +125,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: Text(
                           "Forgot password?",
                           style: TextStyle(
-                              fontSize: 16,
+                              fontSize: mq(context, 21),
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold),
                         ),
@@ -128,13 +134,13 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40),
+                  padding: EdgeInsets.symmetric(horizontal: mq(context, 45)),
                   child: Column(
                     // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Container(
-                        margin: EdgeInsets.only(top: 60),
-                        height: 60,
+                        margin: EdgeInsets.only(top: mq(context, 65)),
+                        height: mq(context, 65),
                         width: double.infinity,
                         child: ElevatedButton(
                             onPressed: () async {
@@ -145,19 +151,21 @@ class _SignInScreenState extends State<SignInScreen> {
                               }
                             },
                             child: Text("Sign In",
-                                style: TextStyle(fontSize: 18))),
+                                style: TextStyle(fontSize: mq(context, 21)))),
                       ),
                       Container(
-                        margin: EdgeInsets.only(top: 30),
-                        height: 60,
+                        margin: EdgeInsets.only(top: mq(context, 35)),
+                        height: mq(context, 65),
                         width: double.infinity,
                         child: TextButton(
                             style: ButtonStyle(
                                 shape: MaterialStateProperty.all(
                                     RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(30),
+                                        borderRadius: BorderRadius.circular(
+                                            mq(context, 35)),
                                         side: BorderSide(
-                                            width: 1, color: Colors.teal)))),
+                                            width: mq(context, 2),
+                                            color: Colors.teal)))),
                             onPressed: () {
                               final provider =
                                   Provider.of<GoogleSignInProvider>(context,
@@ -165,13 +173,13 @@ class _SignInScreenState extends State<SignInScreen> {
                               provider.googleLogin(context);
                             },
                             child: Wrap(
-                              spacing: 10,
+                              spacing: mq(context, 15),
                               children: [
-                                FaIcon(FontAwesomeIcons.google),
+                                const FaIcon(FontAwesomeIcons.google),
                                 Text(
                                   "Sign in with Google",
                                   style: TextStyle(
-                                      fontSize: 18,
+                                      fontSize: mq(context, 21),
                                       color: Colors.black,
                                       fontWeight: FontWeight.w400),
                                 ),
@@ -182,13 +190,16 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 30, right: 40, left: 40),
+                  margin: EdgeInsets.only(
+                      top: mq(context, 35),
+                      right: mq(context, 45),
+                      left: mq(context, 45)),
                   child: Wrap(
-                    spacing: 5,
+                    spacing: mq(context, 10),
                     children: [
                       Text(
                         "Don't have an account?",
-                        style: TextStyle(fontSize: 18),
+                        style: TextStyle(fontSize: mq(context, 21)),
                       ),
                       GestureDetector(
                           onTap: () {
@@ -198,7 +209,8 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: Text(
                             "Register",
                             style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 18),
+                                fontWeight: FontWeight.bold,
+                                fontSize: mq(context, 21)),
                           ))
                     ],
                   ),

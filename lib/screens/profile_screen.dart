@@ -66,46 +66,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    FirebaseAuth.instance.currentUser!.reload();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasData) {
-            return UserProfileSignedIn(context);
+            return userProfileSignedIn(context);
           } else if (snapshot.hasError) {
-            return Center(
+            return const Center(
               child: Text("Something went wrong"),
             );
           } else {
-            return Center(
+            return const Center(
               child: Text("User data not available"),
             );
           }
         });
   }
 
-  Widget UserProfileSignedIn(BuildContext context) {
+  Widget userProfileSignedIn(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
     return FutureBuilder(
       future: getUserTopDiseases(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasData) {
           final data = snapshot.data;
           return profilePage(user, context, data);
         } else if (snapshot.hasError) {
-          return Center(
+          return const Center(
             child: Text("Something went wrong"),
           );
         } else {
-          return Center(
+          return const Center(
             child: Text("User data not available"),
           );
         }
@@ -124,46 +130,50 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               if (user.photoURL == null)
                 Container(
-                  margin:
-                      EdgeInsets.only(top: 20, right: 30, left: 30, bottom: 20),
+                  margin: EdgeInsets.only(
+                      top: mq(context, 25),
+                      right: mq(context, 35),
+                      left: mq(context, 35),
+                      bottom: mq(context, 25)),
                   child: ProfilePhoto(
-                    totalWidth: 100,
-                    cornerRadius: 80,
+                    totalWidth: mq(context, 110),
+                    cornerRadius: mq(context, 90),
                     color: Theme.of(context).colorScheme.onPrimary,
                     image: AssetImage('assets/defaultprofile.png'),
-                    outlineWidth: 5,
+                    outlineWidth: mq(context, 10).toInt(),
                     outlineColor: kColorScheme.primary,
                   ),
                 )
               else
                 Container(
-                  margin:
-                      EdgeInsets.only(top: 20, right: 30, left: 30, bottom: 20),
+                  margin: EdgeInsets.only(
+                      top: mq(context, 25),
+                      right: mq(context, 35),
+                      left: mq(context, 35),
+                      bottom: mq(context, 25)),
                   child: ProfilePhoto(
-                    totalWidth: 100,
-                    cornerRadius: 80,
+                    totalWidth: mq(context, 110),
+                    cornerRadius: mq(context, 90),
                     color: Colors.transparent,
                     image: CachedNetworkImageProvider(
                       user.photoURL!,
                     ),
-                    outlineWidth: 5,
+                    outlineWidth: mq(context, 10).toInt(),
                     outlineColor: kColorScheme.primary,
                   ),
                 ),
               Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(mq(context, 15)),
                 child: Text(
                   user.displayName!,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(fontSize: 36, fontWeight: FontWeight.bold),
+                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                      fontSize: mq(context, 41), fontWeight: FontWeight.bold),
                 ),
               ),
               Container(
-                width: 130,
-                height: 50,
-                margin: EdgeInsets.all(10),
+                width: mq(context, 140),
+                height: mq(context, 60),
+                margin: EdgeInsets.all(mq(context, 15)),
                 child: ElevatedButton(
                   onPressed: () {
                     if (user.photoURL == null) {
@@ -175,21 +185,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       provider.googleLogout(context);
                     }
                   },
-                  child: Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [Text("Logout"), Icon(Icons.logout)],
                   ),
                 ),
               ),
               Container(
-                margin: EdgeInsets.all(10),
+                margin: EdgeInsets.all(mq(context, 15)),
                 child: Center(
                   child: Text(
                     "Top 3 diseases you are vulnerable to",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleSmall!
-                        .copyWith(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        fontSize: mq(context, 25), fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -203,8 +211,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       disease.disease,
                       index,
                       disease.imageLink != null
-                          ? Image.network(
-                              disease.imageLink!,
+                          ? CachedNetworkImage(
+                              imageUrl: disease.imageLink!,
                               fit: BoxFit.cover,
                             )
                           : Image.asset(
@@ -219,7 +227,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ]);
                   },
                   child: Container(
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.all(mq(context, 15)),
                     child: DiseaseCard(
                         index: index,
                         diseaseCardData: disease,
