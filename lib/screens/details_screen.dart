@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:prognosify/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DetailsScreen extends StatefulWidget {
@@ -30,6 +29,10 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   Future openHelpLink(context) async {
     final url = Uri.parse(widget.help);
     if (!await launchUrl(url)) {
@@ -77,24 +80,18 @@ class _DetailsScreenState extends State<DetailsScreen> {
               delegate: SliverChildListDelegate(
                 [
                   Container(
-                    padding: EdgeInsets.all(mq(context, 21)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
+                    margin: EdgeInsets.all(mq(context, 20)),
+                    // padding: EdgeInsets.only(right: mq(context, 20)),
+                    child: Wrap(
+                      alignment: WrapAlignment.start,
                       children: [
-                        if (widget.diseaseName.length < 20)
-                          Text(
-                            widget.diseaseName,
-                            style: TextStyle(
-                                fontSize: mq(context, 41),
-                                fontWeight: FontWeight.bold),
-                          )
-                        else
-                          Text(
-                            widget.diseaseName,
-                            style: TextStyle(
-                                fontSize: mq(context, 25),
-                                fontWeight: FontWeight.bold),
-                          )
+                        Text(
+                          widget.diseaseName,
+                          textAlign: TextAlign.start,
+                          style: TextStyle(
+                              fontSize: mq(context, 36),
+                              fontWeight: FontWeight.bold),
+                        )
                       ],
                     ),
                   ),
@@ -106,7 +103,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         Text(
                           "Description:",
                           style: TextStyle(
-                              fontSize: mq(context, 29),
+                              fontSize: mq(context, 24),
                               fontWeight: FontWeight.bold,
                               color: const Color.fromARGB(255, 72, 72, 70)),
                         ),
@@ -118,7 +115,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
-                              .copyWith(fontSize: mq(context, 21)),
+                              .copyWith(fontSize: mq(context, 18)),
                         ),
                       ],
                     ),
@@ -128,12 +125,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           "Precautions to take:",
                           style: TextStyle(
-                              fontSize: 24,
+                              fontSize: mq(context, 24),
                               fontWeight: FontWeight.bold,
-                              color: Color.fromARGB(255, 72, 72, 70)),
+                              color: const Color.fromARGB(255, 72, 72, 70)),
                         ),
                         SizedBox(
                           height: mq(context, 25),
@@ -154,7 +151,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium!
-                                        .copyWith(fontSize: mq(context, 21)),
+                                        .copyWith(fontSize: mq(context, 18)),
                                   ),
                                 ],
                               ),
@@ -175,7 +172,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             Text(
                               "Precautionary Routines:",
                               style: TextStyle(
-                                  fontSize: mq(context, 29),
+                                  fontSize: mq(context, 24),
                                   fontWeight: FontWeight.bold,
                                   color: const Color.fromARGB(255, 72, 72, 70)),
                             ),
@@ -222,7 +219,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                             ),
                                           ));
                                 },
-                                icon: Icon(Icons.info))
+                                icon: const Icon(Icons.info))
                           ],
                         ),
                         SizedBox(
@@ -244,7 +241,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium!
-                                        .copyWith(fontSize: mq(context, 21)),
+                                        .copyWith(fontSize: mq(context, 18)),
                                   ),
                                 ],
                               ),
@@ -259,19 +256,42 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Seek medical care if you experience:",
-                          style: TextStyle(
-                              fontSize: mq(context, 29),
-                              fontWeight: FontWeight.bold,
-                              color: const Color.fromARGB(255, 72, 72, 70)),
-                        ),
+                        // Text(
+                        //   "Seek medical care ONLY if you experience:",
+                        //   style: TextStyle(
+                        //       fontSize: mq(context, 29),
+                        //       fontWeight: FontWeight.bold,
+                        //       color: const Color.fromARGB(255, 72, 72, 70)),
+                        // ),
+                        RichText(
+                            text: TextSpan(
+                                text: "Seek medical care",
+                                style: TextStyle(
+                                    fontSize: mq(context, 24),
+                                    fontWeight: FontWeight.bold,
+                                    color:
+                                        const Color.fromARGB(255, 72, 72, 70)),
+                                children: [
+                              TextSpan(
+                                  text: " ONLY ",
+                                  style: TextStyle(
+                                      fontSize: mq(context, 24),
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.red)),
+                              TextSpan(
+                                  text: "if you experience:",
+                                  style: TextStyle(
+                                      fontSize: mq(context, 24),
+                                      fontWeight: FontWeight.bold,
+                                      color: const Color.fromARGB(
+                                          255, 72, 72, 70)))
+                            ])),
                         SizedBox(
                           height: mq(context, 25),
                         ),
                         ...widget.diseaseSymptoms.map((symptom) {
                           return Container(
-                            padding: EdgeInsets.only(bottom: 16.0),
+                            padding: EdgeInsets.only(bottom: mq(context, 16)),
                             child: Material(
                               color: Colors.transparent,
                               child: Wrap(
@@ -285,7 +305,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     style: Theme.of(context)
                                         .textTheme
                                         .titleMedium!
-                                        .copyWith(fontSize: mq(context, 21)),
+                                        .copyWith(fontSize: mq(context, 18)),
                                   ),
                                 ],
                               ),
@@ -299,8 +319,8 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     width: double.infinity,
                     decoration:
                         BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    margin: EdgeInsets.all(mq(context, 25)),
-                    height: mq(context, 100),
+                    margin: EdgeInsets.all(mq(context, 40)),
+                    height: mq(context, 60),
                     child: ElevatedButton(
                         onPressed: () {
                           openHelpLink(context);

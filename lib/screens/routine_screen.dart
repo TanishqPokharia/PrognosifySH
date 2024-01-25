@@ -1,7 +1,6 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/models/hive_model/prognosify_notification.dart';
 import 'package:prognosify/models/notification/notification_services.dart';
 import 'package:prognosify/widgets/frosted_glass.dart';
@@ -19,6 +18,10 @@ class _RoutineScreenState extends State<RoutineScreen> {
   TextEditingController textEditingController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   List<PrognosifyNotification> notificationList = [];
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   Future<void> selectTime(BuildContext context) async {
     final TimeOfDay? chosenTime = await showTimePicker(
@@ -173,7 +176,10 @@ class _RoutineScreenState extends State<RoutineScreen> {
                 : Container(
                     child: Text(
                       "Follow a healthy routine to prevent future diseases! Set daily routines now!",
-                      style: TextStyle(fontSize: mq(context, 29)),
+                      style: Theme.of(context)
+                          .textTheme
+                          .titleMedium!
+                          .copyWith(fontSize: mq(context, 23)),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -187,6 +193,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
                 showDragHandle: true,
                 context: context,
                 builder: (context) {
+                  final TimeOfDay time = TimeOfDay.now();
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -198,14 +205,14 @@ class _RoutineScreenState extends State<RoutineScreen> {
                             controller: textEditingController,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return "Do not leave body empty";
+                                return "Do not leave routine empty";
                               } else {
                                 return null;
                               }
                             },
                             decoration: InputDecoration(
                               label: Text(
-                                "Body",
+                                "Routine",
                                 style: TextStyle(fontSize: mq(context, 25)),
                               ),
                               border: OutlineInputBorder(
@@ -244,7 +251,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
                                   borderRadius:
                                       BorderRadius.circular(mq(context, 15))),
                               child: Text(
-                                selectedTime.format(context).toString(),
+                                selectedTime.format(context),
                                 style: TextStyle(fontSize: mq(context, 21)),
                               ),
                             ),
@@ -278,7 +285,8 @@ class _RoutineScreenState extends State<RoutineScreen> {
                             Navigator.of(context).pop();
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
-                                    content: Text("Notification saved")));
+                                    content:
+                                        Text("Routine Notification saved")));
                           }
                         },
                         child: Wrap(
@@ -298,7 +306,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
                 },
               );
             },
-            child: const Text("Schedule Notification"),
+            child: const Text("Schedule Routine Notification"),
           ),
           SizedBox(
             height: mq(context, 25),
@@ -306,8 +314,13 @@ class _RoutineScreenState extends State<RoutineScreen> {
           ElevatedButton(
             onPressed: () async {
               await AwesomeNotifications().cancelAllSchedules();
+              if (!context.mounted) {
+                return;
+              }
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("All Routine Notifications Cancelled")));
             },
-            child: const Text("Cancel All Notification"),
+            child: const Text("Cancel All Routine Notifications"),
           ),
         ],
       ),

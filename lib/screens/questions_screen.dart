@@ -27,6 +27,10 @@ class _QuestionsScreen extends State<QuestionsScreen> {
   List<DiseaseCardData> userDiseaseReport = [];
   late ProgressDialog progressDialog;
 
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -138,14 +142,14 @@ class _QuestionsScreen extends State<QuestionsScreen> {
             'topDiseasesRoutines': topThreeRoutines
           }, SetOptions(merge: true));
           progressDialog.hide();
-          if (!context.mounted) {
+          if (!mounted) {
             return;
           }
           GoRouter.of(context).goNamed(AppRouterConstants.resultsScreen,
               extra: userDiseaseReport);
         } else {
           progressDialog.hide();
-          if (!context.mounted) {
+          if (!mounted) {
             return;
           }
           GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
@@ -173,7 +177,7 @@ class _QuestionsScreen extends State<QuestionsScreen> {
       }
     } on SocketException catch (_) {
       progressDialog.hide();
-      if (!context.mounted) {
+      if (!mounted) {
         return;
       }
       showDialog(
@@ -247,7 +251,15 @@ class _QuestionsScreen extends State<QuestionsScreen> {
                             });
                           },
                           child: Text(option)));
-                })
+                }),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 20)),
+                  child: Text(
+                    "${currentQuestionIndex + 1}/${questions.length}",
+                    style: TextStyle(
+                        color: Colors.grey, fontSize: mq(context, 24)),
+                  ),
+                )
               ],
             ),
           ),

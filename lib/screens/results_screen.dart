@@ -15,6 +15,10 @@ class ResultsScreen extends StatefulWidget {
 }
 
 class _ResultsScreen extends State<ResultsScreen> {
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -36,7 +40,10 @@ class _ResultsScreen extends State<ResultsScreen> {
             children: [
               Text(
                 "Future Potential Health Issues",
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context)
+                    .textTheme
+                    .titleMedium!
+                    .copyWith(fontSize: mq(context, 24)),
               ),
               ResultList(diseaseList: widget.answersList)
             ],

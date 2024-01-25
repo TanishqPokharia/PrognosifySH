@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:prognosify/router/app_router_constants.dart';
@@ -81,10 +80,10 @@ class GoogleSignInProvider extends ChangeNotifier {
 
       notifyListeners();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Signed In Successfully!")));
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //     const SnackBar(content: Text("Signed In Successfully!")));
 
-      GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
+      // GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
     } catch (e) {
       showDialog(
           context: context,

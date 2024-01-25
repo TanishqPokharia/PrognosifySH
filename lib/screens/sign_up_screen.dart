@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/auth/auth_services.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -17,6 +16,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String fullName = "";
   String email = "";
   String password = "";
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +47,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       right: mq(context, 45),
                       left: mq(context, 45)),
                   child: TextFormField(
-                    style: TextStyle(fontSize: mq(context, 23)),
+                    style: TextStyle(fontSize: mq(context, 21)),
                     key: const ValueKey("emailSignUp"),
                     validator: (value) {
                       if (value!.length < 5 ||

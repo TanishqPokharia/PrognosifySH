@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,6 +13,11 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   final User? _user = FirebaseAuth.instance.currentUser;
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   @override
   void initState() {
     super.initState();

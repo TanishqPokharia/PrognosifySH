@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/models/disease_card_data.dart';
 import 'package:prognosify/widgets/disease_card.dart';
@@ -18,6 +17,10 @@ class ResultList extends StatefulWidget {
 
 class _ResultListState extends State<ResultList> {
   bool startAnimation = false;
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   @override
   void initState() {
@@ -75,28 +78,25 @@ class _ResultListState extends State<ResultList> {
                 0,
               ),
               duration: Duration(milliseconds: 600 + (index * 100)),
-              margin: EdgeInsets.all(mq(context, 15)),
-              child: Container(
-                margin: EdgeInsets.all(mq(context, 15)),
-                child: GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context)
-                        .pushNamed(AppRouterConstants.detailsScreen, extra: [
-                      widget.diseaseList[index].disease,
-                      index,
-                      diseaseImage,
-                      diseaseDescription,
-                      widget.diseaseList[index].symptoms,
-                      widget.diseaseList[index].precautions,
-                      widget.diseaseList[index].help,
-                      widget.diseaseList[index].routines
-                    ]);
-                  },
-                  child: DiseaseCard(
-                      index: index,
-                      diseaseCardData: widget.diseaseList[index],
-                      context: context),
-                ),
+              margin: EdgeInsets.all(mq(context, 10)),
+              child: GestureDetector(
+                onTap: () {
+                  GoRouter.of(context)
+                      .pushNamed(AppRouterConstants.detailsScreen, extra: [
+                    widget.diseaseList[index].disease,
+                    index,
+                    diseaseImage,
+                    diseaseDescription,
+                    widget.diseaseList[index].symptoms,
+                    widget.diseaseList[index].precautions,
+                    widget.diseaseList[index].help,
+                    widget.diseaseList[index].routines
+                  ]);
+                },
+                child: DiseaseCard(
+                    index: index,
+                    diseaseCardData: widget.diseaseList[index],
+                    context: context),
               ),
             ),
           );

@@ -1,7 +1,5 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:prognosify/main.dart';
 
 class FrostedGlassBox extends StatelessWidget {
   const FrostedGlassBox(
@@ -11,7 +9,12 @@ class FrostedGlassBox extends StatelessWidget {
       required this.child});
   // final double width;
   // final double height;
-  final child;
+  final Widget child;
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

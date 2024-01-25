@@ -1,7 +1,3 @@
-import 'dart:ffi';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/navigation_menu/navigation_menu.dart';
@@ -20,16 +16,17 @@ class AppRouter {
     GoRoute(
       name: AppRouterConstants.splashScreen,
       path: '/',
-      pageBuilder: (context, state) => MaterialPage(child: SplashScreen()),
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: SplashScreen()),
     ),
     GoRoute(
       name: AppRouterConstants.welcomeScreen,
       path: '/welcome',
-      builder: (context, state) => WelcomeScreen(),
+      builder: (context, state) => const WelcomeScreen(),
       pageBuilder: (context, state) => CustomTransitionPage(
-        transitionDuration: Duration(milliseconds: 500),
+        transitionDuration: const Duration(milliseconds: 500),
         key: state.pageKey,
-        child: WelcomeScreen(),
+        child: const WelcomeScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(
           position: Tween<Offset>(
@@ -43,32 +40,36 @@ class AppRouter {
     GoRoute(
       name: AppRouterConstants.signUpScreen,
       path: "/signUp",
-      pageBuilder: (context, state) => MaterialPage(child: SignUpScreen()),
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: SignUpScreen()),
     ),
     GoRoute(
       name: AppRouterConstants.signInScreen,
       path: "/signIn",
-      pageBuilder: (context, state) => MaterialPage(child: SignInScreen()),
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: SignInScreen()),
     ),
     GoRoute(
       name: AppRouterConstants.startScreen,
       path: '/start',
-      pageBuilder: (context, state) => MaterialPage(child: StartScreen()),
+      pageBuilder: (context, state) => const MaterialPage(child: StartScreen()),
     ),
     GoRoute(
       name: AppRouterConstants.navigationScreen,
       path: "/navigation",
-      builder: (context, state) => NavigationMenu(),
-      pageBuilder: (context, state) => CustomTransitionPage(
-        transitionDuration: Duration(seconds: 1),
-        key: state.pageKey,
-        child: NavigationMenu(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-            FadeTransition(
-          opacity: CurveTween(curve: Curves.easeInCirc).animate(animation),
-          child: child,
-        ),
-      ),
+      // builder: (context, state) => const NavigationMenu(),
+      // pageBuilder: (context, state) => CustomTransitionPage(
+      //   transitionDuration: const Duration(seconds: 1),
+      //   key: state.pageKey,
+      //   child: const NavigationMenu(),
+      //   transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+      //       FadeTransition(
+      //     opacity: CurveTween(curve: Curves.easeInCirc).animate(animation),
+      //     child: child,
+      //   ),
+      // ),
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: NavigationMenu()),
     ),
     GoRoute(
       name: AppRouterConstants.questionsScreen,

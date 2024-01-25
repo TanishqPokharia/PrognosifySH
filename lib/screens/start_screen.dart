@@ -2,11 +2,11 @@ import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
+
   @override
   State<StatefulWidget> createState() {
     return _StartScreenState();
@@ -15,6 +15,10 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   final TextEditingController _textEditingController = TextEditingController();
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   @override
   void dispose() {
@@ -40,14 +44,14 @@ class _StartScreenState extends State<StartScreen> {
                   Text(
                     "Hi,",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontSize: mq(context, 41),
+                          fontSize: mq(context, 36),
                           fontWeight: FontWeight.bold,
                         ),
                   ),
                   Text(
                     FirebaseAuth.instance.currentUser!.displayName ?? "User",
                     style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                          fontSize: mq(context, 41),
+                          fontSize: mq(context, 36),
                           fontWeight: FontWeight.bold,
                         ),
                   ),
@@ -62,7 +66,10 @@ class _StartScreenState extends State<StartScreen> {
             padding: EdgeInsets.all(mq(context, 15)),
             child: Text(
               "Welcome To Prognosify",
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontSize: mq(context, 18)),
               textAlign: TextAlign.center,
             ),
           ),
@@ -70,7 +77,10 @@ class _StartScreenState extends State<StartScreen> {
             padding: EdgeInsets.all(mq(context, 15)),
             child: Text(
               "Assess your vulnerabilities and guard your tomorrow",
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium!
+                  .copyWith(fontSize: mq(context, 18)),
               textAlign: TextAlign.center,
             ),
           ),
@@ -79,11 +89,14 @@ class _StartScreenState extends State<StartScreen> {
               Padding(
                 padding: EdgeInsets.all(mq(context, 10)),
                 child: Text("Enter your age to proceed",
-                    style: Theme.of(context).textTheme.titleMedium),
+                    style: Theme.of(context)
+                        .textTheme
+                        .titleMedium!
+                        .copyWith(fontSize: mq(context, 18))),
               ),
               Padding(
                 padding: EdgeInsets.symmetric(
-                    horizontal: mq(context, 105), vertical: mq(context, 25)),
+                    horizontal: mq(context, 150), vertical: mq(context, 25)),
                 child: TextField(
                   textAlign: TextAlign.center,
                   maxLength: 3,
@@ -93,14 +106,18 @@ class _StartScreenState extends State<StartScreen> {
                       contentPadding: EdgeInsets.all(mq(context, 15)),
                       fillColor: Colors.white,
                       enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(mq(context, 55)),
+                          borderRadius: BorderRadius.circular(mq(context, 10)),
                           borderSide: BorderSide(
-                              color: kColorScheme.primary, width: 2)),
+                              color: Theme.of(context).colorScheme.primary,
+                              width: 2)),
                       filled: true,
                       border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(mq(context, 55)),
+                        borderRadius: BorderRadius.circular(mq(context, 10)),
                       )),
-                  style: Theme.of(context).textTheme.titleMedium,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium!
+                      .copyWith(fontSize: mq(context, 21)),
                 ),
               ),
             ],
@@ -108,7 +125,7 @@ class _StartScreenState extends State<StartScreen> {
           Container(
             width: double.infinity,
             margin: EdgeInsets.symmetric(
-                horizontal: mq(context, 45), vertical: mq(context, 25)),
+                horizontal: mq(context, 45), vertical: mq(context, 10)),
             child: ElevatedButton(
                 onPressed: () {
                   try {
@@ -144,7 +161,6 @@ class _StartScreenState extends State<StartScreen> {
                 },
                 child: Text(
                   "Start Assessment",
-                  style: Theme.of(context).textTheme.titleMedium,
                 )),
           )
         ],

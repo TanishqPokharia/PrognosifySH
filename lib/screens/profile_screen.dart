@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:profile_photo/profile_photo.dart';
 import 'package:prognosify/auth/auth_services.dart';
 import 'package:prognosify/auth/google_sign_in.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/models/disease_card_data.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/widgets/disease_card.dart';
@@ -20,6 +19,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser;
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   Future getUserTopDiseases() async {
     final userData = await FirebaseFirestore.instance
         .collection('users')
@@ -73,25 +77,124 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasData) {
-            return userProfileSignedIn(context);
-          } else if (snapshot.hasError) {
-            return const Center(
-              child: Text("Something went wrong"),
-            );
-          } else {
-            return const Center(
-              child: Text("User data not available"),
-            );
-          }
-        });
+    final user = FirebaseAuth.instance.currentUser!;
+
+    return Column(
+      children: [
+        if (user.photoURL == null)
+          Container(
+            margin: EdgeInsets.only(
+                top: mq(context, 25),
+                right: mq(context, 35),
+                left: mq(context, 35),
+                bottom: mq(context, 25)),
+            child: ProfilePhoto(
+              totalWidth: mq(context, 120),
+              cornerRadius: mq(context, 80),
+              color: Theme.of(context).colorScheme.onPrimary,
+              image: AssetImage('assets/defaultprofile.png'),
+              outlineWidth: 5,
+              outlineColor: Theme.of(context).colorScheme.primary,
+            ),
+          )
+        else
+          Container(
+            margin: EdgeInsets.only(
+                top: mq(context, 25),
+                right: mq(context, 35),
+                left: mq(context, 35),
+                bottom: mq(context, 25)),
+            // child: ProfilePhoto(
+            //   totalWidth: mq(context, 200),
+            //   cornerRadius: mq(context, 100),
+            //   color: Colors.transparent,
+            //   image: CachedNetworkImageProvider(
+            //     user.photoURL!,
+            //   ),
+            //   outlineWidth: 5,
+            //   outlineColor: Theme.of(context).colorScheme.primary,
+            // ),
+            child: CircleAvatar(
+              radius: mq(context, 100),
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              child: CircleAvatar(
+                radius: mq(context, 90),
+                foregroundImage: CachedNetworkImageProvider(user.photoURL!),
+              ),
+            ),
+          ),
+        Container(
+          margin: EdgeInsets.all(mq(context, 15)),
+          child: Text(
+            user.displayName!,
+            style: Theme.of(context).textTheme.titleMedium!.copyWith(
+                fontSize: mq(context, 41), fontWeight: FontWeight.bold),
+          ),
+        ),
+        Container(
+          width: mq(context, 200),
+          margin: EdgeInsets.symmetric(
+              horizontal: mq(context, 100),
+              vertical: mq(context, mq(context, 30))),
+          height: mq(context, 60),
+          child: ElevatedButton(
+            onPressed: () {
+              if (user.photoURL == null) {
+                AuthServices.signOutUser(context);
+              } else {
+                final provider =
+                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                provider.googleLogout(context);
+              }
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Logout",
+                  style: TextStyle(fontSize: mq(context, 20)),
+                ),
+                SizedBox(
+                  width: mq(context, 10),
+                ),
+                const Icon(Icons.logout)
+              ],
+            ),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.all(mq(context, 10)),
+          child: Center(
+            child: Text(
+              "Top 3 diseases you are vulnerable to",
+              style: Theme.of(context)
+                  .textTheme
+                  .titleSmall!
+                  .copyWith(fontSize: mq(context, 21)),
+            ),
+          ),
+        ),
+        StreamBuilder(
+            stream: FirebaseAuth.instance.authStateChanges(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasData) {
+                return userProfileSignedIn(context);
+              } else if (snapshot.hasError) {
+                return const Center(
+                  child: Text("Something went wrong"),
+                );
+              } else {
+                return const Center(
+                  child: Text("User data not available"),
+                );
+              }
+            }),
+      ],
+    );
   }
 
   Widget userProfileSignedIn(BuildContext context) {
@@ -121,122 +224,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget profilePage(User user, BuildContext context,
       List<DiseaseCardData> diseaseCardDataList) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+    return Expanded(
+      child: ListView(
         children: [
-          Container(
-              child: Column(
-            children: [
-              if (user.photoURL == null)
-                Container(
-                  margin: EdgeInsets.only(
-                      top: mq(context, 25),
-                      right: mq(context, 35),
-                      left: mq(context, 35),
-                      bottom: mq(context, 25)),
-                  child: ProfilePhoto(
-                    totalWidth: mq(context, 110),
-                    cornerRadius: mq(context, 90),
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    image: AssetImage('assets/defaultprofile.png'),
-                    outlineWidth: mq(context, 10).toInt(),
-                    outlineColor: kColorScheme.primary,
-                  ),
-                )
-              else
-                Container(
-                  margin: EdgeInsets.only(
-                      top: mq(context, 25),
-                      right: mq(context, 35),
-                      left: mq(context, 35),
-                      bottom: mq(context, 25)),
-                  child: ProfilePhoto(
-                    totalWidth: mq(context, 110),
-                    cornerRadius: mq(context, 90),
-                    color: Colors.transparent,
-                    image: CachedNetworkImageProvider(
-                      user.photoURL!,
-                    ),
-                    outlineWidth: mq(context, 10).toInt(),
-                    outlineColor: kColorScheme.primary,
-                  ),
-                ),
-              Container(
-                margin: EdgeInsets.all(mq(context, 15)),
-                child: Text(
-                  user.displayName!,
-                  style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                      fontSize: mq(context, 41), fontWeight: FontWeight.bold),
-                ),
+          ...diseaseCardDataList.asMap().entries.map((entry) {
+            final index = entry.key;
+            final disease = entry.value;
+            return GestureDetector(
+              onTap: () {
+                GoRouter.of(context)
+                    .pushNamed(AppRouterConstants.detailsScreen, extra: [
+                  disease.disease,
+                  index,
+                  disease.imageLink != null
+                      ? CachedNetworkImage(
+                          imageUrl: disease.imageLink!,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset(
+                          'assets/imagenotloaded.png',
+                          fit: BoxFit.cover,
+                        ),
+                  disease.diseaseDescription,
+                  disease.symptoms,
+                  disease.precautions,
+                  disease.help,
+                  disease.routines
+                ]);
+              },
+              child: Container(
+                margin: EdgeInsets.all(mq(context, 20)),
+                child: DiseaseCard(
+                    index: index, diseaseCardData: disease, context: context),
               ),
-              Container(
-                width: mq(context, 140),
-                height: mq(context, 60),
-                margin: EdgeInsets.all(mq(context, 15)),
-                child: ElevatedButton(
-                  onPressed: () {
-                    if (user.photoURL == null) {
-                      AuthServices.signOutUser(context);
-                    } else {
-                      final provider = Provider.of<GoogleSignInProvider>(
-                          context,
-                          listen: false);
-                      provider.googleLogout(context);
-                    }
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text("Logout"), Icon(Icons.logout)],
-                  ),
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.all(mq(context, 15)),
-                child: Center(
-                  child: Text(
-                    "Top 3 diseases you are vulnerable to",
-                    style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        fontSize: mq(context, 25), fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              ...diseaseCardDataList.asMap().entries.map((entry) {
-                final index = entry.key;
-                final disease = entry.value;
-                return GestureDetector(
-                  onTap: () {
-                    GoRouter.of(context)
-                        .pushNamed(AppRouterConstants.detailsScreen, extra: [
-                      disease.disease,
-                      index,
-                      disease.imageLink != null
-                          ? CachedNetworkImage(
-                              imageUrl: disease.imageLink!,
-                              fit: BoxFit.cover,
-                            )
-                          : Image.asset(
-                              'assets/imagenotloaded.png',
-                              fit: BoxFit.cover,
-                            ),
-                      disease.diseaseDescription,
-                      disease.symptoms,
-                      disease.precautions,
-                      disease.help,
-                      disease.routines
-                    ]);
-                  },
-                  child: Container(
-                    margin: EdgeInsets.all(mq(context, 15)),
-                    child: DiseaseCard(
-                        index: index,
-                        diseaseCardData: disease,
-                        context: context),
-                  ),
-                );
-              })
-            ],
-          ))
+            );
+          })
         ],
       ),
     );

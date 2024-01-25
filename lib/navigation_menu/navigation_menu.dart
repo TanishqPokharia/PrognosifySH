@@ -1,8 +1,6 @@
-import 'package:bottom_bar_matu/bottom_bar/bottom_bar_bubble.dart';
 import 'package:bottom_bar_matu/bottom_bar_matu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/models/hive_model/prognosify_notification.dart';
 import 'package:prognosify/screens/profile_screen.dart';
 import 'package:prognosify/screens/routine_screen.dart';
@@ -20,6 +18,10 @@ class _NavigationMenuState extends State<NavigationMenu> {
   Widget? currentScreen = StartScreen();
   int currentScreenIndex = 0;
   bool areNotificationsStored = false;
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   showInvalidApiResponseDialog(BuildContext context) {
     showDialog(
@@ -75,11 +77,21 @@ class _NavigationMenuState extends State<NavigationMenu> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       bottomNavigationBar: BottomBarBubble(
-        color: kColorScheme.primary,
+        height: mq(context, 80),
+        color: Theme.of(context).colorScheme.primary,
         items: [
-          BottomBarItem(iconData: Icons.assessment, label: "Assessment"),
-          BottomBarItem(iconData: Icons.checklist, label: "Routine"),
-          BottomBarItem(iconData: Icons.person, label: "Profile"),
+          BottomBarItem(
+              iconData: Icons.assessment,
+              label: "Assessment",
+              labelTextStyle: TextStyle(fontSize: mq(context, 14))),
+          BottomBarItem(
+              iconData: Icons.checklist,
+              label: "Routine",
+              labelTextStyle: TextStyle(fontSize: mq(context, 14))),
+          BottomBarItem(
+              iconData: Icons.person,
+              label: "Profile",
+              labelTextStyle: TextStyle(fontSize: mq(context, 14))),
         ],
         selectedIndex: currentScreenIndex,
         onSelect: (index) {

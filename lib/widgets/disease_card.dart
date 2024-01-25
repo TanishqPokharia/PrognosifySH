@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:prognosify/main.dart';
 import 'package:prognosify/models/disease_card_data.dart';
 
 class DiseaseCard extends StatefulWidget {
@@ -20,6 +19,10 @@ class DiseaseCard extends StatefulWidget {
 }
 
 class _DiseaseCardState extends State<DiseaseCard> {
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   Color setColor(double value) {
     if (value <= 30) {
       return Colors.green;
@@ -40,11 +43,11 @@ class _DiseaseCardState extends State<DiseaseCard> {
             Hero(
               tag: "disease${widget.index}",
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: mq(context, 25)),
-                height: mq(context, 150),
-                width: mq(context, 150),
+                margin: EdgeInsets.symmetric(horizontal: mq(context, 10)),
+                height: mq(context, 100),
+                width: mq(context, 100),
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(mq(context, 15)),
+                    borderRadius: BorderRadius.circular(mq(context, 50)),
                     image: DecorationImage(
                         image: widget.diseaseCardData.imageLink != null
                             ? CachedNetworkImageProvider(
@@ -65,11 +68,11 @@ class _DiseaseCardState extends State<DiseaseCard> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: EdgeInsets.all(mq(context, 15)),
+                    padding: EdgeInsets.all(mq(context, 10)),
                     child: Material(
                       color: Colors.transparent,
                       child: Container(
-                        width: mq(context, 250),
+                        // width: mq(context, 250),
                         child: Text(
                           widget.diseaseCardData.disease,
                           textAlign: TextAlign.center,
@@ -84,11 +87,8 @@ class _DiseaseCardState extends State<DiseaseCard> {
                     thickness: 0.5,
                   ),
                   Container(
-                    margin: EdgeInsets.only(
-                        left: mq(context, 35),
-                        right: mq(context, 35),
-                        top: mq(context, 15),
-                        bottom: mq(context, 25)),
+                    // padding: EdgeInsets.all(mq(context, 10)),
+                    margin: EdgeInsets.all(mq(context, 15)),
                     child: CircularPercentIndicator(
                       radius: mq(context, 40),
                       progressColor:
@@ -99,7 +99,10 @@ class _DiseaseCardState extends State<DiseaseCard> {
                       animationDuration: 2000,
                       center: Text(
                         "${widget.diseaseCardData.percentage.round()}%",
-                        style: Theme.of(context).textTheme.titleSmall,
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(fontSize: mq(context, 18)),
                       ),
                     ),
                   ),
