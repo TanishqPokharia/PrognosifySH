@@ -23,7 +23,7 @@ class GoogleSignInProvider extends ChangeNotifier {
         showDialog(
           context: context,
           builder: (context) => Dialog(
-            child: Container(
+            child: SizedBox(
                 width: 200,
                 height: 150,
                 child: Center(

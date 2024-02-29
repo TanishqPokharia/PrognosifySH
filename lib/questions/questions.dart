@@ -7,14 +7,19 @@ const questions = [
       question: "Do you frequently have a cough?", options: ["Yes", "No"]),
   QuestionModel(
       question: "Do you often feel fatigued?", options: ["Yes", "No"]),
-  QuestionModel(question: "What is your sex?", options: ["Male", "Female"]),
-  QuestionModel(
-      question: "How would you describe your cholesterol level?",
-      options: ["Low", "Normal", "High"]),
   QuestionModel(
       question: "Have you experienced difficulty breathing lately?",
       options: ["Yes", "No"]),
   QuestionModel(
-      question: "How would you describe your blood pressure?",
-      options: ["Low", "Normal", "High"]),
+      question: "Do you often experience moderate or severe headaches?",
+      options: ["Yes", "No"]),
+  QuestionModel(
+      question: "Do you frequently experience feelings of anxiety or stress?",
+      options: ["Yes", "No"]),
+  QuestionModel(
+      question: "Do you often notice palpitations or irregular heartbeats?",
+      options: ["Yes", "No"]),
+  QuestionModel(
+      question: "Do you frequently experience shortness of breath?",
+      options: ["Yes", "No"]),
 ];

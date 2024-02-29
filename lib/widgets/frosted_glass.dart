@@ -30,7 +30,6 @@ class FrostedGlassBox extends StatelessWidget {
                 child: Container(),
               ),
               Container(
-                child: child,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(mq(context, 15)),
                     border: Border.all(color: Colors.white.withOpacity(0.13)),
@@ -38,6 +37,7 @@ class FrostedGlassBox extends StatelessWidget {
                       Colors.white.withOpacity(0.15),
                       Colors.white.withOpacity(0.05)
                     ])),
+                child: child,
               ),
             ],
           ),

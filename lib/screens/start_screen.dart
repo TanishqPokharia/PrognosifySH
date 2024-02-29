@@ -1,4 +1,3 @@
-import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -84,82 +83,17 @@ class _StartScreenState extends State<StartScreen> {
               textAlign: TextAlign.center,
             ),
           ),
-          Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.all(mq(context, 10)),
-                child: Text("Enter your age to proceed",
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleMedium!
-                        .copyWith(fontSize: mq(context, 18))),
-              ),
-              Padding(
-                padding: EdgeInsets.symmetric(
-                    horizontal: mq(context, 150), vertical: mq(context, 25)),
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  maxLength: 3,
-                  keyboardType: TextInputType.number,
-                  controller: _textEditingController,
-                  decoration: InputDecoration(
-                      contentPadding: EdgeInsets.all(mq(context, 15)),
-                      fillColor: Colors.white,
-                      enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(mq(context, 10)),
-                          borderSide: BorderSide(
-                              color: Theme.of(context).colorScheme.primary,
-                              width: 2)),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(mq(context, 10)),
-                      )),
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium!
-                      .copyWith(fontSize: mq(context, 21)),
-                ),
-              ),
-            ],
-          ),
           Container(
             width: double.infinity,
             margin: EdgeInsets.symmetric(
                 horizontal: mq(context, 45), vertical: mq(context, 10)),
             child: ElevatedButton(
                 onPressed: () {
-                  try {
-                    int age = _textEditingController.text.toInt();
-                    if (age > 110 || age < 1) return;
-                    GoRouter.of(context).pushNamed(
-                        AppRouterConstants.questionsScreen,
-                        extra: age);
-                  } on Exception catch (_) {
-                    showDialog(
-                        context: context,
-                        builder: ((context) => Dialog(
-                            shape: RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.circular(mq(context, 21))),
-                            backgroundColor: Colors.white,
-                            child: Padding(
-                                padding: EdgeInsets.all(mq(context, 25)),
-                                child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            EdgeInsets.all(mq(context, 35)),
-                                        child: Text("Invalid Age!",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleSmall),
-                                      ),
-                                    ])))));
-                  }
+                  // }
+                  GoRouter.of(context)
+                      .goNamed(AppRouterConstants.questionsScreen);
                 },
-                child: Text(
+                child: const Text(
                   "Start Assessment",
                 )),
           )

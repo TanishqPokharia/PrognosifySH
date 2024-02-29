@@ -13,8 +13,7 @@ import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 import 'package:http/http.dart' as http;
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({super.key, required this.userAge});
-  final int userAge;
+  const QuestionsScreen({super.key});
   @override
   State<StatefulWidget> createState() {
     return _QuestionsScreen();
@@ -24,6 +23,8 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreen extends State<QuestionsScreen> {
   var currentQuestionIndex = 0;
   List<String> answersList = [];
+  List<int> bpList = [];
+
   List<DiseaseCardData> userDiseaseReport = [];
   late ProgressDialog progressDialog;
 
@@ -34,7 +35,6 @@ class _QuestionsScreen extends State<QuestionsScreen> {
   @override
   void initState() {
     super.initState();
-    answersList.add(widget.userAge.toString());
     progressDialog = ProgressDialog(context);
     progressDialog.style(message: "Prognosifying", maxProgress: 30);
   }
@@ -51,19 +51,31 @@ class _QuestionsScreen extends State<QuestionsScreen> {
     };
   }
 
+  getBloodPressure(List<int> bpList) {
+    final bloodPressureResult =
+        bpList[0] * 0.1 + bpList[1] * 0.3 + bpList[2] * 0.3 + bpList[3] * 0.3;
+    return bloodPressureResult;
+  }
+
   Future<void> getUserDiseases(List<String> userResponse) async {
     progressDialog.show();
     try {
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUser!.uid)
+          .get();
       Uri apiUrl = Uri.parse('https://prognosify.onrender.com/prognosify');
+      final bloodPressureResult = getBloodPressure(bpList);
       Map<String, String> requestBody = {
-        "fever": userResponse[1],
-        "cough": userResponse[2],
-        "fatigue": userResponse[3],
-        "age": userResponse[0],
-        "gender": userResponse[4],
-        "cholestrol level": userResponse[5],
-        "difficulty in breathing": userResponse[6],
-        "blood pressure": userResponse[7]
+        "fever": userResponse[0],
+        "cough": userResponse[1],
+        "fatigue": userResponse[2],
+        "age": snapshot.data()!['age'].toString(),
+        "gender": snapshot.data()?['gender'],
+        "cholestrol level": bloodPressureResult >= 0.6 ? "High" : "Normal",
+        "difficulty in breathing": userResponse[3],
+        "blood pressure": bloodPressureResult >= 0.6 ? "High" : "Normal"
       };
 
       http.Response response = await http.post(apiUrl, body: requestBody);
@@ -132,15 +144,17 @@ class _QuestionsScreen extends State<QuestionsScreen> {
           await FirebaseFirestore.instance
               .collection('users')
               .doc(currentUser!.uid)
-              .set({
-            "name": currentUser.displayName,
-            "email": currentUser.email,
-            "topDiseases": topThreeDiseasesName,
-            "topPercentage": topThreeDiseasesPercentage,
-            'topDiseasesPrecautions': topThreeDiseasesPrecautions,
-            'topDiseasesSymptoms': topThreeDiseasesSymptoms,
-            'topDiseasesRoutines': topThreeRoutines
-          }, SetOptions(merge: true));
+              .update(
+            {
+              // "name": currentUser.displayName,
+              // "email": currentUser.email,
+              "topDiseases": topThreeDiseasesName,
+              "topPercentage": topThreeDiseasesPercentage,
+              'topDiseasesPrecautions': topThreeDiseasesPrecautions,
+              'topDiseasesSymptoms': topThreeDiseasesSymptoms,
+              'topDiseasesRoutines': topThreeRoutines
+            },
+          );
           progressDialog.hide();
           if (!mounted) {
             return;
@@ -152,7 +166,8 @@ class _QuestionsScreen extends State<QuestionsScreen> {
           if (!mounted) {
             return;
           }
-          GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
+          GoRouter.of(context)
+              .goNamed(AppRouterConstants.patientNavigationScreen);
           showDialog(
               context: context,
               builder: ((context) => Dialog(
@@ -238,7 +253,15 @@ class _QuestionsScreen extends State<QuestionsScreen> {
                       child: ElevatedButton(
                           onPressed: () {
                             setState(() {
-                              answersList.add(option);
+                              if (currentQuestionIndex < 4) {
+                                answersList.add(option);
+                              } else {
+                                if (option == "Yes") {
+                                  bpList.add(1);
+                                } else {
+                                  bpList.add(0);
+                                }
+                              }
                               if (currentQuestionIndex ==
                                   questions.length - 1) {
                                 getUserDiseases(answersList);

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -24,18 +25,29 @@ class _SplashScreenState extends State<SplashScreen>
 
     Future.delayed(
         const Duration(
-          seconds: 2,
-        ), () {
-      _user == null
-          ? GoRouter.of(context).goNamed(AppRouterConstants.welcomeScreen)
-          : GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
-    });
-  }
+          seconds: 3,
+        ), () async {
+      if (_user == null) {
+        GoRouter.of(context).goNamed(AppRouterConstants.welcomeScreen);
+      }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+      final currentUser = FirebaseAuth.instance.currentUser;
+      final snapshot = await FirebaseFirestore.instance
+          .collection("users")
+          .doc(currentUser!.uid)
+          .get();
+
+      if (!context.mounted) {
+        return;
+      }
+
+      if (snapshot.exists) {
+        GoRouter.of(context)
+            .goNamed(AppRouterConstants.patientNavigationScreen);
+      } else {
+        GoRouter.of(context).goNamed(AppRouterConstants.doctorNavigationScreen);
+      }
+    });
   }
 
   @override

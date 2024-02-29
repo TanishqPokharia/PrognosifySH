@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prognosify/navigation_menu/navigation_menu.dart';
+import 'package:prognosify/navigation_menu/doctor_navigation_menu.dart';
+import 'package:prognosify/navigation_menu/patient_navigation_menu.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/screens/details_screen.dart';
+import 'package:prognosify/screens/doctor/doctor_sign_up_screen.dart';
+import 'package:prognosify/screens/sign_in_screen.dart';
 import 'package:prognosify/screens/questions_screen.dart';
 import 'package:prognosify/screens/results_screen.dart';
-import 'package:prognosify/screens/sign_in_screen.dart';
-import 'package:prognosify/screens/sign_up_screen.dart';
+import 'package:prognosify/screens/patient_sign_up_screen.dart';
 import 'package:prognosify/screens/splash_screen.dart';
 import 'package:prognosify/screens/start_screen.dart';
 import 'package:prognosify/screens/welcome_screen.dart';
@@ -38,10 +40,10 @@ class AppRouter {
       ),
     ),
     GoRoute(
-      name: AppRouterConstants.signUpScreen,
-      path: "/signUp",
+      name: AppRouterConstants.patientSignUpScreen,
+      path: "/patientSignUp",
       pageBuilder: (context, state) =>
-          const MaterialPage(child: SignUpScreen()),
+          const MaterialPage(child: PatientSignUpScreen()),
     ),
     GoRoute(
       name: AppRouterConstants.signInScreen,
@@ -50,13 +52,19 @@ class AppRouter {
           const MaterialPage(child: SignInScreen()),
     ),
     GoRoute(
+      name: AppRouterConstants.doctorSignUpScreen,
+      path: "/doctorSignUp",
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: DoctorSignUpScreen()),
+    ),
+    GoRoute(
       name: AppRouterConstants.startScreen,
       path: '/start',
       pageBuilder: (context, state) => const MaterialPage(child: StartScreen()),
     ),
     GoRoute(
-      name: AppRouterConstants.navigationScreen,
-      path: "/navigation",
+      name: AppRouterConstants.patientNavigationScreen,
+      path: "/patientNavigation",
       // builder: (context, state) => const NavigationMenu(),
       // pageBuilder: (context, state) => CustomTransitionPage(
       //   transitionDuration: const Duration(seconds: 1),
@@ -69,17 +77,19 @@ class AppRouter {
       //   ),
       // ),
       pageBuilder: (context, state) =>
-          const MaterialPage(child: NavigationMenu()),
+          const MaterialPage(child: PatientNavigationMenu()),
+    ),
+    GoRoute(
+      name: AppRouterConstants.doctorNavigationScreen,
+      path: '/doctorNavigation',
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: DoctorNavigationMenu()),
     ),
     GoRoute(
       name: AppRouterConstants.questionsScreen,
       path: '/questions',
       pageBuilder: (context, state) {
-        final dynamic userAge = state.extra;
-        return MaterialPage(
-            child: QuestionsScreen(
-          userAge: userAge,
-        ));
+        return const MaterialPage(child: QuestionsScreen());
       },
     ),
     GoRoute(

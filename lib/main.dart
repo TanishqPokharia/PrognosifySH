@@ -1,15 +1,14 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prognosify/auth/google_sign_in.dart';
 import 'package:prognosify/firebase_options.dart';
 import 'package:prognosify/models/notification/notification_services.dart';
 import 'package:prognosify/router/app_router_config.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as PR;
 
 var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.teal);
 
@@ -27,7 +26,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // runApp(DevicePreview(
   //     builder: ((context) => const MyApp()), enabled: !kReleaseMode));
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -35,7 +34,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
+    return PR.ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp.router(
         // locale: DevicePreview.locale(context),

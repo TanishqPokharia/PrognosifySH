@@ -9,7 +9,7 @@ import 'package:prognosify/auth/google_sign_in.dart';
 import 'package:prognosify/models/disease_card_data.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/widgets/disease_card.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as PV;
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -78,7 +78,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = FirebaseAuth.instance.currentUser!;
-
     return Column(
       children: [
         if (user.photoURL == null)
@@ -92,7 +91,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               totalWidth: mq(context, 120),
               cornerRadius: mq(context, 80),
               color: Theme.of(context).colorScheme.onPrimary,
-              image: AssetImage('assets/defaultprofile.png'),
+              image: const AssetImage('assets/defaultprofile.png'),
               outlineWidth: 5,
               outlineColor: Theme.of(context).colorScheme.primary,
             ),
@@ -142,8 +141,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               if (user.photoURL == null) {
                 AuthServices.signOutUser(context);
               } else {
-                final provider =
-                    Provider.of<GoogleSignInProvider>(context, listen: false);
+                final provider = PV.Provider.of<GoogleSignInProvider>(context,
+                    listen: false);
                 provider.googleLogout(context);
               }
             },

@@ -27,7 +27,8 @@ class _ResultsScreen extends State<ResultsScreen> {
           title: Text(appTitle),
           leading: IconButton(
             onPressed: () {
-              GoRouter.of(context).goNamed(AppRouterConstants.navigationScreen);
+              GoRouter.of(context)
+                  .goNamed(AppRouterConstants.patientNavigationScreen);
             },
             icon: const Icon(Icons.arrow_back),
           )),

@@ -39,7 +39,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       showDialog(
           context: context,
           builder: (context) => Dialog(
-                child: Container(
+                child: SizedBox(
                   height: mq(context, 150),
                   width: mq(context, 250),
                   child: const Text("Network Error. Please try again later"),
@@ -181,7 +181,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                   showDialog(
                                       context: context,
                                       builder: (context) => Dialog(
-                                            child: Container(
+                                            child: SizedBox(
                                               height: mq(context, 250),
                                               width: mq(context, 200),
                                               child: Center(

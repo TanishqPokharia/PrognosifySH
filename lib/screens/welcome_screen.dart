@@ -9,6 +9,96 @@ class WelcomeScreen extends StatelessWidget {
     return MediaQuery.of(context).size.height * (size / 1000);
   }
 
+  showAuthBottomModalSheet(
+      {required context,
+      required heading,
+      required onSignIn,
+      required onSignUp}) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      showDragHandle: true,
+      useSafeArea: true,
+      builder: (context) {
+        return Container(
+          height: mq(context, 400),
+          margin: EdgeInsets.all(mq(context, 10)),
+          width: double.infinity,
+          child: Column(
+            children: [
+              Container(
+                margin: EdgeInsets.all(mq(context, 20)),
+                padding: EdgeInsets.all(mq(context, 10)),
+                child: Text(
+                  heading,
+                  style: TextStyle(
+                      fontSize: mq(context, 30),
+                      color: Colors.teal,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(mq(context, 20)),
+                padding: EdgeInsets.all(mq(context, 10)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(mq(context, 10)),
+                  color: Colors.teal,
+                ),
+                child: TextButton(
+                    onPressed: onSignUp,
+                    child: Text(
+                      "Sign Up",
+                      style: TextStyle(
+                          color: Colors.white, fontSize: mq(context, 24)),
+                    )),
+              ),
+              Container(
+                width: double.infinity,
+                margin: EdgeInsets.all(mq(context, 20)),
+                padding: EdgeInsets.all(mq(context, 10)),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(mq(context, 10)),
+                  color: Colors.teal,
+                ),
+                child: TextButton(
+                    onPressed: onSignIn,
+                    child: Text("Sign In",
+                        style: TextStyle(
+                            color: Colors.white, fontSize: mq(context, 24)))),
+              )
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  doctorAuthModal(context) {
+    showAuthBottomModalSheet(
+        context: context,
+        heading: "Doctor",
+        onSignIn: () {
+          GoRouter.of(context).pushNamed(AppRouterConstants.signInScreen);
+        },
+        onSignUp: () {
+          GoRouter.of(context).pushNamed(AppRouterConstants.doctorSignUpScreen);
+        });
+  }
+
+  patientAuthModal(context) {
+    showAuthBottomModalSheet(
+        context: context,
+        heading: "Patient",
+        onSignIn: () {
+          GoRouter.of(context).pushNamed(AppRouterConstants.signInScreen);
+        },
+        onSignUp: () {
+          GoRouter.of(context)
+              .pushNamed(AppRouterConstants.patientSignUpScreen);
+        });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,11 +175,12 @@ class WelcomeScreen extends StatelessWidget {
                               height: mq(context, 55),
                               child: ElevatedButton(
                                   onPressed: () {
-                                    GoRouter.of(context).pushNamed(
-                                        AppRouterConstants.signUpScreen);
+                                    // GoRouter.of(context).pushNamed(
+                                    //     AppRouterConstants.signUpScreen);
+                                    doctorAuthModal(context);
                                   },
                                   child: Text(
-                                    "Sign Up",
+                                    "Doctor",
                                     style: TextStyle(
                                       fontSize: mq(context, 24),
                                     ),
@@ -100,11 +191,12 @@ class WelcomeScreen extends StatelessWidget {
                               height: mq(context, 55),
                               child: ElevatedButton(
                                   onPressed: () {
-                                    GoRouter.of(context).pushNamed(
-                                        AppRouterConstants.signInScreen);
+                                    // GoRouter.of(context).pushNamed(
+                                    //     AppRouterConstants.signInScreen);
+                                    patientAuthModal(context);
                                   },
                                   child: Text(
-                                    "Sign In",
+                                    "Patient",
                                     style: TextStyle(fontSize: mq(context, 24)),
                                   )),
                             )

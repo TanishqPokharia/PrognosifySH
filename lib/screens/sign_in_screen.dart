@@ -195,7 +195,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                                 "Signed In Successfully!")));
 
                                     GoRouter.of(context).goNamed(
-                                        AppRouterConstants.navigationScreen);
+                                        AppRouterConstants
+                                            .patientNavigationScreen);
                                   });
                                 },
                                 child: Row(
@@ -223,29 +224,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.all(mq(context, 40)),
-                      child: Wrap(
-                        spacing: mq(context, 10),
-                        children: [
-                          Text(
-                            "Don't have an account?",
-                            style: TextStyle(fontSize: mq(context, 21)),
-                          ),
-                          GestureDetector(
-                              onTap: () {
-                                GoRouter.of(context)
-                                    .goNamed(AppRouterConstants.signUpScreen);
-                              },
-                              child: Text(
-                                "Register",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: mq(context, 21)),
-                              ))
-                        ],
-                      ),
-                    )
                   ],
                 ),
               ),

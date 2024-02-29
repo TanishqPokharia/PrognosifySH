@@ -2,20 +2,21 @@ import 'package:bottom_bar_matu/bottom_bar_matu.dart';
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:prognosify/models/hive_model/prognosify_notification.dart';
+import 'package:prognosify/screens/assistant/assistant_screen.dart';
 import 'package:prognosify/screens/profile_screen.dart';
 import 'package:prognosify/screens/routine_screen.dart';
 import 'package:prognosify/screens/start_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class NavigationMenu extends StatefulWidget {
-  const NavigationMenu({super.key});
+class PatientNavigationMenu extends StatefulWidget {
+  const PatientNavigationMenu({super.key});
 
   @override
-  State<NavigationMenu> createState() => _NavigationMenuState();
+  State<PatientNavigationMenu> createState() => _PatientNavigationMenuState();
 }
 
-class _NavigationMenuState extends State<NavigationMenu> {
-  Widget? currentScreen = StartScreen();
+class _PatientNavigationMenuState extends State<PatientNavigationMenu> {
+  Widget? currentScreen = const StartScreen();
   int currentScreenIndex = 0;
   bool areNotificationsStored = false;
 
@@ -81,8 +82,8 @@ class _NavigationMenuState extends State<NavigationMenu> {
         color: Theme.of(context).colorScheme.primary,
         items: [
           BottomBarItem(
-              iconData: Icons.assessment,
-              label: "Assessment",
+              iconData: Icons.home,
+              label: "Home",
               labelTextStyle: TextStyle(fontSize: mq(context, 14))),
           BottomBarItem(
               iconData: Icons.checklist,
@@ -92,6 +93,10 @@ class _NavigationMenuState extends State<NavigationMenu> {
               iconData: Icons.person,
               label: "Profile",
               labelTextStyle: TextStyle(fontSize: mq(context, 14))),
+          BottomBarItem(
+              iconData: Icons.chat,
+              label: "Assistant",
+              labelTextStyle: TextStyle(fontSize: mq(context, 14)))
         ],
         selectedIndex: currentScreenIndex,
         onSelect: (index) {
@@ -117,6 +122,11 @@ class _NavigationMenuState extends State<NavigationMenu> {
                 });
                 currentScreen = const ProfileScreen();
                 break;
+              case 3:
+                setState(() {
+                  currentScreenIndex = 3;
+                });
+                currentScreen = const PrognosifyAssistant();
             }
           });
         },
