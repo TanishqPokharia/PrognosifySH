@@ -53,7 +53,7 @@ class _DoctorNavigationMenuState extends State<DoctorNavigationMenu> {
               case 1:
                 setState(() {
                   currentScreenIndex = 1;
-                  currentScreen = const DoctorPrescriptionScreen();
+                  currentScreen = DoctorPrescriptionScreen();
                 });
                 break;
               case 2:

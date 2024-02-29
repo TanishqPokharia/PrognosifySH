@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:prognosify/data/patient_card_data.dart';
 
-class PatientRequestCard extends StatelessWidget {
-  const PatientRequestCard({super.key, required this.patientCardData});
+class PatientApprovedCard extends StatelessWidget {
+  const PatientApprovedCard({super.key, required this.patientCardData});
   final PatientCardData patientCardData;
 
   double mq(BuildContext context, double size) {
@@ -60,52 +58,13 @@ class PatientRequestCard extends StatelessWidget {
                 margin: EdgeInsets.all(mq(context, 10)),
                 child: ElevatedButton(
                     style: ButtonStyle(elevation: MaterialStatePropertyAll(3)),
-                    onPressed: () async {
-                      await approvePatient();
-                    },
-                    child: Text("Approve")),
+                    onPressed: () {},
+                    child: Text("Prescribe")),
               )
             ],
           ),
         ),
       ),
     );
-  }
-
-  Future<void> approvePatient() async {
-    final user = FirebaseAuth.instance.currentUser;
-
-    // add to approved List
-    final snapshot = await FirebaseFirestore.instance
-        .collection("doctors")
-        .doc(user!.uid)
-        .get();
-    final List approvedList = snapshot.data()!['approvedPatients'];
-
-    approvedList.add({
-      "age": patientCardData.age,
-      "disease": patientCardData.disease,
-      "email": patientCardData.email,
-      "gender": patientCardData.gender,
-      "name": patientCardData.name,
-      "notes": patientCardData.notes,
-      "token": patientCardData.token
-    });
-
-    await FirebaseFirestore.instance
-        .collection("doctors")
-        .doc(user.uid)
-        .update({"approvedPatients": approvedList});
-
-    //remove from patient queue
-
-    final List patientRequests = snapshot.data()!['patientRequests'];
-    patientRequests
-        .removeWhere((element) => element['email'] == patientCardData.email);
-
-    await FirebaseFirestore.instance
-        .collection("doctors")
-        .doc(user.uid)
-        .update({"patientRequests": patientRequests});
   }
 }

@@ -5,14 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prognosify/data/patient_card_data.dart';
 import 'package:prognosify/widgets/patient_request_card.dart';
 
-final patientRequestListProvider =
-    FutureProvider<List<Map<String, dynamic>?>>((ref) async {
+final patientListProvider = StreamProvider<List<dynamic>>((ref) {
   final user = FirebaseAuth.instance.currentUser;
-  final snapshot = await FirebaseFirestore.instance
+  final Stream<List<dynamic>> stream = FirebaseFirestore.instance
       .collection("doctors")
       .doc(user!.uid)
-      .get();
-  return snapshot.data()!['patientRequests'];
+      .snapshots()
+      .map((event) => event.data()?['patientRequests']);
+
+  return stream;
 });
 
 class DoctorHomeScreen extends ConsumerWidget {
@@ -26,9 +27,10 @@ class DoctorHomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final patientRequestList = ref.watch(patientRequestListProvider);
+    final patientRequestList = ref.watch(patientListProvider);
     return Container(
       padding: EdgeInsets.all(mq(context, 15)),
+      height: MediaQuery.of(context).size.height,
       child: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -55,10 +57,27 @@ class DoctorHomeScreen extends ConsumerWidget {
                             fontWeight: FontWeight.bold,
                           ),
                     ),
+                    SizedBox(
+                      height: mq(context, 20),
+                    ),
+                    Container(
+                      margin: EdgeInsets.all(mq(context, 20)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Patient Queue",
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  fontSize: mq(context, 36),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                      ),
+                    ),
                     patientRequestList.when(
                       loading: () => CircularProgressIndicator(),
-                      error: (error, stackTrace) =>
-                          Text("Something Went Wrong"),
+                      error: (error, stackTrace) {
+                        print(error);
+                        return Text("Something Went Wrong");
+                      },
                       data: (data) {
                         return Column(
                           children: [
@@ -75,9 +94,12 @@ class DoctorHomeScreen extends ConsumerWidget {
                                         token: patient['token']));
                               })
                             else
-                              Container(
-                                child: Text("No patients at the moment"),
-                              )
+                              Center(
+                                child: Text(
+                                  "No patients at the moment",
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
                           ],
                         );
                       },
