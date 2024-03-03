@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:prognosify/data/patient_card_data.dart';
+import 'package:prognosify/router/app_router_constants.dart';
 
 class PatientApprovedCard extends StatelessWidget {
   const PatientApprovedCard({super.key, required this.patientCardData});
@@ -12,7 +14,7 @@ class PatientApprovedCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(mq(context, 20)),
+      margin: EdgeInsets.symmetric(vertical: mq(context, 10)),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
@@ -32,6 +34,9 @@ class PatientApprovedCard extends StatelessWidget {
                     ),
                   ),
                   Container(
+                    width: mq(context, 20),
+                  ),
+                  Container(
                     margin: EdgeInsets.all(mq(context, 10)),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -41,24 +46,35 @@ class PatientApprovedCard extends StatelessWidget {
                             child: Text("Name: ${patientCardData.name}")),
                         Container(
                             margin: EdgeInsets.all(mq(context, 5)),
-                            child: Text("Age: ${patientCardData.disease}")),
+                            child: Text("Age: ${patientCardData.age}")),
                         Container(
                             margin: EdgeInsets.all(mq(context, 5)),
                             child: Text("Gender: ${patientCardData.gender}")),
-                        Container(
-                            margin: EdgeInsets.all(mq(context, 5)),
-                            child: Text("Disease: ${patientCardData.disease}")),
                       ],
                     ),
                   )
                 ],
               ),
               Container(
+                margin: EdgeInsets.all(mq(context, 20)),
+                width: mq(context, 500),
+                child: Text(
+                  textAlign: TextAlign.start,
+                  "Additiona Notes: ${patientCardData.notes}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
+              ),
+              Container(
                 width: double.infinity,
                 margin: EdgeInsets.all(mq(context, 10)),
                 child: ElevatedButton(
                     style: ButtonStyle(elevation: MaterialStatePropertyAll(3)),
-                    onPressed: () {},
+                    onPressed: () {
+                      GoRouter.of(context).pushNamed(
+                          AppRouterConstants.prescriptionScreen,
+                          extra: patientCardData);
+                    },
                     child: Text("Prescribe")),
               )
             ],

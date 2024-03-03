@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:prognosify/cloud_notification/cloud_notifications.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 
 class AuthServices {
@@ -12,6 +14,20 @@ class AuthServices {
           .createUserWithEmailAndPassword(email: email, password: password);
       await FirebaseAuth.instance.currentUser!.updateDisplayName(name);
       await FirebaseAuth.instance.currentUser!.updateEmail(email);
+
+      CloudNotifications cloudNotifications = CloudNotifications();
+      cloudNotifications.requestNotificationPermission();
+      cloudNotifications.forgroundMessage();
+      String deviceToken = "";
+
+      if (context.mounted) {
+        cloudNotifications.firebaseInit(context);
+        cloudNotifications.setupInteractMessage(context);
+        cloudNotifications.isTokenRefresh();
+        await cloudNotifications.getDeviceToken().then((value) {
+          deviceToken = value.toString();
+        });
+      }
 
       await FirebaseFirestore.instance
           .collection('users')
@@ -25,7 +41,7 @@ class AuthServices {
         'topPercentage': [],
         'topDiseasesPrecautions': {},
         'topDiseasesSymptoms': {},
-        'sid': ""
+        'token': deviceToken
       });
       if (!context.mounted) {
         return;
@@ -48,19 +64,21 @@ class AuthServices {
   }
 
   static signUpDoctor(
-    BuildContext context,
-    String email,
-    String name,
-    String dob,
-    String registrationNumber,
-    String registrationDate,
-    String medicalCouncil,
-    String qualification,
-    String qualificationDate,
-    String universityName,
-    String aadharNumber,
-    String password,
-  ) async {
+      BuildContext context,
+      String email,
+      String name,
+      String dob,
+      String registrationNumber,
+      String registrationDate,
+      String medicalCouncil,
+      String qualification,
+      String qualificationDate,
+      String universityName,
+      String aadharNumber,
+      String password,
+      String speciality,
+      String fees,
+      String contact) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -68,21 +86,41 @@ class AuthServices {
       user!.updateDisplayName(name);
       user.updateEmail(email);
 
+      CloudNotifications cloudNotifications = CloudNotifications();
+      cloudNotifications.requestNotificationPermission();
+      cloudNotifications.forgroundMessage();
+      String deviceToken = "";
+      if (context.mounted) {
+        cloudNotifications.firebaseInit(context);
+        cloudNotifications.setupInteractMessage(context);
+        cloudNotifications.isTokenRefresh();
+        await cloudNotifications.getDeviceToken().then((value) {
+          deviceToken = value.toString();
+        });
+      }
+
       await FirebaseFirestore.instance
           .collection("doctors")
           .doc(userCredential.user!.uid)
           .set({
         "name": name,
         "dob": dob,
+        "fees": fees,
+        "speciality": speciality,
+        "contact": contact,
         "patientRequests": [],
+        "approvedPatients": [],
         "registrationNumber": registrationNumber,
-        "registrationDate": registrationDate,
+        "dateOfRegistration": registrationDate,
         "medicalCouncil": medicalCouncil,
         "qualification": qualification,
         "qualificationDate": qualificationDate,
         "universityName": universityName,
-        "aadharNumber": aadharNumber
+        "aadharNumber": aadharNumber,
+        "token": deviceToken,
+        "uid": user.uid
       });
+
       if (!context.mounted) {
         return;
       }

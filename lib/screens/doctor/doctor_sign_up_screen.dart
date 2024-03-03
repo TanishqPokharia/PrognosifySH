@@ -114,6 +114,34 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
         label: 'West Bengal Medical Council'),
   ];
 
+  final List<DropdownMenuEntry<String>> medicalSpecializationsList = const [
+    DropdownMenuEntry(value: 'Cardiologist', label: 'Cardiologist'),
+    DropdownMenuEntry(value: 'Neurologist', label: 'Neurologist'),
+    DropdownMenuEntry(value: 'Oncologist', label: 'Oncologist'),
+    DropdownMenuEntry(value: 'Endocrinologist', label: 'Endocrinologist'),
+    DropdownMenuEntry(value: 'Pediatrician', label: 'Pediatrician'),
+    DropdownMenuEntry(value: 'Psychiatrist', label: 'Psychiatrist'),
+    DropdownMenuEntry(value: 'Gynecologist', label: 'Gynecologist'),
+    DropdownMenuEntry(value: 'Dermatologist', label: 'Dermatologist'),
+    DropdownMenuEntry(value: 'Anesthesiologist', label: 'Anesthesiologist'),
+    DropdownMenuEntry(value: 'Gastroenterologist', label: 'Gastroenterologist'),
+    DropdownMenuEntry(value: 'Otolaryngologist', label: 'Otolaryngologist'),
+    DropdownMenuEntry(value: 'Nephrologist', label: 'Nephrologist'),
+    DropdownMenuEntry(value: 'Physicians', label: 'Physicians'),
+    DropdownMenuEntry(value: 'Geriatrician', label: 'Geriatrician'),
+    DropdownMenuEntry(value: 'Pulmonologist', label: 'Pulmonologist'),
+    DropdownMenuEntry(value: 'Radiologist', label: 'Radiologist'),
+    DropdownMenuEntry(value: 'Allergist', label: 'Allergist'),
+    DropdownMenuEntry(value: 'Ophthalmologist', label: 'Ophthalmologist'),
+    DropdownMenuEntry(
+        value: 'Emergency physician', label: 'Emergency physician'),
+    DropdownMenuEntry(value: 'Orthopaedist', label: 'Orthopaedist'),
+    DropdownMenuEntry(value: 'Dentist', label: 'Dentist'),
+    DropdownMenuEntry(value: 'General Surgery', label: 'General Surgery'),
+    DropdownMenuEntry(value: 'Hematologist', label: 'Hematologist'),
+    DropdownMenuEntry(value: 'Internists', label: 'Internists'),
+  ];
+
   bool _passwordHideStatus = true;
   String fullName = "";
   String email = "";
@@ -126,6 +154,9 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
   String qualificationDate = "";
   String universityName = "";
   String aadharNumber = '';
+  String fees = "";
+  String contactNumber = "";
+  String speciality = "Cardiologist";
 
   double mq(BuildContext context, double size) {
     return MediaQuery.of(context).size.height * (size / 1000);
@@ -304,6 +335,28 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
                     horizontal: mq(context, 20), vertical: mq(context, 10)),
                 child: DropdownMenu<String>(
                   width: mq(context, 390),
+                  label: const Text("Select Speciality"),
+                  menuHeight: mq(context, 300),
+                  dropdownMenuEntries: medicalSpecializationsList,
+                  initialSelection: medicalSpecializationsList[0].value,
+                  inputDecorationTheme: InputDecorationTheme(
+                      labelStyle: TextStyle(fontSize: mq(context, 20)),
+                      hintStyle: TextStyle(fontSize: mq(context, 20)),
+                      border: OutlineInputBorder(
+                          borderRadius:
+                              BorderRadius.circular(mq(context, 25)))),
+                  onSelected: (value) {
+                    setState(() {
+                      speciality = value!;
+                    });
+                  },
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: mq(context, 20), vertical: mq(context, 10)),
+                child: DropdownMenu<String>(
+                  width: mq(context, 390),
                   label: const Text("Select Medical Council"),
                   menuHeight: mq(context, 300),
                   dropdownMenuEntries: medicalCouncilsList,
@@ -442,6 +495,66 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
                     horizontal: mq(context, 45), vertical: mq(context, 10)),
                 child: TextFormField(
                   style: TextStyle(fontSize: mq(context, 21)),
+                  key: const ValueKey("fees"),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter proper fees";
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (newValue) {
+                    setState(() {
+                      fees = newValue!;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(mq(context, 25)))),
+                    label: Text(
+                      "Fees",
+                      style: TextStyle(fontSize: mq(context, 21)),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: mq(context, 45), vertical: mq(context, 10)),
+                child: TextFormField(
+                  style: TextStyle(fontSize: mq(context, 21)),
+                  key: const ValueKey("contactNumber"),
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return "Please enter proper contact";
+                    } else {
+                      return null;
+                    }
+                  },
+                  onSaved: (newValue) {
+                    setState(() {
+                      contactNumber = newValue!;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(mq(context, 25)))),
+                    label: Text(
+                      "Contact Number",
+                      style: TextStyle(fontSize: mq(context, 21)),
+                    ),
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(
+                    horizontal: mq(context, 45), vertical: mq(context, 10)),
+                child: TextFormField(
+                  style: TextStyle(fontSize: mq(context, 21)),
                   key: const ValueKey("passwordSignUp"),
                   validator: (value) {
                     if (value!.isEmpty || value.length < 5) {
@@ -497,7 +610,10 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
                             qualificationDate,
                             universityName,
                             aadharNumber,
-                            password);
+                            password,
+                            speciality,
+                            fees,
+                            contactNumber);
                         return;
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(

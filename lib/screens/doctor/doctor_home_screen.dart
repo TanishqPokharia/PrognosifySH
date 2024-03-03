@@ -19,8 +19,6 @@ final patientListProvider = StreamProvider<List<dynamic>>((ref) {
 class DoctorHomeScreen extends ConsumerWidget {
   DoctorHomeScreen({super.key});
 
-  final user = FirebaseAuth.instance.currentUser;
-
   double mq(BuildContext context, double size) {
     return MediaQuery.of(context).size.height * (size / 1000);
   }
@@ -51,7 +49,7 @@ class DoctorHomeScreen extends ConsumerWidget {
                           ),
                     ),
                     Text(
-                      "Dr. ${user!.displayName ?? "User"}",
+                      "Dr. ${FirebaseAuth.instance.currentUser!.displayName ?? "User"}",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                             fontSize: mq(context, 36),
                             fontWeight: FontWeight.bold,
@@ -88,7 +86,7 @@ class DoctorHomeScreen extends ConsumerWidget {
                                         name: patient!['name'],
                                         age: patient['age'],
                                         gender: patient['gender'],
-                                        disease: patient['disease'],
+                                        disease: "",
                                         notes: patient['notes'],
                                         email: patient['email'],
                                         token: patient['token']));

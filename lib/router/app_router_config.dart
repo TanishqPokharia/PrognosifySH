@@ -5,6 +5,7 @@ import 'package:prognosify/navigation_menu/patient_navigation_menu.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/screens/details_screen.dart';
 import 'package:prognosify/screens/doctor/doctor_sign_up_screen.dart';
+import 'package:prognosify/screens/doctor/prescription_screen.dart';
 import 'package:prognosify/screens/sign_in_screen.dart';
 import 'package:prognosify/screens/questions_screen.dart';
 import 'package:prognosify/screens/results_screen.dart';
@@ -116,6 +117,15 @@ class AppRouter {
             help: detail[6],
             routines: detail[7],
           ));
-        })
+        }),
+    GoRoute(
+      name: AppRouterConstants.prescriptionScreen,
+      path: "/prescription",
+      pageBuilder: (context, state) {
+        final dynamic patientData = state.extra;
+        return MaterialPage(
+            child: WritePrescriptionScreen(patientData: patientData));
+      },
+    )
   ]);
 }

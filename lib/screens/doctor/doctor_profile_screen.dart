@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:prognosify/auth/auth_services.dart';
 
 final doctorProfileProvider =
     FutureProvider<Map<String, dynamic>?>((ref) async {
@@ -33,7 +34,8 @@ class DoctorProfileScreen extends ConsumerWidget {
                 backgroundColor: Colors.teal,
                 radius: mq(context, 100),
                 child: CircleAvatar(
-                  foregroundImage: const AssetImage("assets/Doctordefault.jpeg"),
+                  foregroundImage:
+                      const AssetImage("assets/Doctordefault.jpeg"),
                   radius: mq(context, 90),
                 ),
               ),
@@ -79,7 +81,7 @@ class DoctorProfileScreen extends ConsumerWidget {
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
                           child: Text(
-                              "Date of Registration: ${data['registrationDate']}"),
+                              "Date of Registration: ${data['dateOfRegistration']}"),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
@@ -114,7 +116,9 @@ class DoctorProfileScreen extends ConsumerWidget {
               margin: EdgeInsets.all(mq(context, 20)),
               width: mq(context, 200),
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    AuthServices.signOutUser(context);
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

@@ -57,7 +57,7 @@ class DoctorPrescriptionScreen extends ConsumerWidget {
                       loading: () => CircularProgressIndicator(),
                       error: (error, stackTrace) {
                         print(error);
-                        return Text("Something Went Wrong");
+                        return Center(child: Text("Something Went Wrong"));
                       },
                       data: (data) {
                         return Column(
@@ -75,7 +75,7 @@ class DoctorPrescriptionScreen extends ConsumerWidget {
                                         token: patient['token']));
                               })
                             else
-                              Text("No patients at the moment"),
+                              Center(child: Text("No patients at the moment")),
                           ],
                         );
                       },

@@ -315,18 +315,6 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ],
                     ),
                   ),
-                  Container(
-                    width: double.infinity,
-                    decoration:
-                        BoxDecoration(borderRadius: BorderRadius.circular(20)),
-                    margin: EdgeInsets.all(mq(context, 40)),
-                    height: mq(context, 60),
-                    child: ElevatedButton(
-                        onPressed: () {
-                          openHelpLink(context);
-                        },
-                        child: const Text("Find nearby doctors/specialists")),
-                  )
                 ],
               ),
             ),

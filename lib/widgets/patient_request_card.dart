@@ -14,7 +14,7 @@ class PatientRequestCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(mq(context, 20)),
+      margin: EdgeInsets.symmetric(vertical: mq(context, 10)),
       child: Card(
         elevation: 5,
         shape: RoundedRectangleBorder(
@@ -43,17 +43,24 @@ class PatientRequestCard extends StatelessWidget {
                             child: Text("Name: ${patientCardData.name}")),
                         Container(
                             margin: EdgeInsets.all(mq(context, 5)),
-                            child: Text("Age: ${patientCardData.disease}")),
+                            child: Text("Age: ${patientCardData.age}")),
                         Container(
                             margin: EdgeInsets.all(mq(context, 5)),
                             child: Text("Gender: ${patientCardData.gender}")),
-                        Container(
-                            margin: EdgeInsets.all(mq(context, 5)),
-                            child: Text("Disease: ${patientCardData.disease}")),
                       ],
                     ),
                   )
                 ],
+              ),
+              Container(
+                margin: EdgeInsets.all(mq(context, 20)),
+                width: mq(context, 500),
+                child: Text(
+                  textAlign: TextAlign.start,
+                  "Additiona Notes: ${patientCardData.notes}",
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                ),
               ),
               Container(
                 width: double.infinity,

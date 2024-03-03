@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:prognosify/models/hive_model/prognosify_notification.dart';
 import 'package:prognosify/screens/assistant/assistant_screen.dart';
+import 'package:prognosify/screens/doctor_search_screen.dart';
 import 'package:prognosify/screens/profile_screen.dart';
 import 'package:prognosify/screens/routine_screen.dart';
 import 'package:prognosify/screens/start_screen.dart';
@@ -90,13 +91,17 @@ class _PatientNavigationMenuState extends State<PatientNavigationMenu> {
               label: "Routine",
               labelTextStyle: TextStyle(fontSize: mq(context, 14))),
           BottomBarItem(
+              iconData: Icons.chat,
+              label: "Assistant",
+              labelTextStyle: TextStyle(fontSize: mq(context, 14))),
+          BottomBarItem(
+              iconData: Icons.search,
+              label: "Consult",
+              labelTextStyle: TextStyle(fontSize: mq(context, 14))),
+          BottomBarItem(
               iconData: Icons.person,
               label: "Profile",
               labelTextStyle: TextStyle(fontSize: mq(context, 14))),
-          BottomBarItem(
-              iconData: Icons.chat,
-              label: "Assistant",
-              labelTextStyle: TextStyle(fontSize: mq(context, 14)))
         ],
         selectedIndex: currentScreenIndex,
         onSelect: (index) {
@@ -120,13 +125,22 @@ class _PatientNavigationMenuState extends State<PatientNavigationMenu> {
                 setState(() {
                   currentScreenIndex = 2;
                 });
-                currentScreen = const ProfileScreen();
+                currentScreen = const PrognosifyAssistant();
                 break;
+
               case 3:
                 setState(() {
                   currentScreenIndex = 3;
                 });
-                currentScreen = const PrognosifyAssistant();
+                currentScreen = const DoctorSearchScreen();
+                break;
+
+              case 4:
+                setState(() {
+                  currentScreenIndex = 4;
+                });
+                currentScreen = const ProfileScreen();
+                break;
             }
           });
         },

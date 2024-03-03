@@ -124,6 +124,11 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                       age = DateTime.now().year - value.year;
                     });
                   },
+                  onDateSaved: (value) {
+                    setState(() {
+                      age = DateTime.now().year - value.year;
+                    });
+                  },
                 ),
               ),
               Container(
