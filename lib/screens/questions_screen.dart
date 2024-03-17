@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/main.dart';
-import 'package:prognosify/models/disease_card_data.dart';
+import 'package:prognosify/data/disease_card_data.dart';
 import 'package:prognosify/questions/questions.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
@@ -35,8 +35,13 @@ class _QuestionsScreen extends State<QuestionsScreen> {
   @override
   void initState() {
     super.initState();
-    progressDialog = ProgressDialog(context);
-    progressDialog.style(message: "Prognosifying", maxProgress: 30);
+    progressDialog = ProgressDialog(context,
+        isDismissible: false, type: ProgressDialogType.normal);
+    progressDialog.style(
+        message: "Prognosifying...",
+        elevation: 5,
+        insetAnimCurve: Curves.easeIn,
+        progressWidget: Image.asset("assets/stethoscope.gif"));
   }
 
   Future<Map<String, String>> getImageAndDescription(String diseaseName) async {

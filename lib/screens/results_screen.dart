@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/main.dart';
-import 'package:prognosify/models/disease_card_data.dart';
+import 'package:prognosify/data/disease_card_data.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/widgets/result_list.dart';
 

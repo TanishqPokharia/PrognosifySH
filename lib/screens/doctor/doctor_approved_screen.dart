@@ -16,9 +16,9 @@ final approvedPatientListProvider = StreamProvider<List<dynamic>>((ref) {
   return stream;
 });
 
-class DoctorPrescriptionScreen extends ConsumerWidget {
+class DoctorApprovedScreen extends ConsumerWidget {
   final user = FirebaseAuth.instance.currentUser;
-  DoctorPrescriptionScreen({super.key});
+  DoctorApprovedScreen({super.key});
   double mq(BuildContext context, double size) {
     return MediaQuery.of(context).size.height * (size / 1000);
   }
@@ -54,7 +54,7 @@ class DoctorPrescriptionScreen extends ConsumerWidget {
                       ),
                     ),
                     approvedPatientsList.when(
-                      loading: () => CircularProgressIndicator(),
+                      loading: () => Center(child: CircularProgressIndicator()),
                       error: (error, stackTrace) {
                         print(error);
                         return Center(child: Text("Something Went Wrong"));

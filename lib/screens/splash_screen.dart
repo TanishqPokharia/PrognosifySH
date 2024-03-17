@@ -29,23 +29,19 @@ class _SplashScreenState extends State<SplashScreen>
         ), () async {
       if (_user == null) {
         GoRouter.of(context).goNamed(AppRouterConstants.welcomeScreen);
-      }
-
-      final currentUser = FirebaseAuth.instance.currentUser;
-      final snapshot = await FirebaseFirestore.instance
-          .collection("users")
-          .doc(currentUser!.uid)
-          .get();
-
-      if (!context.mounted) {
-        return;
-      }
-
-      if (snapshot.exists) {
-        GoRouter.of(context)
-            .goNamed(AppRouterConstants.patientNavigationScreen);
       } else {
-        GoRouter.of(context).goNamed(AppRouterConstants.doctorNavigationScreen);
+        final snapshot = await FirebaseFirestore.instance
+            .collection("users")
+            .doc(_user!.uid)
+            .get();
+
+        if (snapshot.exists && mounted) {
+          GoRouter.of(context)
+              .goNamed(AppRouterConstants.patientNavigationScreen);
+        } else if (mounted) {
+          GoRouter.of(context)
+              .goNamed(AppRouterConstants.doctorNavigationScreen);
+        }
       }
     });
   }

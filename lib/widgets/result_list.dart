@@ -3,7 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/router/app_router_constants.dart';
-import 'package:prognosify/models/disease_card_data.dart';
+import 'package:prognosify/data/disease_card_data.dart';
 import 'package:prognosify/widgets/disease_card.dart';
 
 class ResultList extends StatefulWidget {

@@ -1,7 +1,7 @@
 import 'package:bottom_bar_matu/bottom_bar_matu.dart';
 import 'package:flutter/material.dart';
+import 'package:prognosify/screens/doctor/doctor_approved_screen.dart';
 import 'package:prognosify/screens/doctor/doctor_home_screen.dart';
-import 'package:prognosify/screens/doctor/doctor_prescription_screen.dart';
 import 'package:prognosify/screens/doctor/doctor_profile_screen.dart';
 
 class DoctorNavigationMenu extends StatefulWidget {
@@ -53,7 +53,7 @@ class _DoctorNavigationMenuState extends State<DoctorNavigationMenu> {
               case 1:
                 setState(() {
                   currentScreenIndex = 1;
-                  currentScreen = DoctorPrescriptionScreen();
+                  currentScreen = DoctorApprovedScreen();
                 });
                 break;
               case 2:

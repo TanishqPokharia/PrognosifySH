@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:prognosify/cloud_notification/cloud_notifications.dart';
 import 'package:dob_input_field/dob_input_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -103,9 +105,9 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
   }
 
   onPrescriptionSubmit(context) async {
+    final user = FirebaseAuth.instance.currentUser;
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      final user = FirebaseAuth.instance.currentUser;
       Map<String, dynamic> result = {
         "email": widget.patientData.email,
         "doc_name": user!.displayName,
@@ -129,6 +131,7 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
         if (value.statusCode == 200) {
           final response = value.body;
           final status = jsonDecode(response);
+          print("Status:${status['status']}");
           if (status['status'] == "true") {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Prescription has been sent!")));
@@ -176,7 +179,27 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
       }
     });
 
-    CloudNotifications cloudNotifications = CloudNotifications();
+    final snapshot = await FirebaseFirestore.instance
+        .collection("doctors")
+        .doc(user!.uid)
+        .get();
+
+    final List approvedPatients = snapshot.data()!['approvedPatients'];
+    approvedPatients
+        .removeWhere((element) => element['email'] == widget.patientData.email);
+
+    await FirebaseFirestore.instance
+        .collection("doctors")
+        .doc(user.uid)
+        .update({"approvedPatients": approvedPatients});
+
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content:
+            Text("Prescription has been sent to ${widget.patientData.name}")));
+
+    GoRouter.of(context).pop();
+
+    print("Done");
   }
 
   @override
@@ -441,15 +464,25 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
                   margin: EdgeInsets.all(mq(context, 20)),
                   child: TextButton(
                       onPressed: () {
-                        onPrescriptionSubmit(context);
+                        if (_formKey.currentState!.validate() &&
+                            savedMedicationList.isNotEmpty &&
+                            savedMedicationList.isNotEmpty) {
+                          _formKey.currentState!.save();
+                          onPrescriptionSubmit(context);
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content:
+                                      Text("Please fill all the details")));
+                        }
                       },
                       style: ButtonStyle(
                           minimumSize: MaterialStatePropertyAll(
                               Size(mq(context, 400), mq(context, 80))),
                           foregroundColor:
-                              MaterialStatePropertyAll(Colors.white),
+                              const MaterialStatePropertyAll(Colors.white),
                           backgroundColor:
-                              MaterialStatePropertyAll(Colors.teal),
+                              const MaterialStatePropertyAll(Colors.teal),
                           shape: MaterialStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius:

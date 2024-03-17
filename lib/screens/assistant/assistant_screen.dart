@@ -1,9 +1,12 @@
+import 'dart:convert';
+
 import 'package:dash_chat_2/dash_chat_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:http/http.dart' as http;
 
 class PrognosifyAssistant extends StatefulWidget {
   const PrognosifyAssistant({super.key});
@@ -12,31 +15,32 @@ class PrognosifyAssistant extends StatefulWidget {
   State<PrognosifyAssistant> createState() => _PrognosifyAssistantState();
 }
 
+final ChatUser currentUser = ChatUser(
+    id: "1", firstName: "${FirebaseAuth.instance.currentUser!.displayName}");
+final ChatUser bot = ChatUser(id: "2", firstName: "Prognosify Assistant");
+
 class _PrognosifyAssistantState extends State<PrognosifyAssistant> {
-  late IO.Socket socket;
-  final header = {'Content-Type': 'application/json'};
-
-  final ChatUser currentUser = ChatUser(id: "1", firstName: "User");
-  final ChatUser bot = ChatUser(id: "2", firstName: "Prognosify Assistant");
-
-  List<ChatMessage> messages = [];
+  List<ChatMessage> messages = [
+    ChatMessage(
+        user: bot,
+        createdAt: DateTime.now(),
+        text:
+            "Hi ${FirebaseAuth.instance.currentUser!.displayName}!, how may I assist you?")
+  ];
   List<ChatUser> typing = [];
 
-  String receivedMessage = "";
-
   final user = FirebaseAuth.instance.currentUser;
-  String sid = "";
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
     //get user location permission
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
-    if (!serviceEnabled) {
-      await Geolocator.openLocationSettings();
-      return Future.error('Location services are disabled.');
-    }
+    // serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    // if (!serviceEnabled) {
+    //   await Geolocator.openLocationSettings();
+    //   return Future.error('Location services are disabled.');
+    // }
 
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
@@ -72,59 +76,41 @@ class _PrognosifyAssistantState extends State<PrognosifyAssistant> {
       typing.add(bot);
     });
     messages.insert(0, message);
-
-    Position position = await _determinePosition();
-
+    final location;
     if (message.text.contains("find doctors")) {
-      final location = await getAddressFromPosition(position);
-      socket.emit('practo_scrap', {
-        'message': {'location': "Chennai", 'category': 'general'},
-        'sid': sid
-      });
-    } else if (message.text.contains("how to book appointment")) {
-      socket.emit('appointment_info', {'sid': sid});
-    } else {
-      socket.emit('ask_gemini', {'message': message.text, 'sid': sid});
+      Position position = await _determinePosition();
+      location = await getAddressFromPosition(position);
     }
 
-    socket.on('receive_message', (data) {
-      receivedMessage = data['message'];
-
-      final response = ChatMessage(
-          user: bot, createdAt: DateTime.now(), text: receivedMessage);
-
-      //NOW HERE YOUU CAN WRITE CODE TO SHOW THE RECEIVED TEXT IN UR CHAT UI
-      messages.insert(0, response);
-      print(response.text);
-      setState(() {});
-    });
-
-    socket.on('receive_sid', (data) {
-      sid = data['message'];
-
-      //STORE THE RECEIVED SID IN THE DATABASE FOR EACH USER, IF ALREADY EXISTS, UPDATE IT!!!
-
-      print(sid);
-    });
+    Map<String, String> data = {
+      // "location": message.text.contains("find doctors")
+      //     ? await getAddressFromPosition(position)
+      //     : "",
+      "location": message.text.contains("find doctors") ? "Chennai" : "",
+      "chat": message.text
+    };
+    // Position position = await _determinePosition();
+    final header = {"Content-Type": "application/json"};
+    final encodedData = jsonEncode(data);
+    await http
+        .post(Uri.parse("https://prognosifyassistantchatapi.onrender.com/chat"),
+            body: encodedData, headers: header)
+        .then((value) {
+      if (value.statusCode == 200) {
+        final receivedMessage = value.body;
+        final response = ChatMessage(
+            user: bot,
+            createdAt: DateTime.now(),
+            text: receivedMessage,
+            isMarkdown: true);
+        messages.insert(0, response);
+      } else {
+        print(value.body);
+      }
+    }).catchError((error) => throw error);
 
     typing.remove(bot);
     setState(() {});
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-
-    socket = IO.io(
-        'https://prognosifysocketserver-103f.onrender.com', <String, dynamic>{
-      'transports': ['websocket'],
-    });
-
-    //WARNING: CONNECT ONLY ONCE WITH THE SERVER, IF RECONNECTED AGAIN NO PROBLEM BUT, SID WILL CHANGE AND YOU GOTTA UPDATE IT IN THE DATABASE
-    socket.onConnect((_) {
-      print('Connected to server');
-    });
   }
 
   @override
@@ -140,6 +126,7 @@ class _PrognosifyAssistantState extends State<PrognosifyAssistant> {
       body: DashChat(
         messageOptions: const MessageOptions(
           currentUserContainerColor: Colors.teal,
+          showTime: true,
         ),
         currentUser: currentUser,
         onSend: (message) {

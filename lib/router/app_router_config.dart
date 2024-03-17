@@ -6,13 +6,18 @@ import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/screens/details_screen.dart';
 import 'package:prognosify/screens/doctor/doctor_sign_up_screen.dart';
 import 'package:prognosify/screens/doctor/prescription_screen.dart';
+import 'package:prognosify/screens/health_matrix/bmi/bmi_screen.dart';
+import 'package:prognosify/screens/health_matrix/calorie/calorie_screen.dart';
+import 'package:prognosify/screens/health_matrix/sleep_monitor/sleep_monitor_screen.dart';
+import 'package:prognosify/screens/patient/contacted_doctors/contacted_doctors_screen.dart';
 import 'package:prognosify/screens/sign_in_screen.dart';
 import 'package:prognosify/screens/questions_screen.dart';
 import 'package:prognosify/screens/results_screen.dart';
 import 'package:prognosify/screens/patient_sign_up_screen.dart';
 import 'package:prognosify/screens/splash_screen.dart';
-import 'package:prognosify/screens/start_screen.dart';
+import 'package:prognosify/screens/patient_home_screen.dart';
 import 'package:prognosify/screens/welcome_screen.dart';
+import 'package:prognosify/widgets/calorie_history_card.dart';
 
 class AppRouter {
   GoRouter router = GoRouter(routes: [
@@ -61,22 +66,12 @@ class AppRouter {
     GoRoute(
       name: AppRouterConstants.startScreen,
       path: '/start',
-      pageBuilder: (context, state) => const MaterialPage(child: StartScreen()),
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: PatientHomeScreen()),
     ),
     GoRoute(
       name: AppRouterConstants.patientNavigationScreen,
       path: "/patientNavigation",
-      // builder: (context, state) => const NavigationMenu(),
-      // pageBuilder: (context, state) => CustomTransitionPage(
-      //   transitionDuration: const Duration(seconds: 1),
-      //   key: state.pageKey,
-      //   child: const NavigationMenu(),
-      //   transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-      //       FadeTransition(
-      //     opacity: CurveTween(curve: Curves.easeInCirc).animate(animation),
-      //     child: child,
-      //   ),
-      // ),
       pageBuilder: (context, state) =>
           const MaterialPage(child: PatientNavigationMenu()),
     ),
@@ -126,6 +121,60 @@ class AppRouter {
         return MaterialPage(
             child: WritePrescriptionScreen(patientData: patientData));
       },
+    ),
+    GoRoute(
+        name: AppRouterConstants.sleepMonitorScreen,
+        path: "/sleep",
+        pageBuilder: (context, state) => CustomTransitionPage(
+              key: state.pageKey,
+              child: SleepMonitorScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return SlideTransition(
+                  position: animation.drive(
+                      Tween(begin: Offset(1, 0), end: Offset.zero).chain(
+                          CurveTween(curve: Curves.fastEaseInToSlowEaseOut))),
+                  child: child,
+                );
+              },
+            )),
+    GoRoute(
+      name: AppRouterConstants.bmiScreen,
+      path: "/bmi",
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: BMIScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          return SlideTransition(
+            position: animation.drive(
+                Tween(begin: Offset(1, 0), end: Offset.zero)
+                    .chain(CurveTween(curve: Curves.fastEaseInToSlowEaseOut))),
+            child: child,
+          );
+        },
+      ),
+    ),
+    GoRoute(
+      name: AppRouterConstants.calorieScreen,
+      path: "/calorie",
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: CaloriesScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            SlideTransition(
+          position: animation.drive(
+            Tween(begin: Offset(1, 0), end: Offset.zero)
+                .chain(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)),
+          ),
+          child: child,
+        ),
+      ),
+    ),
+    GoRoute(
+      name: AppRouterConstants.contactedDoctorsScreen,
+      path: "/contactedDoctors",
+      pageBuilder: (context, state) =>
+          const MaterialPage(child: ContactedDoctorsScreen()),
     )
   ]);
 }

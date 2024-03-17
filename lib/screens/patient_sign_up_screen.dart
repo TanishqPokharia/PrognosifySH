@@ -1,6 +1,7 @@
 import 'package:dob_input_field/dob_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:prognosify/auth/auth_services.dart';
+import 'package:prognosify/models/mediaquery/mq.dart';
 
 class PatientSignUpScreen extends StatefulWidget {
   const PatientSignUpScreen({super.key});
@@ -40,7 +41,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                   child: Image.asset(
                     "assets/applogo.png",
                     width: mq(context, 350),
-                    height: mq(context, 250),
+                    height: mq(context, 200),
                   ),
                 ),
               ),
@@ -267,6 +268,9 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                     child: Text("Sign Up",
                         style: TextStyle(fontSize: mq(context, 21)))),
               ),
+              SizedBox(
+                height: MQ.size(context, 190),
+              )
             ],
           ),
         ));

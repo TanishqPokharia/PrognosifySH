@@ -71,10 +71,10 @@ class DoctorHomeScreen extends ConsumerWidget {
                       ),
                     ),
                     patientRequestList.when(
-                      loading: () => CircularProgressIndicator(),
+                      loading: () => Center(child: CircularProgressIndicator()),
                       error: (error, stackTrace) {
                         print(error);
-                        return Text("Something Went Wrong");
+                        return Center(child: Text("Something Went Wrong"));
                       },
                       data: (data) {
                         return Column(

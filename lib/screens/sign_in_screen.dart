@@ -27,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        // resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Stack(
           children: [
@@ -162,65 +162,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                     style:
                                         TextStyle(fontSize: mq(context, 21)))),
                           ),
-                          Container(
-                            margin: EdgeInsets.only(top: mq(context, 35)),
-                            height: mq(context, 65),
-                            width: double.infinity,
-                            child: TextButton(
-                                style: ButtonStyle(
-                                    shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                                mq(context, 35)),
-                                            side: BorderSide(
-                                                width: mq(context, 2),
-                                                color: Colors.teal)))),
-                                onPressed: () {
-                                  final provider =
-                                      Provider.of<GoogleSignInProvider>(context,
-                                          listen: false);
-                                  // waitForLogin(provider.googleLogin(context));
-                                  setState(() {
-                                    waiting = true;
-                                  });
-                                  provider
-                                      .googleLogin(context)
-                                      .whenComplete(() {
-                                    setState(() {
-                                      waiting = false;
-                                    });
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                "Signed In Successfully!")));
-
-                                    GoRouter.of(context).goNamed(
-                                        AppRouterConstants
-                                            .patientNavigationScreen);
-                                  });
-                                },
-                                child: Row(
-                                  // spacing: mq(context, 15),
-                                  mainAxisAlignment: MainAxisAlignment.center,
-
-                                  children: [
-                                    FaIcon(
-                                      FontAwesomeIcons.google,
-                                      size: mq(context, 24),
-                                    ),
-                                    SizedBox(
-                                      width: mq(context, 15),
-                                    ),
-                                    Text(
-                                      "Sign in with Google",
-                                      style: TextStyle(
-                                          fontSize: mq(context, 21),
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ],
-                                )),
-                          )
                         ],
                       ),
                     ),

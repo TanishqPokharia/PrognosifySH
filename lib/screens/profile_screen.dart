@@ -6,7 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:profile_photo/profile_photo.dart';
 import 'package:prognosify/auth/auth_services.dart';
 import 'package:prognosify/auth/google_sign_in.dart';
-import 'package:prognosify/models/disease_card_data.dart';
+import 'package:prognosify/data/disease_card_data.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/widgets/disease_card.dart';
 import 'package:provider/provider.dart' as PV;

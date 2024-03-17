@@ -6,7 +6,7 @@ import 'package:prognosify/screens/assistant/assistant_screen.dart';
 import 'package:prognosify/screens/doctor_search_screen.dart';
 import 'package:prognosify/screens/profile_screen.dart';
 import 'package:prognosify/screens/routine_screen.dart';
-import 'package:prognosify/screens/start_screen.dart';
+import 'package:prognosify/screens/patient_home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PatientNavigationMenu extends StatefulWidget {
@@ -17,7 +17,7 @@ class PatientNavigationMenu extends StatefulWidget {
 }
 
 class _PatientNavigationMenuState extends State<PatientNavigationMenu> {
-  Widget? currentScreen = const StartScreen();
+  Widget? currentScreen = const PatientHomeScreen();
   int currentScreenIndex = 0;
   bool areNotificationsStored = false;
 
@@ -111,7 +111,7 @@ class _PatientNavigationMenuState extends State<PatientNavigationMenu> {
                 setState(() {
                   currentScreenIndex = 0;
                 });
-                currentScreen = const StartScreen();
+                currentScreen = const PatientHomeScreen();
                 break;
               case 1:
                 setState(() {

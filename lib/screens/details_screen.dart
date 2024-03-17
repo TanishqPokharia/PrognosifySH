@@ -195,7 +195,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                                               EdgeInsets.all(mq(
                                                                   context, 15)),
                                                           child: Text(
-                                                            "Set daily precautionary routines for yourself!",
+                                                            "Set daily precautionary routines for yourself in the routines tab!",
                                                             style: Theme.of(
                                                                     context)
                                                                 .textTheme

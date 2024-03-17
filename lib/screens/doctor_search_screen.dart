@@ -182,6 +182,7 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                   ),
                 ),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
                       margin: EdgeInsets.all(mq(context, 5)),

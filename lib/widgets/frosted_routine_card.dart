@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class FrostedGlassBox extends StatelessWidget {
-  const FrostedGlassBox(
+class FrostedGlassRoutineCard extends StatelessWidget {
+  const FrostedGlassRoutineCard(
       {super.key,
       // required this.width,
       // required this.height,

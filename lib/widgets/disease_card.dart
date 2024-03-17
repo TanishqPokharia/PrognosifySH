@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
-import 'package:prognosify/models/disease_card_data.dart';
+import 'package:prognosify/data/disease_card_data.dart';
 
 class DiseaseCard extends StatefulWidget {
   const DiseaseCard({

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:prognosify/models/hive_model/prognosify_notification.dart';
 import 'package:prognosify/models/notification/notification_services.dart';
-import 'package:prognosify/widgets/frosted_glass.dart';
+import 'package:prognosify/widgets/frosted_routine_card.dart';
 
 class RoutineScreen extends StatefulWidget {
   RoutineScreen({super.key, required this.areNotificationsStored});
@@ -136,7 +136,7 @@ class _RoutineScreenState extends State<RoutineScreen> {
                               const SnackBar(
                                   content: Text("Notification removed")));
                         },
-                        child: FrostedGlassBox(
+                        child: FrostedGlassRoutineCard(
                           child: Container(
                             padding: EdgeInsets.all(mq(context, 10)),
                             margin: EdgeInsets.all(mq(context, 10)),
