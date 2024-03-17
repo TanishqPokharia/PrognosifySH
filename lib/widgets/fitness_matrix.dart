@@ -120,28 +120,35 @@ class FitnessMatrix extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    child: FrostedOptions(
-                        color: Colors.amber,
-                        child: Container(
-                            alignment: Alignment.center,
-                            height: mq(context, 80),
-                            width: mq(context, 150),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.image,
-                                  color: Colors.amber,
-                                ),
-                                Text(
-                                  "Feature",
-                                  style: TextStyle(
-                                      color: Colors.amber,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: mq(context, 20)),
-                                )
-                              ],
-                            ))),
+                    child: GestureDetector(
+                      onTap: () {
+                        GoRouter.of(context).pushNamed(
+                            AppRouterConstants.reportSummarizerScreen);
+                      },
+                      child: FrostedOptions(
+                          color: Colors.amber,
+                          child: Container(
+                              alignment: Alignment.center,
+                              height: mq(context, 80),
+                              width: mq(context, 150),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Icon(
+                                    Icons.file_open,
+                                    color: Colors.amber,
+                                  ),
+                                  Text(
+                                    "Report",
+                                    style: TextStyle(
+                                        color: Colors.amber,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: mq(context, 20)),
+                                  )
+                                ],
+                              ))),
+                    ),
                   ),
                 ],
               )

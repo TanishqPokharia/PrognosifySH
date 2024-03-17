@@ -57,7 +57,7 @@ class PatientRequestCard extends StatelessWidget {
                 width: mq(context, 500),
                 child: Text(
                   textAlign: TextAlign.start,
-                  "Additiona Notes: ${patientCardData.notes}",
+                  "Additional Notes: ${patientCardData.notes}",
                   overflow: TextOverflow.ellipsis,
                   maxLines: 1,
                 ),

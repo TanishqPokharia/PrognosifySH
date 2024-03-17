@@ -16,4 +16,5 @@ class AppRouterConstants {
   static const String bmiScreen = 'bmi';
   static const String calorieScreen = "calorie";
   static const String contactedDoctorsScreen = "contactedDoctors";
+  static const String reportSummarizerScreen = "reportSummarizer";
 }

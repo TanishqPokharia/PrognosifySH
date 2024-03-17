@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:go_router/go_router.dart';
@@ -27,7 +28,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        // resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         body: Stack(
           children: [
@@ -154,8 +155,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onPressed: () async {
                                   if (_formKeySignIn.currentState!.validate()) {
                                     _formKeySignIn.currentState!.save();
-                                    AuthServices.signInUser(
-                                        email, password, context);
+                                    setState(() async {
+                                      waiting = true;
+                                      await AuthServices.signInUser(
+                                          email, password, context);
+                                      waiting = false;
+                                    });
                                   }
                                 },
                                 child: Text("Sign In",

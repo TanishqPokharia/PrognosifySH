@@ -34,15 +34,16 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      // locale: DevicePreview.locale(context),
-      // builder: DevicePreview.appBuilder,
+        // locale: DevicePreview.locale(context),
+        // builder: DevicePreview.appBuilder,
 
-      // routeInformationParser: AppRouter().router.routeInformationParser,
-      // routerDelegate: AppRouter().router.routerDelegate,
-      // routeInformationProvider: AppRouter().router.routeInformationProvider,
-      routerConfig: AppRouter().router,
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData().copyWith(
+        // routeInformationParser: AppRouter().router.routeInformationParser,
+        // routerDelegate: AppRouter().router.routerDelegate,
+        // routeInformationProvider: AppRouter().router.routeInformationProvider,
+
+        routerConfig: AppRouter().router,
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData().copyWith(
           colorScheme: kColorScheme,
           appBarTheme: const AppBarTheme(
               scrolledUnderElevation: 0,
@@ -60,15 +61,12 @@ class MyApp extends StatelessWidget {
                 color: kColorScheme.shadow,
               )),
           textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-                minimumSize: MaterialStatePropertyAll(
-                    Size(MQ.size(context, 400), MQ.size(context, 60))),
-                foregroundColor: const MaterialStatePropertyAll(Colors.white),
-                backgroundColor: const MaterialStatePropertyAll(Colors.teal),
-                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(MQ.size(context, 10))))),
-          )),
-    );
+              style: ButtonStyle(
+                  minimumSize: MaterialStatePropertyAll(Size(400, 60)),
+                  foregroundColor: const MaterialStatePropertyAll(Colors.white),
+                  backgroundColor: const MaterialStatePropertyAll(Colors.teal),
+                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10))))),
+        ));
   }
 }

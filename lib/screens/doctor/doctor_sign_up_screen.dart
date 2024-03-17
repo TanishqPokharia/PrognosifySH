@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dob_input_field/dob_input_field.dart';
 import 'package:prognosify/auth/auth_services.dart';
+import 'package:prognosify/models/mediaquery/mq.dart';
 
 class DoctorSignUpScreen extends StatefulWidget {
   const DoctorSignUpScreen({super.key});
@@ -171,12 +172,16 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Form(
           key: _formKeySignUp,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              SizedBox(
+                height: mq(context, 30),
+              ),
               Container(
                 child: Hero(
                   tag: "Tag",
@@ -192,7 +197,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
                       horizontal: mq(context, 45), vertical: mq(context, 10)),
                   child: TextFormField(
                     style: TextStyle(fontSize: mq(context, 21)),
-                    key: const ValueKey("emailSignUp"),
+                    key: const ValueKey("emailSignUpDoctor"),
                     validator: (value) {
                       if (value!.length < 5 ||
                           value.isEmpty ||
@@ -221,7 +226,7 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
                     horizontal: mq(context, 45), vertical: mq(context, 10)),
                 child: TextFormField(
                   style: TextStyle(fontSize: mq(context, 21)),
-                  key: const ValueKey("fullname"),
+                  key: const ValueKey("fullnameDoctor"),
                   validator: (value) {
                     if (!value!.contains(" ")) {
                       return "Please enter your full name";
@@ -623,6 +628,9 @@ class _DoctorSignUpScreenState extends State<DoctorSignUpScreen> {
                     },
                     child: Text("Sign Up",
                         style: TextStyle(fontSize: mq(context, 21)))),
+              ),
+              SizedBox(
+                height: mq(context, 150),
               ),
             ],
           ),

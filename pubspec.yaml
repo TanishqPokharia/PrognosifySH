@@ -74,6 +74,10 @@ dependencies:
   flutter_markdown: ^0.6.21
   fl_chart: ^0.66.2
   flutter_phone_direct_caller: ^2.1.1
+  file_picker: ^6.2.0
+  dio: ^5.4.1
+  pedometer: ^4.0.1
+  permission_handler: ^11.3.0
 flutter_icons:
   android: true
   ios: true

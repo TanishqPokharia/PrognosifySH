@@ -28,7 +28,9 @@ class _SplashScreenState extends State<SplashScreen>
           seconds: 3,
         ), () async {
       if (_user == null) {
-        GoRouter.of(context).goNamed(AppRouterConstants.welcomeScreen);
+        if (mounted) {
+          GoRouter.of(context).goNamed(AppRouterConstants.welcomeScreen);
+        }
       } else {
         final snapshot = await FirebaseFirestore.instance
             .collection("users")

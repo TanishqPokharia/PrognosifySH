@@ -18,6 +18,9 @@ List<DoctorData> doctorList = [
 
 class ContactedDoctorsScreen extends ConsumerWidget {
   const ContactedDoctorsScreen({super.key});
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -35,7 +38,7 @@ class ContactedDoctorsScreen extends ConsumerWidget {
               return ContactedDoctorsCard(doctorData: doctorList[index]);
             },
             separatorBuilder: (context, index) => SizedBox(
-              height: MQ.size(context, 10),
+              height: mq(context, 10),
             ),
             itemCount: doctorList.length,
           ),

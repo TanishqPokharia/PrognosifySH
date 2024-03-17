@@ -96,7 +96,7 @@ class PatientHomeScreen extends ConsumerWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(MQ.size(context, 20)),
+              margin: EdgeInsets.all(mq(context, 20)),
               child: TextButton(
                   style: Theme.of(context).textButtonTheme.style!.copyWith(
                       elevation: MaterialStatePropertyAll(10),
@@ -112,14 +112,17 @@ class PatientHomeScreen extends ConsumerWidget {
                     children: [
                       Icon(Icons.assignment),
                       SizedBox(
-                        width: MQ.size(context, 10),
+                        width: mq(context, 10),
                       ),
-                      Text("Start Assessment"),
+                      Text(
+                        "Start Assessment",
+                        style: TextStyle(fontSize: mq(context, 20)),
+                      ),
                     ],
                   )),
             ),
             Container(
-              margin: EdgeInsets.all(MQ.size(context, 20)),
+              margin: EdgeInsets.all(mq(context, 20)),
               child: TextButton(
                   style: Theme.of(context).textButtonTheme.style!.copyWith(
                       elevation: MaterialStatePropertyAll(10),
@@ -135,9 +138,10 @@ class PatientHomeScreen extends ConsumerWidget {
                     children: [
                       Icon(Icons.history),
                       SizedBox(
-                        width: MQ.size(context, 10),
+                        width: mq(context, 10),
                       ),
-                      Text("Contacted Doctors")
+                      Text("Contacted Doctors",
+                          style: TextStyle(fontSize: mq(context, 20)))
                     ],
                   )),
             ),

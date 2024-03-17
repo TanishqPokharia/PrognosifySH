@@ -8,6 +8,7 @@ import 'package:prognosify/screens/doctor/doctor_sign_up_screen.dart';
 import 'package:prognosify/screens/doctor/prescription_screen.dart';
 import 'package:prognosify/screens/health_matrix/bmi/bmi_screen.dart';
 import 'package:prognosify/screens/health_matrix/calorie/calorie_screen.dart';
+import 'package:prognosify/screens/health_matrix/report_summarizer/report_summarizer_screen.dart';
 import 'package:prognosify/screens/health_matrix/sleep_monitor/sleep_monitor_screen.dart';
 import 'package:prognosify/screens/patient/contacted_doctors/contacted_doctors_screen.dart';
 import 'package:prognosify/screens/sign_in_screen.dart';
@@ -160,6 +161,22 @@ class AppRouter {
       pageBuilder: (context, state) => CustomTransitionPage(
         key: state.pageKey,
         child: CaloriesScreen(),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            SlideTransition(
+          position: animation.drive(
+            Tween(begin: Offset(1, 0), end: Offset.zero)
+                .chain(CurveTween(curve: Curves.fastEaseInToSlowEaseOut)),
+          ),
+          child: child,
+        ),
+      ),
+    ),
+    GoRoute(
+      name: AppRouterConstants.reportSummarizerScreen,
+      path: "/reportSummarizer",
+      pageBuilder: (context, state) => CustomTransitionPage(
+        key: state.pageKey,
+        child: MedicalReportSummarizer(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) =>
             SlideTransition(
           position: animation.drive(

@@ -1,10 +1,15 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prognosify/data/sleep_review.dart';
+import 'package:prognosify/models/mediaquery/mq.dart';
 
 class SleepReviewCard extends StatelessWidget {
   final SleepReview sleepReview;
 
   const SleepReviewCard({super.key, required this.sleepReview});
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,38 +17,42 @@ class SleepReviewCard extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       width: double.infinity,
-      height: 100,
+      height: mq(context, 100),
       child: Card(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              width: 100,
+              width: mq(context, 100),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    sleepReview.day,
-                    style: const TextStyle(fontSize: 18),
+                  FittedBox(
+                    child: Text(
+                      sleepReview.day,
+                      style: TextStyle(fontSize: mq(context, 18)),
+                    ),
                   ),
-                  const Text(
+                  Text(
                     "Day",
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                    style: TextStyle(
+                        color: Colors.grey, fontSize: mq(context, 16)),
                   )
                 ],
               ),
             ),
             Container(
-              width: 100,
+              width: mq(context, 100),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "${sleepReview.timeSlept.inHours}:${sleepReview.timeSlept.inMinutes.remainder(60)} hrs",
-                    style: const TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: mq(context, 18)),
                   ),
-                  const Text("Time Slept",
-                      style: TextStyle(color: Colors.grey, fontSize: 12))
+                  Text("Time Slept",
+                      style: TextStyle(
+                          color: Colors.grey, fontSize: mq(context, 16)))
                 ],
               ),
             ),
@@ -54,10 +63,11 @@ class SleepReviewCard extends StatelessWidget {
                 children: [
                   Text(
                     sleepReview.satisfaction,
-                    style: const TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: mq(context, 18)),
                   ),
-                  const Text("Status",
-                      style: TextStyle(color: Colors.grey, fontSize: 12))
+                  Text("Status",
+                      style: TextStyle(
+                          color: Colors.grey, fontSize: mq(context, 16)))
                 ],
               ),
             ),

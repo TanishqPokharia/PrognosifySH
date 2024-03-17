@@ -199,6 +199,9 @@ List<PieChartSectionData> showingSections(WidgetRef ref) {
 class BMIScreen extends ConsumerWidget {
   BMIScreen({super.key});
   final formKey = GlobalKey<FormState>();
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
 
   void changeBMI(BuildContext context, WidgetRef ref) {
     showModalBottomSheet(
@@ -208,17 +211,16 @@ class BMIScreen extends ConsumerWidget {
       barrierLabel: "Change Height and Weight",
       context: context,
       builder: (context) => Container(
-        height: MQ.size(context, 600),
+        height: mq(context, 600),
         child: Form(
           key: formKey,
           child: Column(
             children: [
               Container(
                 margin: EdgeInsets.symmetric(
-                    horizontal: MQ.size(context, 45),
-                    vertical: MQ.size(context, 10)),
+                    horizontal: mq(context, 45), vertical: mq(context, 10)),
                 child: TextFormField(
-                  style: TextStyle(fontSize: MQ.size(context, 21)),
+                  style: TextStyle(fontSize: mq(context, 21)),
                   key: const ValueKey("height"),
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -234,21 +236,20 @@ class BMIScreen extends ConsumerWidget {
                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(MQ.size(context, 25)))),
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(mq(context, 25)))),
                     label: Text(
                       "Height(centimeters)",
-                      style: TextStyle(fontSize: MQ.size(context, 21)),
+                      style: TextStyle(fontSize: mq(context, 21)),
                     ),
                   ),
                 ),
               ),
               Container(
                 margin: EdgeInsets.symmetric(
-                    horizontal: MQ.size(context, 45),
-                    vertical: MQ.size(context, 10)),
+                    horizontal: mq(context, 45), vertical: mq(context, 10)),
                 child: TextFormField(
-                  style: TextStyle(fontSize: MQ.size(context, 21)),
+                  style: TextStyle(fontSize: mq(context, 21)),
                   key: const ValueKey("weight"),
                   keyboardType: TextInputType.number,
                   validator: (value) {
@@ -264,18 +265,18 @@ class BMIScreen extends ConsumerWidget {
                   },
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(MQ.size(context, 25)))),
+                        borderRadius:
+                            BorderRadius.all(Radius.circular(mq(context, 25)))),
                     label: Text(
                       "Weight(kilograms)",
-                      style: TextStyle(fontSize: MQ.size(context, 21)),
+                      style: TextStyle(fontSize: mq(context, 21)),
                     ),
                   ),
                 ),
               ),
               Container(
                 width: double.infinity,
-                margin: EdgeInsets.all(MQ.size(context, 20)),
+                margin: EdgeInsets.all(mq(context, 20)),
                 child: TextButton(
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
@@ -302,7 +303,7 @@ class BMIScreen extends ConsumerWidget {
       builder: (context) {
         return Dialog.fullscreen(
           child: Container(
-            margin: EdgeInsets.all(MQ.size(context, 20)),
+            margin: EdgeInsets.all(mq(context, 20)),
             child: SingleChildScrollView(
                 child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -315,26 +316,26 @@ class BMIScreen extends ConsumerWidget {
                       "Protien",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: MQ.size(context, 30)),
+                          fontSize: mq(context, 30)),
                     ),
                     Container(
-                      margin: EdgeInsets.all(MQ.size(context, 10)),
+                      margin: EdgeInsets.all(mq(context, 10)),
                       child: Text(
                         " Animal Sources 🥩 \n ◾ Meat (beef, lamb, pork, poultry) \n ◾ Fish (salmon, tuna, mackerel)\n ◾ Eggs \n ◾ Dairy (milk, yogurt, cheese)",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
-                            .copyWith(fontSize: MQ.size(context, 24)),
+                            .copyWith(fontSize: mq(context, 24)),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(MQ.size(context, 10)),
+                      margin: EdgeInsets.all(mq(context, 10)),
                       child: Text(
                         " Plant Sources 🌱 \n ◾ Beans (kidney beans, black beans, pinto beans)\n ◾ Chickpeas\n ◾ Peas\n ◾ Tofu\n ◾ Nuts (almonds, walnuts, peanuts)\n ◾ Seeds (lentils ,chia seeds, flax seeds, pumpkin seeds)",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
-                            .copyWith(fontSize: MQ.size(context, 24)),
+                            .copyWith(fontSize: mq(context, 24)),
                       ),
                     ),
                   ],
@@ -347,26 +348,26 @@ class BMIScreen extends ConsumerWidget {
                       "Vitamins",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: MQ.size(context, 30)),
+                          fontSize: mq(context, 30)),
                     ),
                     Container(
-                      margin: EdgeInsets.all(MQ.size(context, 10)),
+                      margin: EdgeInsets.all(mq(context, 10)),
                       child: Text(
                         " Fat-Soluble Vitamins (A, D, E, K)\n ◾ Fatty fish\n ◾ Egg yolks\n ◾ Dairy products\n ◾ Nuts\n ◾ Seeds\n ◾ Leafy green vegetables",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
-                            .copyWith(fontSize: MQ.size(context, 24)),
+                            .copyWith(fontSize: mq(context, 24)),
                       ),
                     ),
                     Container(
-                      margin: EdgeInsets.all(MQ.size(context, 10)),
+                      margin: EdgeInsets.all(mq(context, 10)),
                       child: Text(
                         " Water-Soluble Vitamins (B complex, C)\n ◾ Fruits (citrus fruits, berries)\n ◾ Vegetables (potatoes, broccoli, Brussels sprouts)\n ◾ Whole grains, legumes",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
-                            .copyWith(fontSize: MQ.size(context, 24)),
+                            .copyWith(fontSize: mq(context, 24)),
                       ),
                     ),
                   ],
@@ -379,16 +380,16 @@ class BMIScreen extends ConsumerWidget {
                       "Minerals",
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
                           fontWeight: FontWeight.bold,
-                          fontSize: MQ.size(context, 30)),
+                          fontSize: mq(context, 30)),
                     ),
                     Container(
-                      margin: EdgeInsets.all(MQ.size(context, 10)),
+                      margin: EdgeInsets.all(mq(context, 10)),
                       child: Text(
                         " ◾ Calcium: Dairy products (milk, cheese, yogurt) leafy green vegetables, tofu, fortified foods (cereals, orange juice)\n ◾ Iron: Red meat, poultry, fish, beans, lentils, leafy green vegetables, iron-fortified foods (cereals, bread)\n ◾ Potassium: Fruits (bananas, oranges, cantaloupe), vegetables (potatoes, spinach, mushrooms), dairy products (milk, yogurt)\n ◾ Sodium: Table salt, processed foods (canned goods, cured meats), soy sauce\n  ◾ Magnesium: Nuts, seeds, legumes, whole grains, leafy green vegetables, dark chocolate",
                         style: Theme.of(context)
                             .textTheme
                             .titleMedium!
-                            .copyWith(fontSize: MQ.size(context, 24)),
+                            .copyWith(fontSize: mq(context, 24)),
                       ),
                     ),
                   ],
@@ -420,8 +421,8 @@ class BMIScreen extends ConsumerWidget {
               alignment: Alignment.center,
               children: [
                 SizedBox(
-                    height: MQ.size(context, 400),
-                    width: MQ.size(context, 400),
+                    height: mq(context, 400),
+                    width: mq(context, 400),
                     child: PieChart(
                       PieChartData(
                           sections: showingSections(ref),
@@ -446,7 +447,7 @@ class BMIScreen extends ConsumerWidget {
                     "BMI : 28 \n Overweight",
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        fontSize: MQ.size(context, 24),
+                        fontSize: mq(context, 20),
                         color: Colors.teal.shade800,
                         fontWeight: FontWeight.bold),
                   ),
@@ -454,10 +455,10 @@ class BMIScreen extends ConsumerWidget {
               ],
             ),
             SizedBox(
-              height: MQ.size(context, 50),
+              height: mq(context, 50),
             ),
             Container(
-              margin: EdgeInsets.all(MQ.size(context, 20)),
+              margin: EdgeInsets.all(mq(context, 20)),
               child: GestureDetector(
                 onTap: () {
                   showNutrientDetails(context);
@@ -510,7 +511,7 @@ class BMIScreen extends ConsumerWidget {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(MQ.size(context, 20)),
+              margin: EdgeInsets.all(mq(context, 20)),
               child: ElevatedButton(
                   onPressed: () {
                     changeBMI(context, ref);

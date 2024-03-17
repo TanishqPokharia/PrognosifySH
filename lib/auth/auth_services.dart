@@ -152,6 +152,19 @@ class AuthServices {
           .doc(currentUser!.uid)
           .get();
 
+      CloudNotifications cloudNotifications = CloudNotifications();
+      cloudNotifications.requestNotificationPermission();
+      cloudNotifications.forgroundMessage();
+      String deviceToken = "";
+      if (context.mounted) {
+        cloudNotifications.firebaseInit(context);
+        cloudNotifications.setupInteractMessage(context);
+        cloudNotifications.isTokenRefresh();
+        await cloudNotifications.getDeviceToken().then((value) {
+          deviceToken = value.toString();
+        });
+      }
+
       if (!context.mounted) {
         return;
       }
@@ -159,8 +172,24 @@ class AuthServices {
       if (snapshot.exists) {
         GoRouter.of(context)
             .goNamed(AppRouterConstants.patientNavigationScreen);
+
+        await FirebaseFirestore.instance
+            .collection("users")
+            .doc(currentUser.uid)
+            .update({"token": deviceToken});
       } else {
-        GoRouter.of(context).goNamed(AppRouterConstants.doctorNavigationScreen);
+        await FirebaseFirestore.instance
+            .collection("doctors")
+            .doc(currentUser.uid)
+            .update({"token": deviceToken});
+        if (context.mounted) {
+          GoRouter.of(context)
+              .goNamed(AppRouterConstants.doctorNavigationScreen);
+        }
+      }
+
+      if (!context.mounted) {
+        return;
       }
 
       ScaffoldMessenger.of(context).showSnackBar(

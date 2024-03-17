@@ -9,26 +9,31 @@ class ContactedDoctorsCard extends StatelessWidget {
   final DoctorData doctorData;
 
   const ContactedDoctorsCard({super.key, required this.doctorData});
+
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-      margin: EdgeInsets.all(MQ.size(context, 20)),
-      height: MQ.size(context, 120),
+      margin: EdgeInsets.all(mq(context, 20)),
+      height: mq(context, 120),
       child: Card(
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Container(
-              margin: EdgeInsets.all(MQ.size(context, 10)),
+              margin: EdgeInsets.all(mq(context, 10)),
               child: CircleAvatar(
-                radius: MQ.size(context, 40),
+                radius: mq(context, 40),
                 backgroundImage: AssetImage("assets/Doctordefault.jpeg"),
               ),
             ),
             SizedBox(
-              width: MQ.size(context, 210),
-              height: MQ.size(context, 100),
+              width: mq(context, 210),
+              height: mq(context, 100),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,

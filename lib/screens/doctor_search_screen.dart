@@ -200,10 +200,6 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                       margin: EdgeInsets.all(mq(context, 5)),
                       child: Text("Qualification: ${doctor.qualification}"),
                     ),
-                    Container(
-                      margin: EdgeInsets.all(mq(context, 5)),
-                      child: Text("Contact: ${doctor.contact}"),
-                    )
                   ],
                 )
               ],
@@ -273,8 +269,11 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                   });
 
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                      content:
-                          Text("Consultation Request sent to ${doctor.name}")));
+                      content: Text(
+                    "Consultation Request sent to Dr. ${doctor.name}",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )));
                 },
                 child: Text("Consult"),
                 style: ButtonStyle(elevation: MaterialStatePropertyAll(5)),

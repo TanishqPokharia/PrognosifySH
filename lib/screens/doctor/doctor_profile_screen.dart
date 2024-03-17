@@ -60,51 +60,92 @@ class DoctorProfileScreen extends ConsumerWidget {
                   child: Card(
                     elevation: 5,
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
-                          child: Text("Name: ${data!['name']}"),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(mq(context, 20)),
-                          child: Text("Speciality: ${data['speciality']}"),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(mq(context, 20)),
-                          child: Text("Date of Birth: ${data['dob']}"),
+                          child: Text(
+                            "Name: ${data!['name']}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: mq(context, 18)),
+                          ),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
                           child: Text(
-                              "Registration Number: ${data['registrationNumber']}"),
+                            "Contact: ${data['contact']}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: mq(context, 18)),
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(mq(context, 20)),
+                          child: Text("Speciality: ${data['speciality']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(mq(context, 20)),
+                          child: Text("Date of Birth: ${data['dob']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
                           child: Text(
-                              "Date of Registration: ${data['dateOfRegistration']}"),
+                              "Registration Number: ${data['registrationNumber']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
                           child: Text(
-                              "Medical Council: ${data['medicalCouncil']}"),
-                        ),
-                        Container(
-                          margin: EdgeInsets.all(mq(context, 20)),
-                          child:
-                              Text("Qualification: ${data['qualification']}"),
+                              "Date of Registration: ${data['dateOfRegistration']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
                           child: Text(
-                              "Qualification Date: ${data['qualificationDate']}"),
+                              "Medical Council: ${data['medicalCouncil']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
-                          child: Text("University: ${data['universityName']}"),
+                          child: Text("Qualification: ${data['qualification']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
                         ),
                         Container(
                           margin: EdgeInsets.all(mq(context, 20)),
-                          child: Text("Aadhar Number: ${data['aadharNumber']}"),
+                          child: Text(
+                              "Qualification Date: ${data['qualificationDate']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(mq(context, 20)),
+                          child: Text("University: ${data['universityName']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
+                        ),
+                        Container(
+                          margin: EdgeInsets.all(mq(context, 20)),
+                          child: Text("Aadhar Number: ${data['aadharNumber']}",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: mq(context, 18))),
                         )
                       ],
                     ),

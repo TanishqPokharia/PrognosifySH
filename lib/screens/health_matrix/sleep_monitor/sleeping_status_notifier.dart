@@ -7,6 +7,10 @@ import 'package:prognosify/screens/health_matrix/sleep_monitor/sleep_monitor_scr
 class SleepingStatusNotifier extends StateNotifier<bool> {
   SleepingStatusNotifier() : super(false);
 
+  double mq(BuildContext context, double size) {
+    return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
   void updateSleepingStatus(WidgetRef ref, BuildContext context,
       DateTime? sleepStartTime, String day) {
     if (state) {
@@ -21,8 +25,8 @@ class SleepingStatusNotifier extends StateNotifier<bool> {
         builder: (context) => Dialog(
           child: Container(
             alignment: Alignment.center,
-            height: MQ.size(context, 200),
-            width: MQ.size(context, 200),
+            height: mq(context, 200),
+            width: mq(context, 200),
             child: Text(
               "Sweet Dreams!",
               style: Theme.of(context).textTheme.titleMedium,
@@ -47,7 +51,7 @@ class SleepingStatusNotifier extends StateNotifier<bool> {
           child: Column(
             children: [
               Container(
-                margin: EdgeInsets.all(MQ.size(context, 10)),
+                margin: EdgeInsets.all(mq(context, 10)),
                 child: Text(
                   "Sleep Review",
                   style: TextStyle(fontSize: 24),

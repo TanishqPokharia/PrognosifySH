@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/cloud_notification/cloud_notifications.dart';
@@ -10,6 +11,7 @@ import 'package:prognosify/data/medication.dart';
 import 'package:prognosify/data/patient_card_data.dart';
 import 'package:prognosify/data/routine.dart';
 import 'package:flutter/material.dart';
+import 'package:prognosify/screens/health_matrix/sleep_monitor/sleep_review_list_notifier.dart';
 import 'package:prognosify/widgets/medication_form.dart';
 import 'package:prognosify/widgets/medication_prescription.dart';
 import 'package:prognosify/widgets/routine_form.dart';
@@ -38,6 +40,7 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
   String dietaryRecommendations = "";
   String activityRestrictions = "";
   String additionalInstructions = "";
+  bool waiting = false;
   final _formKey = GlobalKey<FormState>();
 
   double mq(BuildContext context, double size) {
@@ -104,7 +107,7 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
     return result;
   }
 
-  onPrescriptionSubmit(context) async {
+  Future<void> onPrescriptionSubmit(context) async {
     final user = FirebaseAuth.instance.currentUser;
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
@@ -202,10 +205,85 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
     print("Done");
   }
 
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 0:
+        text = const Text('Mon', style: style);
+        break;
+      case 1:
+        text = const Text('Tue', style: style);
+        break;
+      case 2:
+        text = const Text('Wed', style: style);
+        break;
+      case 3:
+        text = const Text('Thu', style: style);
+        break;
+      case 4:
+        text = const Text('Fri', style: style);
+        break;
+      case 5:
+        text = const Text('Sat', style: style);
+        break;
+      case 6:
+        text = const Text('Sun', style: style);
+        break;
+
+      default:
+        text = const Text('', style: style);
+        break;
+    }
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      child: text,
+    );
+  }
+
+  Widget leftTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      fontWeight: FontWeight.bold,
+      fontSize: 15,
+    );
+    String text;
+    switch (value.toInt()) {
+      case 2:
+        text = '2hr';
+        break;
+      case 4:
+        text = '4hr';
+        break;
+      case 6:
+        text = '6hr';
+        break;
+      case 8:
+        text = '8hr';
+        break;
+      case 10:
+        text = '10hr';
+        break;
+      case 12:
+        text = '12hr';
+        break;
+
+      default:
+        return Container();
+    }
+
+    return Text(text, style: style, textAlign: TextAlign.left);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("Prescribe"),
+      ),
       resizeToAvoidBottomInset: true,
       body: Form(
         key: _formKey,
@@ -218,6 +296,166 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
               children: [
                 Container(
                   margin: EdgeInsets.only(top: mq(context, 50)),
+                ),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 30)),
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Patient Lifestyle Data",
+                    style: TextStyle(
+                        fontSize: mq(context, 30),
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 24)),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Patient Sleep Pattern",
+                    style: TextStyle(
+                        fontSize: mq(context, 24),
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 30)),
+                  height: mq(context, 300),
+                  child: LineChart(LineChartData(
+                    gridData: const FlGridData(show: false),
+                    titlesData: FlTitlesData(
+                        topTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false)),
+                        rightTitles: const AxisTitles(
+                            sideTitles: SideTitles(showTitles: false)),
+                        bottomTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 30,
+                                interval: 1,
+                                getTitlesWidget: bottomTitleWidgets)),
+                        leftTitles: AxisTitles(
+                            sideTitles: SideTitles(
+                          showTitles: true,
+                          interval: 1,
+                          reservedSize: 42,
+                          getTitlesWidget: leftTitleWidgets,
+                        ))),
+                    borderData: FlBorderData(
+                      show: true,
+                      border: Border.all(color: Colors.cyanAccent),
+                    ),
+                    minX: 0,
+                    maxX: 6,
+                    minY: 0,
+                    maxY: 12,
+                    lineTouchData: LineTouchData(
+                        enabled: true,
+                        touchTooltipData: LineTouchTooltipData(
+                          getTooltipItems: (touchedSpots) {
+                            return touchedSpots.map((spot) {
+                              return LineTooltipItem(
+                                  "${spot.y.toString()} hrs",
+                                  const TextStyle(
+                                      color: Colors.cyanAccent,
+                                      fontWeight: FontWeight.bold));
+                            }).toList();
+                          },
+                        )),
+                    lineBarsData: [
+                      LineChartBarData(
+                        spots: [
+                          ...futureSleepList.map((e) => FlSpot(
+                                e.dayIndex.toDouble() - 1,
+                                e.timeSlept.inHours.toDouble() +
+                                    e.timeSlept.inMinutes.remainder(60) / 100,
+                              ))
+                        ],
+                        isCurved: true,
+                        gradient: const LinearGradient(
+                          colors: [Colors.cyanAccent, Colors.teal],
+                        ),
+                        barWidth: 5,
+                        isStrokeCapRound: true,
+                        dotData: const FlDotData(
+                          show: false,
+                        ),
+                        belowBarData: BarAreaData(
+                          show: true,
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.cyanAccent.withOpacity(0.5),
+                              Colors.teal.withOpacity(0.5)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+                ),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 24)),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Patient BMI: 28",
+                    style: TextStyle(
+                        fontSize: mq(context, 24),
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 24)),
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Patient Physical Activity",
+                    style: TextStyle(
+                        fontSize: mq(context, 24),
+                        color: Colors.teal,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Column(
+                      children: [
+                        Text(
+                          "1550 kcal",
+                          style: TextStyle(fontSize: mq(context, 18)),
+                        ),
+                        Text(
+                          "Calories burned",
+                          style: TextStyle(
+                              color: Colors.teal, fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text("32000",
+                            style: TextStyle(fontSize: mq(context, 18))),
+                        Text("Steps",
+                            style: TextStyle(
+                                color: Colors.teal,
+                                fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                    Column(
+                      children: [
+                        Text("24 km",
+                            style: TextStyle(fontSize: mq(context, 18))),
+                        Text("Distance",
+                            style: TextStyle(
+                                color: Colors.teal,
+                                fontWeight: FontWeight.bold))
+                      ],
+                    ),
+                  ],
+                ),
+                Container(
+                  margin: EdgeInsets.all(mq(context, 10)),
                 ),
                 Container(
                   margin: EdgeInsets.all(mq(context, 30)),
@@ -460,38 +698,44 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.all(mq(context, 20)),
-                  child: TextButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate() &&
-                            savedMedicationList.isNotEmpty &&
-                            savedMedicationList.isNotEmpty) {
-                          _formKey.currentState!.save();
-                          onPrescriptionSubmit(context);
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                  content:
-                                      Text("Please fill all the details")));
-                        }
-                      },
-                      style: ButtonStyle(
-                          minimumSize: MaterialStatePropertyAll(
-                              Size(mq(context, 400), mq(context, 80))),
+                if (!waiting)
+                  Container(
+                    margin: EdgeInsets.all(mq(context, 20)),
+                    child: TextButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate() &&
+                              savedMedicationList.isNotEmpty &&
+                              savedMedicationList.isNotEmpty) {
+                            _formKey.currentState!.save();
+                            setState(() {
+                              waiting = true;
+                            });
+                            await onPrescriptionSubmit(context);
+                            setState(() {
+                              waiting = false;
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text("Please fill all the details")));
+                          }
+                        },
+                        style: ButtonStyle(
                           foregroundColor:
                               const MaterialStatePropertyAll(Colors.white),
                           backgroundColor:
                               const MaterialStatePropertyAll(Colors.teal),
-                          shape: MaterialStatePropertyAll(
-                              RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.circular(mq(context, 10))))),
-                      child: Text(
-                        "Submit",
-                        style: TextStyle(fontSize: mq(context, 24)),
-                      )),
-                ),
+                        ),
+                        child: Text(
+                          "Submit",
+                          style: TextStyle(fontSize: mq(context, 24)),
+                        )),
+                  )
+                else
+                  Container(
+                      margin: EdgeInsets.all(mq(context, 20)),
+                      child: CircularProgressIndicator()),
               ],
             ),
           ),
