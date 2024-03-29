@@ -153,6 +153,7 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
 
     var data = {
       'to': widget.patientData.token,
+      "priority": "high",
       'notification': {
         'title': 'Prognosfiy',
         'body':
