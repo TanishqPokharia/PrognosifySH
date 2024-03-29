@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:prognosify/data/sleep_review.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 
 class SleepReviewCard extends StatelessWidget {
   final SleepReview sleepReview;

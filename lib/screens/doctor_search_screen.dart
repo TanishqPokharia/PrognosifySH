@@ -1,42 +1,12 @@
 import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:collection/collection.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:prognosify/cloud_notification/cloud_notifications.dart';
 import 'package:prognosify/data/doctor_data.dart';
-import 'package:prognosify/data/doctor_filter.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
-
-List<SpecialityFilter> speciality = [
-  SpecialityFilter(speciality: "All", color: Colors.grey),
-  SpecialityFilter(speciality: 'Cardiologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Neurologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Oncologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Endocrinologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Pediatrician', color: Colors.grey),
-  SpecialityFilter(speciality: 'Psychiatrist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Gynecologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Dermatologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Anesthesiologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Gastroenterologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Otolaryngologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Nephrologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Physicians', color: Colors.grey),
-  SpecialityFilter(speciality: 'Geriatrician', color: Colors.grey),
-  SpecialityFilter(speciality: 'Pulmonologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Radiologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Allergist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Ophthalmologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Emergency physician', color: Colors.grey),
-  SpecialityFilter(speciality: 'Orthopaedist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Dentist', color: Colors.grey),
-  SpecialityFilter(speciality: 'General Surgery', color: Colors.grey),
-  SpecialityFilter(speciality: 'Hematologist', color: Colors.grey),
-  SpecialityFilter(speciality: 'Internists', color: Colors.grey),
-];
+import 'package:prognosify/data/doctor_speciality_list.dart';
 
 final doctorListProvider = FutureProvider<List<DoctorData>>((ref) async {
   final snapshot = await FirebaseFirestore.instance.collection("doctors").get();
@@ -82,7 +52,6 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
   @override
   Widget build(BuildContext context) {
     final doctorList = ref.watch(doctorListProvider);
-    final specialityFilter = ref.watch(specialityFilterProvider);
 
     return Scaffold(
         body: Container(
@@ -98,11 +67,11 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                ...speciality.map((e) => GestureDetector(
+                ...specialityList.map((e) => GestureDetector(
                       onTap: () {
                         setState(() {
                           e.color = Colors.green;
-                          speciality.forEach((element) {
+                          specialityList.forEach((element) {
                             if (element.speciality != e.speciality) {
                               setState(() {
                                 element.color = Colors.grey;
@@ -128,7 +97,7 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
             ),
           ),
           doctorList.when(
-            loading: () => CircularProgressIndicator(),
+            loading: () => const CircularProgressIndicator(),
             error: (error, stackTrace) {
               print(stackTrace);
               return Text("Error occured while fetching doctors");
@@ -235,7 +204,7 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                       .doc(doctor.uid)
                       .update({"patientRequests": patientsList});
 
-                  CloudNotifications cloudNotifications = CloudNotifications();
+                  //send notification to the doctor
                   var data = {
                     'to': doctor.token,
                     'notification': {
@@ -243,12 +212,9 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                       'body': 'Appointment request received',
                       "sound": "jetsons_doorbell.mp3"
                     },
-                    'android': {
-                      'notification': {
-                        'notification_count': 23,
-                      },
+                    "android": {
+                      "notification": {"channel_id": "PrognosifyChannelID"}
                     },
-                    'data': {'type': 'msj', 'id': 'Prognosify'}
                   };
 
                   await http.post(
@@ -275,8 +241,9 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                     overflow: TextOverflow.ellipsis,
                   )));
                 },
-                child: Text("Consult"),
-                style: ButtonStyle(elevation: MaterialStatePropertyAll(5)),
+                style:
+                    const ButtonStyle(elevation: MaterialStatePropertyAll(5)),
+                child: const Text("Consult"),
               ),
             )
           ],

@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prognosify/firebase_options.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 import 'package:prognosify/models/notification/notification_services.dart';
 import 'package:prognosify/router/app_router_config.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,13 +33,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-        // locale: DevicePreview.locale(context),
-        // builder: DevicePreview.appBuilder,
-
-        // routeInformationParser: AppRouter().router.routeInformationParser,
-        // routerDelegate: AppRouter().router.routerDelegate,
-        // routeInformationProvider: AppRouter().router.routeInformationProvider,
-
         routerConfig: AppRouter().router,
         debugShowCheckedModeBanner: false,
         theme: ThemeData().copyWith(
@@ -62,7 +54,7 @@ class MyApp extends StatelessWidget {
               )),
           textButtonTheme: TextButtonThemeData(
               style: ButtonStyle(
-                  minimumSize: MaterialStatePropertyAll(Size(400, 60)),
+                  minimumSize: const MaterialStatePropertyAll(Size(200, 40)),
                   foregroundColor: const MaterialStatePropertyAll(Colors.white),
                   backgroundColor: const MaterialStatePropertyAll(Colors.teal),
                   shape: MaterialStatePropertyAll(RoundedRectangleBorder(

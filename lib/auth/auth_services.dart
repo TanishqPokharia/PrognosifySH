@@ -8,7 +8,7 @@ import 'package:prognosify/router/app_router_constants.dart';
 
 class AuthServices {
   static signUpUser(String email, String name, String password, int age,
-      String gender, BuildContext context) async {
+      String gender, double weight, double height, BuildContext context) async {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
@@ -37,6 +37,8 @@ class AuthServices {
         'name': name,
         'age': age,
         'gender': gender,
+        'weight': weight,
+        'height': height,
         'topDiseases': [],
         'topPercentage': [],
         'topDiseasesPrecautions': {},
@@ -94,7 +96,7 @@ class AuthServices {
         cloudNotifications.firebaseInit(context);
         cloudNotifications.setupInteractMessage(context);
         cloudNotifications.isTokenRefresh();
-        await cloudNotifications.getDeviceToken().then((value) {
+        await cloudNotifications.getDeviceToken().then((value) async {
           deviceToken = value.toString();
         });
       }
@@ -170,13 +172,13 @@ class AuthServices {
       }
 
       if (snapshot.exists) {
-        GoRouter.of(context)
-            .goNamed(AppRouterConstants.patientNavigationScreen);
-
         await FirebaseFirestore.instance
             .collection("users")
             .doc(currentUser.uid)
             .update({"token": deviceToken});
+
+        GoRouter.of(context)
+            .goNamed(AppRouterConstants.patientNavigationScreen);
       } else {
         await FirebaseFirestore.instance
             .collection("doctors")

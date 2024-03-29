@@ -1,3 +1,4 @@
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/navigation_menu/doctor_navigation_menu.dart';
@@ -140,21 +141,26 @@ class AppRouter {
               },
             )),
     GoRoute(
-      name: AppRouterConstants.bmiScreen,
-      path: "/bmi",
-      pageBuilder: (context, state) => CustomTransitionPage(
-        key: state.pageKey,
-        child: BMIScreen(),
-        transitionsBuilder: (context, animation, secondaryAnimation, child) {
-          return SlideTransition(
-            position: animation.drive(
-                Tween(begin: Offset(1, 0), end: Offset.zero)
+        name: AppRouterConstants.bmiScreen,
+        path: "/bmi",
+        pageBuilder: (context, state) {
+          print(state.extra);
+          return CustomTransitionPage(
+            key: state.pageKey,
+            child: BMIScreen(
+              bmi: state.extra.toString().toDouble(),
+            ),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return SlideTransition(
+                position: animation.drive(Tween(
+                        begin: Offset(1, 0), end: Offset.zero)
                     .chain(CurveTween(curve: Curves.fastEaseInToSlowEaseOut))),
-            child: child,
+                child: child,
+              );
+            },
           );
-        },
-      ),
-    ),
+        }),
     GoRoute(
       name: AppRouterConstants.calorieScreen,
       path: "/calorie",

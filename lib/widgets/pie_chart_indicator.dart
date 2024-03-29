@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 
 class Indicator extends StatelessWidget {
   final String title;

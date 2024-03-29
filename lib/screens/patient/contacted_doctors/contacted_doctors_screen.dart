@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prognosify/data/doctor_data.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 import 'package:prognosify/widgets/contacted_doctors_card.dart';
 
 List<DoctorData> doctorList = [

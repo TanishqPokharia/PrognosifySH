@@ -1,7 +1,8 @@
 import 'package:bottom_bar_matu/utils/app_utils.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:prognosify/widgets/pie_chart_indicator.dart';
 
@@ -9,6 +10,14 @@ final touchedIndexProvider = StateProvider<int>((ref) => -1);
 
 final userWeightProvider = StateProvider<double>((ref) => 0);
 final userHeightProvider = StateProvider<double>((ref) => 0);
+
+final userDataProvider =
+    StreamProvider.family<DocumentSnapshot, User?>((ref, user) {
+  return FirebaseFirestore.instance
+      .collection("users")
+      .doc(user!.uid)
+      .snapshots();
+});
 
 List<double> nutrientValues = [
   15.32,
@@ -197,10 +206,23 @@ List<PieChartSectionData> showingSections(WidgetRef ref) {
 }
 
 class BMIScreen extends ConsumerWidget {
-  BMIScreen({super.key});
+  BMIScreen({super.key, required this.bmi});
+  final double bmi;
+
+  final user = FirebaseAuth.instance.currentUser;
   final formKey = GlobalKey<FormState>();
   double mq(BuildContext context, double size) {
     return MediaQuery.of(context).size.height * (size / 1000);
+  }
+
+  String get weightCategory {
+    if (bmi < 18.5) {
+      return "Underweight";
+    } else if (bmi > 18.5 && bmi < 24.9) {
+      return "Healthy";
+    } else {
+      return "Overweight";
+    }
   }
 
   void changeBMI(BuildContext context, WidgetRef ref) {
@@ -239,7 +261,7 @@ class BMIScreen extends ConsumerWidget {
                         borderRadius:
                             BorderRadius.all(Radius.circular(mq(context, 25)))),
                     label: Text(
-                      "Height(centimeters)",
+                      "Height(meters)",
                       style: TextStyle(fontSize: mq(context, 21)),
                     ),
                   ),
@@ -278,10 +300,19 @@ class BMIScreen extends ConsumerWidget {
                 width: double.infinity,
                 margin: EdgeInsets.all(mq(context, 20)),
                 child: TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (formKey.currentState!.validate()) {
                         formKey.currentState!.save();
+                        await FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(user!.uid)
+                            .update({
+                          "weight": ref.watch(userWeightProvider),
+                          "height": ref.watch(userHeightProvider)
+                        });
                         Navigator.pop(context);
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text("Height and Weight changed")));
                       }
                     },
                     child: Text(
@@ -444,7 +475,7 @@ class BMIScreen extends ConsumerWidget {
                     )),
                 Center(
                   child: Text(
-                    "BMI : 28 \n Overweight",
+                    "BMI : $bmi \n $weightCategory",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: mq(context, 20),

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dob_input_field/dob_input_field.dart';
 import 'package:prognosify/auth/auth_services.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 
 class DoctorSignUpScreen extends StatefulWidget {
   const DoctorSignUpScreen({super.key});

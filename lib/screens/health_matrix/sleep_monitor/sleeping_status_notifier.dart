@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:prognosify/data/sleep_review.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 import 'package:prognosify/screens/health_matrix/sleep_monitor/sleep_monitor_screen.dart';
 
 class SleepingStatusNotifier extends StateNotifier<bool> {

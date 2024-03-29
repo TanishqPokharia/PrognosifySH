@@ -1,0 +1,30 @@
+import 'package:flutter/material.dart';
+import 'package:prognosify/data/doctor_filter.dart';
+
+List<SpecialityFilter> specialityList = [
+  SpecialityFilter(speciality: "All", color: Colors.grey),
+  SpecialityFilter(speciality: 'Cardiologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Neurologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Oncologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Endocrinologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Pediatrician', color: Colors.grey),
+  SpecialityFilter(speciality: 'Psychiatrist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Gynecologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Dermatologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Anesthesiologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Gastroenterologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Otolaryngologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Nephrologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Physicians', color: Colors.grey),
+  SpecialityFilter(speciality: 'Geriatrician', color: Colors.grey),
+  SpecialityFilter(speciality: 'Pulmonologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Radiologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Allergist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Ophthalmologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Emergency physician', color: Colors.grey),
+  SpecialityFilter(speciality: 'Orthopaedist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Dentist', color: Colors.grey),
+  SpecialityFilter(speciality: 'General Surgery', color: Colors.grey),
+  SpecialityFilter(speciality: 'Hematologist', color: Colors.grey),
+  SpecialityFilter(speciality: 'Internists', color: Colors.grey),
+];

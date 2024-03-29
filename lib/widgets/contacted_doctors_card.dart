@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:prognosify/data/doctor_data.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 
 class ContactedDoctorsCard extends StatelessWidget {
   final DoctorData doctorData;

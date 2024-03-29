@@ -2,7 +2,6 @@ import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:dob_input_field/dob_input_field.dart';
 import 'package:flutter/material.dart';
 import 'package:prognosify/auth/auth_services.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 
 class PatientSignUpScreen extends StatefulWidget {
   const PatientSignUpScreen({super.key});
@@ -119,7 +118,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                       key: const ValueKey("weight"),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value!.isEmpty || value.toInt() < 10) {
                           return "Please enter proper weight";
                         } else {
                           return null;
@@ -148,7 +147,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                       key: const ValueKey("height"),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value!.isEmpty) {
+                        if (value!.isEmpty || value.toInt() < 10) {
                           return "Please enter proper height";
                         } else {
                           return null;
@@ -164,7 +163,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                               borderRadius: BorderRadius.all(
                                   Radius.circular(mq(context, 25)))),
                           label: Text(
-                            "Height(centimeters)",
+                            "Height(meters)",
                             style: TextStyle(fontSize: mq(context, 25)),
                             // style: TextStyle(fontSize: 20),
                           )),
@@ -324,7 +323,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                           _formKeySignUp.currentState!.save();
                           if (isMale && age != null && gender != null) {
                             AuthServices.signUpUser(email, fullName, password,
-                                age!, gender!, context);
+                                age!, gender!, weight, height, context);
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(

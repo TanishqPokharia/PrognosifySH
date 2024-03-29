@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -32,24 +31,18 @@ class CloudNotifications {
 
   void firebaseInit(BuildContext context) {
     FirebaseMessaging.onMessage.listen((message) {
-      RemoteNotification? notification = message.notification;
-      AndroidNotification? android = message.notification!.android;
+      // RemoteNotification? notification = message.notification;
+      // AndroidNotification? android = message.notification!.android;
 
-      if (kDebugMode) {
-        print("notifications title:${notification!.title}");
-        print("notifications body:${notification.body}");
-        print('count:${android!.count}');
-        print('data:${message.data.toString()}');
-      }
+      // if (kDebugMode) {
+      //   print("notifications title:${notification!.title}");
+      //   print("notifications body:${notification.body}");
+      //   print('count:${android!.count}');
+      //   print('data:${message.data.toString()}');
+      // }
 
-      if (Platform.isIOS) {
-        forgroundMessage();
-      }
-
-      if (Platform.isAndroid) {
-        initLocalNotifications(context, message);
-        showNotification(message);
-      }
+      initLocalNotifications(context, message);
+      showNotification(message);
     });
   }
 
@@ -84,9 +77,8 @@ class CloudNotifications {
   // function to show visible notification when app is active
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
-        message.notification!.android!.channelId.toString(),
-        message.notification!.android!.channelId.toString(),
-        importance: Importance.max,
+        "PrognosifyChannelID", "High Importance Notification",
+        importance: Importance.high,
         showBadge: true,
         playSound: true,
         sound: const RawResourceAndroidNotificationSound('jetsons_doorbell'));
@@ -99,17 +91,10 @@ class CloudNotifications {
             priority: Priority.high,
             playSound: true,
             ticker: 'ticker',
-            sound: channel.sound
-            //     sound: RawResourceAndroidNotificationSound('jetsons_doorbell')
-            //  icon: largeIconPath
-            );
+            sound: channel.sound);
 
-    const DarwinNotificationDetails darwinNotificationDetails =
-        DarwinNotificationDetails(
-            presentAlert: true, presentBadge: true, presentSound: true);
-
-    NotificationDetails notificationDetails = NotificationDetails(
-        android: androidNotificationDetails, iOS: darwinNotificationDetails);
+    NotificationDetails notificationDetails =
+        NotificationDetails(android: androidNotificationDetails);
 
     Future.delayed(Duration.zero, () {
       _flutterLocalNotificationsPlugin.show(
@@ -153,10 +138,8 @@ class CloudNotifications {
   }
 
   void handleMessage(BuildContext context, RemoteMessage message) {
-    if (message.data['type'] == 'msj') {
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => SplashScreen()));
-    }
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SplashScreen()));
   }
 
   Future forgroundMessage() async {

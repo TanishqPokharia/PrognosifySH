@@ -7,7 +7,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:dio/dio.dart';
 
 final medicalReportSummaryProvider =
-    StateNotifierProvider<SummarizedDataNotifier, String>((ref) {
+    StateNotifierProvider<SummarizedDataNotifier, Widget>((ref) {
   return SummarizedDataNotifier();
 });
 
@@ -31,22 +31,38 @@ class MedicalReportSummarizer extends ConsumerWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(
+                Container(
+                  margin: EdgeInsets.all(mq(context, 20)),
+                  width: double.infinity,
+                  child: TextButton(
+                    style: ButtonStyle(
+                        padding: MaterialStatePropertyAll(
+                            EdgeInsets.all(mq(context, 20)))),
                     onPressed: () {
                       ref
                           .read(medicalReportSummaryProvider.notifier)
                           .fetchReportSummary();
                     },
-                    child: Text("Select File")),
-                Container(
-                  alignment: Alignment.topCenter,
-                  margin: EdgeInsets.all(mq(context, 20)),
-                  width: MediaQuery.of(context).size.width,
-                  height: mq(context, 1300),
-                  child: MarkdownBody(
-                    data: ref.watch(medicalReportSummaryProvider),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.attach_file),
+                        SizedBox(
+                          width: mq(context, 10),
+                        ),
+                        Text(
+                          "Select File",
+                          style: TextStyle(fontSize: 24),
+                        ),
+                      ],
+                    ),
                   ),
-                )
+                ),
+                Container(
+                    alignment: Alignment.topCenter,
+                    margin: EdgeInsets.all(mq(context, 20)),
+                    width: MediaQuery.of(context).size.width,
+                    child: ref.watch(medicalReportSummaryProvider))
               ],
             ),
           ),
@@ -54,9 +70,9 @@ class MedicalReportSummarizer extends ConsumerWidget {
   }
 }
 
-class SummarizedDataNotifier extends StateNotifier<String> {
+class SummarizedDataNotifier extends StateNotifier<Widget> {
   SummarizedDataNotifier()
-      : super("Upload a medical report to get its summary");
+      : super(Text("Upload a medical report to get its summary"));
 
   Future<void> fetchReportSummary() async {
     //pick pdf file from device
@@ -73,7 +89,7 @@ class SummarizedDataNotifier extends StateNotifier<String> {
       });
 
       try {
-        state = "Loading...";
+        state = CircularProgressIndicator();
         Response response = await dio.post(
           "https://prognosifyassistantchatapi.onrender.com/reportAI",
           data: formData,
@@ -88,16 +104,16 @@ class SummarizedDataNotifier extends StateNotifier<String> {
           // print(result);
           // print(summary);
           // print(insights);
-          state = summary + insights;
+          state = Text(summary + insights);
         } else {
-          state = "Some error occured, please try again later";
+          state = Text("Some error occured, please try again later");
         }
       } catch (error) {
         print(error);
-        state = "Some error occured, please try again later";
+        state = Text("Some error occured, please try again later");
       }
     } else {
-      state = "Could not pick file";
+      state = Text("Could not pick file");
     }
   }
 }

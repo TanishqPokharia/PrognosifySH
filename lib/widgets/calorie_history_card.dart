@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:prognosify/data/calorie_data.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 
 class CalorieHistoryCard extends StatelessWidget {
   final CalorieData calorieData;

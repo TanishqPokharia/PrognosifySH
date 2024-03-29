@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:pedometer/pedometer.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:prognosify/data/calorie_data.dart';
-import 'package:prognosify/models/mediaquery/mq.dart';
 import 'package:prognosify/widgets/calorie_history_card.dart';
 
 class CaloriesScreen extends ConsumerStatefulWidget {
@@ -40,10 +40,10 @@ class CalorieScreenState extends ConsumerState<CaloriesScreen> {
     });
   }
 
-  void initPlatformState() {
+  void initPlatformState() async {
+    await Permission.activityRecognition.request().isGranted;
     _stepCountStream = Pedometer.stepCountStream;
     _stepCountStream.listen(onStepCount).onError(onStepCountError);
-
     if (!mounted) return;
   }
 

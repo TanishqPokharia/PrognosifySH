@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/widgets/frosted_options.dart';
 
 class FitnessMatrix extends StatelessWidget {
-  const FitnessMatrix({super.key});
+  FitnessMatrix({super.key});
 
   double mq(BuildContext context, double size) {
     return MediaQuery.of(context).size.height * (size / 1000);
   }
+
+  final user = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -24,9 +28,22 @@ class FitnessMatrix extends StatelessWidget {
                 children: [
                   Container(
                     child: GestureDetector(
-                      onTap: () {
-                        GoRouter.of(context)
-                            .pushNamed(AppRouterConstants.bmiScreen);
+                      onTap: () async {
+                        final fetchUserData = FirebaseFirestore.instance
+                            .collection("users")
+                            .doc(user!.uid)
+                            .get();
+                        final data = await fetchUserData;
+                        if (context.mounted) {
+                          print((data['weight'] /
+                                  (data['height'] * data['height']))
+                              .toStringAsFixed(2));
+                          GoRouter.of(context).pushNamed(
+                              AppRouterConstants.bmiScreen,
+                              extra: (data['weight'] /
+                                      (data['height'] * data['height']))
+                                  .toStringAsFixed(2));
+                        }
                       },
                       child: FrostedOptions(
                           color: Colors.indigo,

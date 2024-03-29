@@ -126,6 +126,7 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
       print(widget.patientData.email);
       final encodedResult = jsonEncode(result);
 
+      //mail the prescription to the user
       await http
           .post(Uri.parse("https://prognosify.onrender.com/mail_prescription"),
               headers: {'Content-Type': 'application/json'},
@@ -150,6 +151,8 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
           const SnackBar(content: Text("Please fill all the details")));
     }
 
+    //send notification to patient
+
     var data = {
       'to': widget.patientData.token,
       'notification': {
@@ -158,12 +161,9 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
             'Dr. ${FirebaseAuth.instance.currentUser!.displayName} has sent prescription',
         "sound": "jetsons_doorbell.mp3"
       },
-      'android': {
-        'notification': {
-          'notification_count': 23,
-        },
+      "android": {
+        "notification": {"channel_id": "PrognosifyChannelID"}
       },
-      'data': {'type': 'msj', 'id': 'Prognosify'}
     };
 
     await http.post(Uri.parse('https://fcm.googleapis.com/fcm/send'),
@@ -181,6 +181,8 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
         print(error);
       }
     });
+
+    //remove from approved screen
 
     final snapshot = await FirebaseFirestore.instance
         .collection("doctors")
@@ -721,11 +723,11 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
                                         Text("Please fill all the details")));
                           }
                         },
-                        style: ButtonStyle(
+                        style: const ButtonStyle(
                           foregroundColor:
-                              const MaterialStatePropertyAll(Colors.white),
+                              MaterialStatePropertyAll(Colors.white),
                           backgroundColor:
-                              const MaterialStatePropertyAll(Colors.teal),
+                              MaterialStatePropertyAll(Colors.teal),
                         ),
                         child: Text(
                           "Submit",
