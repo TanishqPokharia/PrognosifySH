@@ -1,3 +1,4 @@
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -64,11 +65,16 @@ class DoctorApprovedScreen extends ConsumerWidget {
                           children: [
                             if (data.isNotEmpty)
                               ...data.map((patient) {
+                                print(patient);
                                 return PatientApprovedCard(
                                     patientCardData: PatientCardData(
                                         name: patient!['name'],
                                         age: patient['age'],
                                         gender: patient['gender'],
+                                        bmi: patient['bmi']
+                                            .toString()
+                                            .toDouble()
+                                            .toStringAsFixed(2),
                                         disease: patient['disease'],
                                         notes: patient['notes'],
                                         email: patient['email'],

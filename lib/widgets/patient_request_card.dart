@@ -96,7 +96,8 @@ class PatientRequestCard extends StatelessWidget {
       "gender": patientCardData.gender,
       "name": patientCardData.name,
       "notes": patientCardData.notes,
-      "token": patientCardData.token
+      "token": patientCardData.token,
+      "bmi": patientCardData.bmi
     });
 
     await FirebaseFirestore.instance

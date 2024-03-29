@@ -155,12 +155,11 @@ class _SignInScreenState extends State<SignInScreen> {
                                 onPressed: () async {
                                   if (_formKeySignIn.currentState!.validate()) {
                                     _formKeySignIn.currentState!.save();
-                                    setState(() async {
-                                      waiting = true;
-                                      await AuthServices.signInUser(
-                                          email, password, context);
-                                      waiting = false;
-                                    });
+                                    waiting = true;
+                                    await AuthServices.signInUser(
+                                        email, password, context);
+                                    waiting = false;
+                                    setState(() {});
                                   }
                                 },
                                 child: Text("Sign In",

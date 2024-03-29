@@ -1,12 +1,10 @@
 import 'dart:convert';
+import 'package:bottom_bar_matu/utils/app_utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
-import 'package:prognosify/cloud_notification/cloud_notifications.dart';
-import 'package:dob_input_field/dob_input_field.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:intl/intl.dart';
 import 'package:prognosify/data/medication.dart';
 import 'package:prognosify/data/patient_card_data.dart';
 import 'package:prognosify/data/routine.dart';
@@ -159,7 +157,6 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
         'title': 'Prognosfiy',
         'body':
             'Dr. ${FirebaseAuth.instance.currentUser!.displayName} has sent prescription',
-        "sound": "jetsons_doorbell.mp3"
       },
       "android": {
         "notification": {"channel_id": "PrognosifyChannelID"}
@@ -400,7 +397,7 @@ class _WritePrescriptionScreenState extends State<WritePrescriptionScreen> {
                   margin: EdgeInsets.all(mq(context, 24)),
                   alignment: Alignment.center,
                   child: Text(
-                    "Patient BMI: 28",
+                    "Patient BMI: ${widget.patientData.bmi.toDouble().toStringAsFixed(2)}",
                     style: TextStyle(
                         fontSize: mq(context, 24),
                         color: Colors.teal,

@@ -196,7 +196,10 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                     "gender": patientSnapshot.data()!['gender'],
                     "token": patientSnapshot.data()!['token'],
                     "email": patientSnapshot.data()!['email'],
-                    "notes": "Pain"
+                    "notes": "Pain",
+                    "bmi": (patientSnapshot.data()!['weight'] /
+                        (patientSnapshot.data()!['height'] *
+                            patientSnapshot.data()!['height']))
                   });
 
                   await FirebaseFirestore.instance
@@ -209,8 +212,8 @@ class _DoctorSearchScreenState extends ConsumerState<DoctorSearchScreen> {
                     'to': doctor.token,
                     'notification': {
                       'title': 'Prognosfiy',
-                      'body': 'Appointment request received',
-                      "sound": "jetsons_doorbell.mp3"
+                      'body':
+                          'Appointment request received from ${user.displayName}',
                     },
                     "android": {
                       "notification": {"channel_id": "PrognosifyChannelID"}

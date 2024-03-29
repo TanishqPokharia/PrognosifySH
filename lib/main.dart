@@ -1,8 +1,10 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:prognosify/cloud_notification/cloud_notifications.dart';
 import 'package:prognosify/firebase_options.dart';
 import 'package:prognosify/models/notification/notification_services.dart';
 import 'package:prognosify/router/app_router_config.dart';
@@ -12,6 +14,11 @@ var kColorScheme = ColorScheme.fromSeed(seedColor: Colors.teal);
 
 String appTitle = 'Prognosify';
 
+@pragma("vm:entry-point")
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
@@ -19,11 +26,17 @@ void main() async {
       AwesomeNotifications().requestPermissionToSendNotifications();
     }
   });
+
   // Hive.registerAdapter(PrognosifyNotificationAdapter());
   NotificationServices.initializeNotifications();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
   // runApp(DevicePreview(
   //     builder: ((context) => const MyApp()), enabled: !kReleaseMode));
+  CloudNotifications cloudNotifications = CloudNotifications();
+  cloudNotifications.requestNotificationPermission();
+  cloudNotifications.forgroundMessage();
   runApp(const ProviderScope(child: MyApp()));
 }
 

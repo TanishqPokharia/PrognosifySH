@@ -1,7 +1,10 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:go_router/go_router.dart';
+import 'package:prognosify/router/app_router_constants.dart';
 import 'package:prognosify/screens/splash_screen.dart';
 
 class CloudNotifications {
@@ -13,20 +16,18 @@ class CloudNotifications {
       FlutterLocalNotificationsPlugin();
 
   //function to initialise flutter local notification plugin to show notifications for android when app is active
-  void initLocalNotifications(
-      BuildContext context, RemoteMessage message) async {
-    var androidInitializationSettings =
-        const AndroidInitializationSettings('@mipmap/ic_launcher');
-    var iosInitializationSettings = const DarwinInitializationSettings();
+  void initLocalNotifications(BuildContext context) async {
+    AndroidInitializationSettings androidInitializationSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    InitializationSettings initializationSettings =
+        InitializationSettings(android: androidInitializationSettings);
 
-    var initializationSetting = InitializationSettings(
-        android: androidInitializationSettings, iOS: iosInitializationSettings);
-
-    await _flutterLocalNotificationsPlugin.initialize(initializationSetting,
-        onDidReceiveNotificationResponse: (payload) {
-      // handle interaction when app is active for android
-      handleMessage(context, message);
-    });
+    await _flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse: (details) {
+        GoRouter.of(context).goNamed(AppRouterConstants.splashScreen);
+      },
+    );
   }
 
   void firebaseInit(BuildContext context) {
@@ -41,13 +42,14 @@ class CloudNotifications {
       //   print('data:${message.data.toString()}');
       // }
 
-      initLocalNotifications(context, message);
+      initLocalNotifications(context);
       showNotification(message);
     });
   }
 
   void requestNotificationPermission() async {
-    NotificationSettings settings = await messaging.requestPermission(
+    NotificationSettings notificationSettings =
+        await messaging.requestPermission(
       alert: true,
       announcement: true,
       badge: true,
@@ -57,53 +59,47 @@ class CloudNotifications {
       sound: true,
     );
 
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      if (kDebugMode) {
-        print('user granted permission');
-      }
-    } else if (settings.authorizationStatus ==
+    if (notificationSettings.authorizationStatus ==
+        AuthorizationStatus.authorized) {
+      print("access granted");
+    } else if (notificationSettings.authorizationStatus ==
         AuthorizationStatus.provisional) {
-      if (kDebugMode) {
-        print('user granted provisional permission');
-      }
+      print("provisional permission granted");
     } else {
-      //appsetting.AppSettings.openNotificationSettings();
-      if (kDebugMode) {
-        print('user denied permission');
-      }
+      AppSettings.openAppSettings(type: AppSettingsType.notification);
+      print("access denied");
     }
   }
 
   // function to show visible notification when app is active
   Future<void> showNotification(RemoteMessage message) async {
     AndroidNotificationChannel channel = AndroidNotificationChannel(
-        "PrognosifyChannelID", "High Importance Notification",
-        importance: Importance.high,
-        showBadge: true,
-        playSound: true,
-        sound: const RawResourceAndroidNotificationSound('jetsons_doorbell'));
+      "PrognosifyChannelID",
+      "High Importance Notification",
+      importance: Importance.high,
+      showBadge: true,
+      playSound: true,
+    );
 
     AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-            channel.id.toString(), channel.name.toString(),
-            channelDescription: 'your channel description',
-            importance: Importance.high,
-            priority: Priority.high,
-            playSound: true,
-            ticker: 'ticker',
-            sound: channel.sound);
+      channel.id.toString(),
+      channel.name.toString(),
+      importance: Importance.high,
+      priority: Priority.high,
+      playSound: true,
+      ticker: 'ticker',
+    );
 
     NotificationDetails notificationDetails =
         NotificationDetails(android: androidNotificationDetails);
 
-    Future.delayed(Duration.zero, () {
-      _flutterLocalNotificationsPlugin.show(
-        0,
-        message.notification!.title.toString(),
-        message.notification!.body.toString(),
-        notificationDetails,
-      );
-    });
+    await _flutterLocalNotificationsPlugin.show(
+      0,
+      message.notification!.title.toString(),
+      message.notification!.body.toString(),
+      notificationDetails,
+    );
   }
 
   //function to get device token on which we will send the notifications

@@ -118,7 +118,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                       key: const ValueKey("weight"),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value!.isEmpty || value.toInt() < 10) {
+                        if (value!.isEmpty) {
                           return "Please enter proper weight";
                         } else {
                           return null;
@@ -147,7 +147,7 @@ class _PatientSignUpScreenState extends State<PatientSignUpScreen> {
                       key: const ValueKey("height"),
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        if (value!.isEmpty || value.toInt() < 10) {
+                        if (value!.isEmpty) {
                           return "Please enter proper height";
                         } else {
                           return null;

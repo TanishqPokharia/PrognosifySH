@@ -86,6 +86,7 @@ class DoctorHomeScreen extends ConsumerWidget {
                                         name: patient!['name'],
                                         age: patient['age'],
                                         gender: patient['gender'],
+                                        bmi: patient['bmi'].toStringAsFixed(2),
                                         disease: "",
                                         notes: patient['notes'],
                                         email: patient['email'],
