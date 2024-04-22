@@ -44,6 +44,7 @@ class LifestyleScore extends StatelessWidget {
         ),
         Text(
           "Lifestyle Score",
+          textAlign: TextAlign.center,
           style: Theme.of(context)
               .textTheme
               .titleSmall!

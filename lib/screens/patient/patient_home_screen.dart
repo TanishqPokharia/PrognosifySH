@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -103,30 +104,35 @@ class PatientHomeScreen extends ConsumerWidget {
                         ),
                       ],
                     ),
-                    lifeStyleScore.when(
-                      loading: () => CircularProgressIndicator(),
-                      data: (data) {
-                        if (data != null) {
-                          print(data['Lifestyle_Score']);
+                    FittedBox(
+                      child: lifeStyleScore.when(
+                        loading: () => CircularProgressIndicator(),
+                        data: (data) {
+                          if (data != null) {
+                            print(data['Lifestyle_Score']);
 
-                          return GestureDetector(
-                              onTap: () {
-                                showDetailedLifestyleReview(context,
-                                    data['Health_Insights'], data['Steps']);
-                              },
-                              child: LifestyleScore(
-                                  score: data['Lifestyle_Score']));
-                        } else {
-                          return Container();
-                        }
-                      },
-                      error: (error, stackTrace) {
-                        print(error);
-                        print(stackTrace);
-                        return Container(
-                          child: Text("Error"),
-                        );
-                      },
+                            return GestureDetector(
+                                onTap: () {
+                                  showDetailedLifestyleReview(context,
+                                      data['Health_Insights'], data['Steps']);
+                                },
+                                child: Container(
+                                  width: mq(context, 100),
+                                  child: LifestyleScore(
+                                      score: data['Lifestyle_Score']),
+                                ));
+                          } else {
+                            return Container();
+                          }
+                        },
+                        error: (error, stackTrace) {
+                          print(error);
+                          print(stackTrace);
+                          return Container(
+                            child: Text("Error"),
+                          );
+                        },
+                      ),
                     )
                   ],
                 ),

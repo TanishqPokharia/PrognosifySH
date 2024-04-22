@@ -38,7 +38,7 @@ dependencies:
   go_router: ^12.1.3
   google_fonts: ^6.1.0
   percent_indicator: ^4.2.3
-  lorem_ipsum: ^0.0.3
+  
   bottom_bar_matu: ^1.3.1
   profile_photo: ^1.0.3
   progress_dialog_null_safe: ^1.0.7

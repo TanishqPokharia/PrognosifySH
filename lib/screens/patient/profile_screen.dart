@@ -103,16 +103,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 right: mq(context, 35),
                 left: mq(context, 35),
                 bottom: mq(context, 25)),
-            // child: ProfilePhoto(
-            //   totalWidth: mq(context, 200),
-            //   cornerRadius: mq(context, 100),
-            //   color: Colors.transparent,
-            //   image: CachedNetworkImageProvider(
-            //     user.photoURL!,
-            //   ),
-            //   outlineWidth: 5,
-            //   outlineColor: Theme.of(context).colorScheme.primary,
-            // ),
             child: CircleAvatar(
               radius: mq(context, 100),
               backgroundColor: Theme.of(context).colorScheme.primary,

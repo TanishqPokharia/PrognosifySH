@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:prognosify/models/hive_model/prognosify_notification.dart';
 import 'package:prognosify/screens/assistant/assistant_screen.dart';
-import 'package:prognosify/screens/doctor_search_screen.dart';
-import 'package:prognosify/screens/profile_screen.dart';
-import 'package:prognosify/screens/routine_screen.dart';
-import 'package:prognosify/screens/patient_home_screen.dart';
+import 'package:prognosify/screens/patient/doctor_search_screen.dart';
+import 'package:prognosify/screens/patient/profile_screen.dart';
+import 'package:prognosify/screens/patient/routine_screen.dart';
+import 'package:prognosify/screens/patient/patient_home_screen.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PatientNavigationMenu extends StatefulWidget {
