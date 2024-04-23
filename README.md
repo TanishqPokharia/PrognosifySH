@@ -14,7 +14,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
  - https://drive.google.com/drive/folders/1234bOtQ7itpCyxr-B_3owhPIxOXtivB1?usp=sharing
 
 **Download and Install the APK in the folder given above**
-https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/e511998a-7920-4b22-bd1a-eb8066b0d4cb
+
 ## Features
 
 **For Patients:**
