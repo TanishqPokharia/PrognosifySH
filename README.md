@@ -2,7 +2,10 @@
 
 Welcome to Prognosify, an AI-powered platform designed to empower individuals to take control of their health by predicting, preventing, and prevailing over potential health risks and diseases. Whether you're a patient looking to proactively manage your health or a doctor seeking to provide personalized care, Prognosify has you covered.
 
-### Features
+
+## Demo Video
+ - https://youtu.be/aBbo37wM-8M?feature=shared
+## Features
 
 **For Patients:**
 
@@ -21,7 +24,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 2. 📊 **Lifestyle Data Analysis**: Access patient lifestyle data including BMI and sleep cycle information to provide better analysis and personalized care.
 3. ✍️ **Prescription Reports**: Write prescriptions and additional notes based on patient data, and have them automatically mailed to the user.
 
-### Tech Stack
+## Tech Stack
 
 - Flutter
 - Firebase
