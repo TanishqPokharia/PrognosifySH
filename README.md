@@ -110,7 +110,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
    - You can use any text editor or IDE of your choice with Flutter, such as Visual Studio Code, Android Studio, or IntelliJ IDEA.
    - Install the Flutter and Dart plugins/extensions for your chosen IDE.
 
-### Afterwards to the following:
+### Afterwards do the following:
 
 1. Fork the repository.
 2. Clone the forked repository to your local machine.
