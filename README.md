@@ -36,7 +36,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
    
 ## Features Requiring Contribution
 
-1. **Better and comprehensive model for any disease**: Enhance the app's predictive threats analytics to antoher level by contributing a more comprehensive and larger model for predicting even larger set of diseases based on a wider variety of symptoms.
+1. **Better and comprehensive model for any disease**: Enhance the app's predictive threats analytics to another level by contributing a more comprehensive and larger model for predicting even larger set of diseases based on a wider variety of symptoms.
 
 2. **Improve Lifestyle Features Using Native Device Features**: Utilize native device features to enhance lifestyle tracking capabilities, such as integrating with device sensors for more accurate calorie tracking pedometer and sleep monitoring.
 
