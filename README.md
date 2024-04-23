@@ -2,7 +2,8 @@
 
 Welcome to Prognosify, an AI-powered platform designed to empower individuals to take control of their health by predicting, preventing, and prevailing over potential health risks and diseases. Whether you're a patient looking to proactively manage your health or a doctor seeking to provide personalized care, Prognosify has you covered.
 
-https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/859/488/datas/original.jpg
+![Atharv_photo](https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/ea92f389-f120-4dbf-bf50-ac83f274f9f9)
+
 
 
 ## Demo Video
@@ -18,13 +19,15 @@ https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/859/
 **For Patients:**
 
 1. 🧬 **Predictive AI Model**: Answer a set of questions tailored to your profile to predict future potential health risks and diseases.
-2. 📊 **Lifestyle Tracking**: Keep track of your lifestyle factors including calorie tracking(pedometer), sleep patterns, and BMI insights.
-3. 📑 **PDF Summarizer**: Easily summarize complex medical reports into simple language for better understanding by leveragint the power of our AI powered PDF Summarization feature.
-4. ⚖️ **Lifestyle Score**: Receive a personalized lifestyle score using our Lifestyle AI.
-5. 📰 **Health Articles**: Stay informed with access to the latest health articles.
-6. ⏰ **Health Routines**: Set daily health routines and receive reminders to stay on track.
-7. 🤖 **Prognosify Assistant**: Interact with a personal AI chatbot assistant for queries and assistance in locating nearby doctors.
-8. 🩺 **Consult with Doctors**: Connect with verified Prognosify registered doctors for consultations within the app.
+![original](https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/e511998a-7920-4b22-bd1a-eb8066b0d4cb)
+
+3. 📊 **Lifestyle Tracking**: Keep track of your lifestyle factors including calorie tracking(pedometer), sleep patterns, and BMI insights.
+4. 📑 **PDF Summarizer**: Easily summarize complex medical reports into simple language for better understanding by leveragint the power of our AI powered PDF Summarization feature.
+5. ⚖️ **Lifestyle Score**: Receive a personalized lifestyle score using our Lifestyle AI.
+6. 📰 **Health Articles**: Stay informed with access to the latest health articles.
+7. ⏰ **Health Routines**: Set daily health routines and receive reminders to stay on track.
+8. 🤖 **Prognosify Assistant**: Interact with a personal AI chatbot assistant for queries and assistance in locating nearby doctors.
+9. 🩺 **Consult with Doctors**: Connect with verified Prognosify registered doctors for consultations within the app.
 
 **For Doctors:**
 
