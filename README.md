@@ -1,4 +1,4 @@
-**Prognosify - Predict, Prevent, Prevail** 🚀
+# Prognosify - Predict, Prevent, Prevail 🚀
 
 Welcome to Prognosify, an AI-powered platform designed to empower individuals to take control of their health by predicting, preventing, and prevailing over potential health risks and diseases. Whether you're a patient looking to proactively manage your health or a doctor seeking to provide personalized care, Prognosify has you covered.
 
