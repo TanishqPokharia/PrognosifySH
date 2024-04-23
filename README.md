@@ -2,6 +2,8 @@
 
 Welcome to Prognosify, an AI-powered platform designed to empower individuals to take control of their health by predicting, preventing, and prevailing over potential health risks and diseases. Whether you're a patient looking to proactively manage your health or a doctor seeking to provide personalized care, Prognosify has you covered.
 
+https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/859/488/datas/original.jpg
+
 
 ## Demo Video
  - https://youtu.be/aBbo37wM-8M?feature=shared
