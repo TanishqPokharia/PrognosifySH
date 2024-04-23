@@ -8,7 +8,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 
 1. 🧬 **Predictive AI Model**: Answer a set of questions tailored to your profile to predict future potential health risks and diseases.
 2. 📊 **Lifestyle Tracking**: Keep track of your lifestyle factors including calorie tracking(pedometer), sleep patterns, and BMI insights.
-3. 📑 **PDF Summarizer**: Easily summarize complex medical reports into simple language for better understanding.
+3. 📑 **PDF Summarizer**: Easily summarize complex medical reports into simple language for better understanding by leveragint the power of our AI powered PDF Summarization feature.
 4. ⚖️ **Lifestyle Score**: Receive a personalized lifestyle score using our Lifestyle AI.
 5. 📰 **Health Articles**: Stay informed with access to the latest health articles.
 6. ⏰ **Health Routines**: Set daily health routines and receive reminders to stay on track.
@@ -33,13 +33,34 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
    
 ## Features Requiring Contribution
 
-1. **Improve Predictive Model with a Bigger Dataset**: Enhance the predictive capabilities of the AI model by collecting and integrating a larger dataset, enabling more accurate predictions of future health risks and diseases.
+1. **Better and comprehensive model for any disease**: Enhance the app's predictive threats analytics to antoher level by contributing a more comprehensive and larger model for predicting even larger set of diseases based on a wider variety of symptoms.
 
 2. **Improve Lifestyle Features Using Native Device Features**: Utilize native device features to enhance lifestyle tracking capabilities, such as integrating with device sensors for more accurate calorie tracking pedometer and sleep monitoring.
 
 3. **General Improvement of App UI**: Work on enhancing the user interface (UI) of the app to improve user experience and overall aesthetics, making it more intuitive and visually appealing.
 
-### How to Contribute
+## How to Contribute
+
+### Setting Up Flutter
+
+1. **Install Flutter SDK:**
+   - Download the Flutter SDK from the [official Flutter website](https://flutter.dev/docs/get-started/install).
+   - Follow the installation instructions provided for your operating system (Windows, macOS, or Linux).
+
+2. **Set Up Flutter Environment:**
+   - After installing the Flutter SDK, add the Flutter `bin` directory to your system's `PATH` variable.
+   - Run
+      ```
+     flutter doctor
+      ```
+      
+      in your terminal to check if there are any dependencies you need to install to complete the setup.
+
+3. **Install Flutter IDE:**
+   - You can use any text editor or IDE of your choice with Flutter, such as Visual Studio Code, Android Studio, or IntelliJ IDEA.
+   - Install the Flutter and Dart plugins/extensions for your chosen IDE.
+
+### Afterwards to the following:
 
 1. Fork the repository.
 2. Clone the forked repository to your local machine.
