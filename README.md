@@ -5,6 +5,12 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 
 ## Demo Video
  - https://youtu.be/aBbo37wM-8M?feature=shared
+
+## Try It Out!
+ - https://drive.google.com/drive/folders/1234bOtQ7itpCyxr-B_3owhPIxOXtivB1?usp=sharing
+
+**Download and Install the APK in the folder given above**
+
 ## Features
 
 **For Patients:**
