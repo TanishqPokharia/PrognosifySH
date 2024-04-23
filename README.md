@@ -68,19 +68,30 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 **For Doctors:**
 
 1. 👩‍⚕️ **Patient Management**: View and approve patients who have consulted with you, all from your home screen.
+<p align = "center">
+<img src = "https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/03e8f03b-4423-41c4-9b79-625912910d74" width = "600">
+</p>
+
 2. 📊 **Lifestyle Data Analysis**: Access patient lifestyle data including BMI and sleep cycle information to provide better analysis and personalized care.
+<p align = "center">
+<img src = "https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/90b895a0-e0bc-4c04-8d24-22bf81e57763" width = "600">
+</p>
+
 3. ✍️ **Prescription Reports**: Write prescriptions and additional notes based on patient data, and have them automatically mailed to the user.
+<p align = "center">
+<img src = "https://d112y698adiu2z.cloudfront.net/photos/production/software_photos/002/859/503/datas/original.jpg" width = "200">
+</p>
 
 ## Tech Stack
+![Screenshot 2024-04-24 012344](https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/c5378b2e-f1f5-4ca4-8eae-f35472733a4a)
 
-- Flutter
-- Firebase
-- Flask
-- Llama 2
-- Gemini
-- Docker
-- Practo
-   
+## Prognosify Architecture
+<p align = "center">
+<img src = "https://github.com/TanishqPokharia/PrognosifySH/assets/131706297/2d5dcecc-f879-4087-bbaa-b2f6a26f5459">
+</p>
+
+
+
 ## Features Requiring Contribution
 
 1. **Better and comprehensive model for any disease**: Enhance the app's predictive threats analytics to another level by contributing a more comprehensive and larger model for predicting even larger set of diseases based on a wider variety of symptoms.
