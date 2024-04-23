@@ -7,7 +7,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 **For Patients:**
 
 1. 🧬 **Predictive AI Model**: Answer a set of questions tailored to your profile to predict future potential health risks and diseases.
-2. 📊 **Lifestyle Tracking**: Keep track of your lifestyle factors including calorie intake, sleep patterns, and BMI insights.
+2. 📊 **Lifestyle Tracking**: Keep track of your lifestyle factors including calorie tracking(pedometer), sleep patterns, and BMI insights.
 3. 📑 **PDF Summarizer**: Easily summarize complex medical reports into simple language for better understanding.
 4. ⚖️ **Lifestyle Score**: Receive a personalized lifestyle score using our Lifestyle AI.
 5. 📰 **Health Articles**: Stay informed with access to the latest health articles.
@@ -35,7 +35,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 
 1. **Improve Predictive Model with a Bigger Dataset**: Enhance the predictive capabilities of the AI model by collecting and integrating a larger dataset, enabling more accurate predictions of future health risks and diseases.
 
-2. **Improve Lifestyle Features Using Native Device Features**: Utilize native device features to enhance lifestyle tracking capabilities, such as integrating with device sensors for more accurate calorie tracking and sleep monitoring.
+2. **Improve Lifestyle Features Using Native Device Features**: Utilize native device features to enhance lifestyle tracking capabilities, such as integrating with device sensors for more accurate calorie tracking pedometer and sleep monitoring.
 
 3. **General Improvement of App UI**: Work on enhancing the user interface (UI) of the app to improve user experience and overall aesthetics, making it more intuitive and visually appealing.
 
@@ -43,7 +43,7 @@ Welcome to Prognosify, an AI-powered platform designed to empower individuals to
 
 1. Fork the repository.
 2. Clone the forked repository to your local machine.
-3. Set up the development environment according to the provided instructions.
+3. Set up the development environment.
 4. Make your changes and improvements.
 5. Test thoroughly.
 6. Create a pull request with your changes.
